@@ -1,0 +1,475 @@
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0x4355A750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=8458" (0x00000000)
+|   "-Dcommons.daemon.process.parent=8457" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+log4j:WARN No appenders could be found for logger (com.namaraka.ggserver.utils.XMLValidationEventHandler).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Exiting. Failed to load system properties - JAXB exception: null
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0xE4906750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=9111" (0x00000000)
+|   "-Dcommons.daemon.process.parent=9110" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+log4j:WARN No appenders could be found for logger (com.namaraka.ggserver.utils.XMLValidationEventHandler).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Exiting. Failed to load system properties - JAXB exception: null
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0x86179750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=9261" (0x00000000)
+|   "-Dcommons.daemon.process.parent=9260" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+log4j:WARN No appenders could be found for logger (com.namaraka.ggserver.utils.XMLValidationEventHandler).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Exiting. Failed to load system properties - JAXB exception: null
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0xA8425750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=9438" (0x00000000)
+|   "-Dcommons.daemon.process.parent=9437" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+log4j:WARN No appenders could be found for logger (com.namaraka.ggserver.utils.XMLValidationEventHandler).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Exiting. Failed to load system properties - JAXB exception: null
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0x5BD27750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=9675" (0x00000000)
+|   "-Dcommons.daemon.process.parent=9674" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+Exiting. Failed to load system properties - File not found: /etc/xsdfiles/ug/ggserver/v1_0 (Is a directory)
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0xBF037750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=9905" (0x00000000)
+|   "-Dcommons.daemon.process.parent=9904" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+Exiting. Failed to load system properties - General exception: com.namaraka.ggserver.config.v1_0.Appconfig cannot be cast to com.namaraka.ggserver.utils.DBMSXMLObject
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0xF3DAF750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=9974" (0x00000000)
+|   "-Dcommons.daemon.process.parent=9973" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+Exiting. Failed to load system properties - Hibernate exception: Unable to load class [ com.cellulant.aopc.model.v1_0.User] declared in Hibernate configuration <mapping/> entry
+Service exit with a return value of 1
+Switching umask back to 022 from 077
+Using default JVM in /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+Attemtping to load library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so
+JVM library /usr/lib/jvm/jdk1.7.0_60//jre/lib/amd64/server/libjvm.so loaded
+JVM library entry point found (0x462F7750)
++-- DUMPING JAVA VM CREATION ARGUMENTS -----------------
+| Version:                       0x010004
+| Ignore Unrecognized Arguments: True
+| Extra options:                 3
+|   "-Xms256m" (0x00000000)
+|   "-Xmx512m" (0x00000000)
+|   "-Djava.class.path=/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar" (0x00000000)
++-------------------------------------------------------
+| Internal options:              4
+|   "-Dcommons.daemon.process.id=10759" (0x00000000)
+|   "-Dcommons.daemon.process.parent=10758" (0x00000000)
+|   "-Dcommons.daemon.version=1.0.15-dev" (0x00000000)
+|   "abort" (0x00405a70)
++-------------------------------------------------------
+Java VM created successfully
+Class org/apache/commons/daemon/support/DaemonLoader found
+Native methods registered
+java_init done
+Daemon loading...
+Daemon loaded successfully
+java_load done
+org.eclipse.jetty.server.Server@5589aea3 - STARTING
+ += qtp1558171694{STARTED,8<=8<=200,i=5,q=0} - STARTED
+ |   +- 13 qtp1558171694-13-selector-ServerConnectorManager@2c3edf79/0 RUNNABLE @ sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+ |   +- 14 qtp1558171694-14-selector-ServerConnectorManager@2c3edf79/1 RUNNABLE @ sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+ |   +- 15 qtp1558171694-15-acceptor-0@23130c0a-ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480} RUNNABLE @ sun.nio.ch.ServerSocketChannelImpl.accept0(Native Method)
+ |   +- 16 qtp1558171694-16 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 17 qtp1558171694-17 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 18 qtp1558171694-18 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 19 qtp1558171694-19 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 20 qtp1558171694-20 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ +- [org.eclipse.jetty.webapp.WebInfConfiguration, org.eclipse.jetty.webapp.WebXmlConfiguration, org.eclipse.jetty.webapp.MetaInfConfiguration, org.eclipse.jetty.webapp.FragmentConfiguration, org.eclipse.jetty.webapp.JettyWebXmlConfiguration]
+ +- null
+ += ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480} - STARTED
+ |   +~ org.eclipse.jetty.server.Server@5589aea3 - STARTING
+ |   +~ qtp1558171694{STARTED,8<=8<=200,i=5,q=0} - STARTED
+ |   += org.eclipse.jetty.util.thread.ScheduledExecutorScheduler@5a89484a - STARTED
+ |   +- org.eclipse.jetty.io.ArrayByteBufferPool@6f6281e8
+ |   += HttpConnectionFactory@cec0246{HTTP/1.1} - STARTED
+ |   |   +- HttpConfiguration@36ee7f4c{32768/8192,8192/8192,https://:9005,[]}
+ |   += org.eclipse.jetty.server.ServerConnector$ServerConnectorManager@2c3edf79 - STARTED
+ |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector@6632fad3 keys=0 selected=0 id=0
+ |   |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:600)
+ |   |   |   +- sun.nio.ch.EPollSelectorImpl@75e41d53 keys=0
+ |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector@7b828c62 keys=0 selected=0 id=1
+ |   |       +- org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:600)
+ |   |       +- sun.nio.ch.EPollSelectorImpl@2179e0ae keys=0
+ |   +- sun.nio.ch.ServerSocketChannelImpl[/0:0:0:0:0:0:0:0:9480]
+ |   +- qtp1558171694-15-acceptor-0@23130c0a-ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480}
+ += o.e.j.w.WebAppContext@445ea9d2{/,file:/home/smallgod/NetBeansProjects/ggserver/src/main/ggserver/,AVAILABLE} - STARTED
+ |   += org.eclipse.jetty.server.session.SessionHandler@5608e379 - STARTED
+ |   |   += org.eclipse.jetty.server.session.HashSessionManager@618e490f - STARTED
+ |   |   |   += org.eclipse.jetty.util.thread.ScheduledExecutorScheduler@3b3bdd0e - STARTED
+ |   |   |   +~ org.eclipse.jetty.server.session.HashSessionIdManager@4ee89ac7 - STARTED
+ |   |   |   +~ org.eclipse.jetty.security.SecurityHandler$1@4bd949bc
+ |   |   += org.eclipse.jetty.security.ConstraintSecurityHandler@22df3d0f - STARTED
+ |   |       +- org.eclipse.jetty.security.DefaultAuthenticatorFactory@6e21b5ab
+ |   |       += org.eclipse.jetty.servlet.ServletHandler@671e2609 - STARTED
+ |   |       |   += org.eclipse.jetty.servlet.ListenerHolder@4ff51278 - STARTED
+ |   |       |   += org.eclipse.jetty.servlet.ListenerHolder@6a92b6af - STARTED
+ |   |       |   += default@5c13d641==org.eclipse.jetty.servlet.DefaultServlet,0,true - STARTED
+ |   |       |   |   +- maxCacheSize=256000000
+ |   |       |   |   +- etags=false
+ |   |       |   |   +- dirAllowed=true
+ |   |       |   |   +- gzip=false
+ |   |       |   |   +- maxCachedFileSize=200000000
+ |   |       |   |   +- redirectWelcome=false
+ |   |       |   |   +- acceptRanges=true
+ |   |       |   |   +- welcomeServlets=false
+ |   |       |   |   +- aliases=false
+ |   |       |   |   +- useFileMappedBuffer=true
+ |   |       |   |   +- maxCachedFiles=2048
+ |   |       |   += jsp@19c47==org.eclipse.jetty.servlet.NoJspServlet,0,true - STARTED
+ |   |       |   |   +- compilerTargetVM=1.7
+ |   |       |   |   +- xpoweredBy=false
+ |   |       |   |   +- fork=false
+ |   |       |   |   +- logVerbosityLevel=DEBUG
+ |   |       |   |   +- compilerSourceVM=1.7
+ |   |       |   +- [/]=>default
+ |   |       |   +- [*.jsp, *.jspf, *.jspx, *.xsp, *.JSP, *.JSPF, *.JSPX, *.XSP]=>jsp
+ |   |       |
+ |   |       +> null
+ |   |       +> null
+ |   |       +> null
+ |   |       +> []
+ |   |       +> /={TRACE.omission={RoleInfo[],None}, TRACE={RoleInfo,F,C[],None}}
+ |   += org.eclipse.jetty.servlet.ErrorPageErrorHandler@6c534dc2 - STARTED
+ |   |
+ |   +> WebAppClassLoader=1661698367@630b813f
+ |   |   +- sun.misc.Launcher$AppClassLoader@5b5fdf31
+ |   |       +- file:/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar
+ |   |       +- sun.misc.Launcher$ExtClassLoader@733638d4
+ |   +> javax.servlet.context.tempdir=/tmp/jetty-0.0.0.0-9480-ggserver-_-any-7226263894709664406.dir
+ |   +> org.eclipse.jetty.server.Executor=qtp1558171694{STARTED,8<=8<=200,i=5,q=0}
+ +- {}
+ +- {}
+ +- {}
+ += org.eclipse.jetty.server.session.HashSessionIdManager@4ee89ac7 - STARTED
+ |
+ +> sun.misc.Launcher$AppClassLoader@5b5fdf31
+     +- file:/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar
+     +- sun.misc.Launcher$ExtClassLoader@733638d4
+org.eclipse.jetty.server.Server@5589aea3 - STARTED
+ += qtp1558171694{STARTED,8<=8<=200,i=5,q=0} - STARTED
+ |   +- 13 qtp1558171694-13-selector-ServerConnectorManager@2c3edf79/0 RUNNABLE @ sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+ |   +- 14 qtp1558171694-14-selector-ServerConnectorManager@2c3edf79/1 RUNNABLE @ sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+ |   +- 15 qtp1558171694-15-acceptor-0@23130c0a-ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480} RUNNABLE @ sun.nio.ch.ServerSocketChannelImpl.accept0(Native Method)
+ |   +- 16 qtp1558171694-16 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 17 qtp1558171694-17 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 18 qtp1558171694-18 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 19 qtp1558171694-19 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 20 qtp1558171694-20 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ +- [org.eclipse.jetty.webapp.WebInfConfiguration, org.eclipse.jetty.webapp.WebXmlConfiguration, org.eclipse.jetty.webapp.MetaInfConfiguration, org.eclipse.jetty.webapp.FragmentConfiguration, org.eclipse.jetty.webapp.JettyWebXmlConfiguration]
+ +- null
+ += ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480} - STARTED
+ |   +~ org.eclipse.jetty.server.Server@5589aea3 - STARTED
+ |   +~ qtp1558171694{STARTED,8<=8<=200,i=5,q=0} - STARTED
+ |   += org.eclipse.jetty.util.thread.ScheduledExecutorScheduler@5a89484a - STARTED
+ |   +- org.eclipse.jetty.io.ArrayByteBufferPool@6f6281e8
+ |   += HttpConnectionFactory@cec0246{HTTP/1.1} - STARTED
+ |   |   +- HttpConfiguration@36ee7f4c{32768/8192,8192/8192,https://:9005,[]}
+ |   += org.eclipse.jetty.server.ServerConnector$ServerConnectorManager@2c3edf79 - STARTED
+ |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector@6632fad3 keys=0 selected=0 id=0
+ |   |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:600)
+ |   |   |   +- sun.nio.ch.EPollSelectorImpl@75e41d53 keys=0
+ |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector@7b828c62 keys=0 selected=0 id=1
+ |   |       +- org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:600)
+ |   |       +- sun.nio.ch.EPollSelectorImpl@2179e0ae keys=0
+ |   +- sun.nio.ch.ServerSocketChannelImpl[/0:0:0:0:0:0:0:0:9480]
+ |   +- qtp1558171694-15-acceptor-0@23130c0a-ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480}
+ += o.e.j.w.WebAppContext@445ea9d2{/,file:/home/smallgod/NetBeansProjects/ggserver/src/main/ggserver/,AVAILABLE} - STARTED
+ |   += org.eclipse.jetty.server.session.SessionHandler@5608e379 - STARTED
+ |   |   += org.eclipse.jetty.server.session.HashSessionManager@618e490f - STARTED
+ |   |   |   += org.eclipse.jetty.util.thread.ScheduledExecutorScheduler@3b3bdd0e - STARTED
+ |   |   |   +~ org.eclipse.jetty.server.session.HashSessionIdManager@4ee89ac7 - STARTED
+ |   |   |   +~ org.eclipse.jetty.security.SecurityHandler$1@4bd949bc
+ |   |   += org.eclipse.jetty.security.ConstraintSecurityHandler@22df3d0f - STARTED
+ |   |       +- org.eclipse.jetty.security.DefaultAuthenticatorFactory@6e21b5ab
+ |   |       += org.eclipse.jetty.servlet.ServletHandler@671e2609 - STARTED
+ |   |       |   += org.eclipse.jetty.servlet.ListenerHolder@4ff51278 - STARTED
+ |   |       |   += org.eclipse.jetty.servlet.ListenerHolder@6a92b6af - STARTED
+ |   |       |   += default@5c13d641==org.eclipse.jetty.servlet.DefaultServlet,0,true - STARTED
+ |   |       |   |   +- maxCacheSize=256000000
+ |   |       |   |   +- etags=false
+ |   |       |   |   +- dirAllowed=true
+ |   |       |   |   +- gzip=false
+ |   |       |   |   +- maxCachedFileSize=200000000
+ |   |       |   |   +- redirectWelcome=false
+ |   |       |   |   +- acceptRanges=true
+ |   |       |   |   +- welcomeServlets=false
+ |   |       |   |   +- aliases=false
+ |   |       |   |   +- useFileMappedBuffer=true
+ |   |       |   |   +- maxCachedFiles=2048
+ |   |       |   += jsp@19c47==org.eclipse.jetty.servlet.NoJspServlet,0,true - STARTED
+ |   |       |   |   +- compilerTargetVM=1.7
+ |   |       |   |   +- xpoweredBy=false
+ |   |       |   |   +- fork=false
+ |   |       |   |   +- logVerbosityLevel=DEBUG
+ |   |       |   |   +- compilerSourceVM=1.7
+ |   |       |   +- [/]=>default
+ |   |       |   +- [*.jsp, *.jspf, *.jspx, *.xsp, *.JSP, *.JSPF, *.JSPX, *.XSP]=>jsp
+ |   |       |
+ |   |       +> null
+ |   |       +> null
+ |   |       +> null
+ |   |       +> []
+ |   |       +> /={TRACE.omission={RoleInfo[],None}, TRACE={RoleInfo,F,C[],None}}
+ |   += org.eclipse.jetty.servlet.ErrorPageErrorHandler@6c534dc2 - STARTED
+ |   |
+ |   +> WebAppClassLoader=1661698367@630b813f
+ |   |   +- sun.misc.Launcher$AppClassLoader@5b5fdf31
+ |   |       +- file:/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar
+ |   |       +- sun.misc.Launcher$ExtClassLoader@733638d4
+ |   +> javax.servlet.context.tempdir=/tmp/jetty-0.0.0.0-9480-ggserver-_-any-7226263894709664406.dir
+ |   +> org.eclipse.jetty.server.Executor=qtp1558171694{STARTED,8<=8<=200,i=5,q=0}
+ +- {}
+ +- {}
+ +- {}
+ += org.eclipse.jetty.server.session.HashSessionIdManager@4ee89ac7 - STARTED
+ |
+ +> sun.misc.Launcher$AppClassLoader@5b5fdf31
+     +- file:/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar
+     +- sun.misc.Launcher$ExtClassLoader@733638d4
+Yoyoyoyoyoyoooooo!!!! Jetty server is started na bidi
+Daemon started successfully
+java_start done
+Waiting for a signal to be delivered
+create_tmp_file: /tmp/10759.jsvc_up
+Caught SIGTERM: Scheduling a shutdown
+remove_tmp_file: /tmp/10759.jsvc_up
+Shutdown or reload requested: exiting
+org.eclipse.jetty.server.Server@5589aea3 - STOPPING
+ += qtp1558171694{STARTED,8<=8<=200,i=5,q=0} - STARTED
+ |   +- 13 qtp1558171694-13-selector-ServerConnectorManager@2c3edf79/0 RUNNABLE @ sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+ |   +- 14 qtp1558171694-14-selector-ServerConnectorManager@2c3edf79/1 RUNNABLE @ sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+ |   +- 15 qtp1558171694-15-acceptor-0@23130c0a-ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480} RUNNABLE @ sun.nio.ch.ServerSocketChannelImpl.accept0(Native Method)
+ |   +- 16 qtp1558171694-16 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 19 qtp1558171694-19 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 20 qtp1558171694-20 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 23 qtp1558171694-23 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ |   +- 24 qtp1558171694-24 TIMED_WAITING @ sun.misc.Unsafe.park(Native Method) IDLE
+ +- [org.eclipse.jetty.webapp.WebInfConfiguration, org.eclipse.jetty.webapp.WebXmlConfiguration, org.eclipse.jetty.webapp.MetaInfConfiguration, org.eclipse.jetty.webapp.FragmentConfiguration, org.eclipse.jetty.webapp.JettyWebXmlConfiguration]
+ +- null
+ += ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480} - STARTED
+ |   +~ org.eclipse.jetty.server.Server@5589aea3 - STOPPING
+ |   +~ qtp1558171694{STARTED,8<=8<=200,i=5,q=0} - STARTED
+ |   += org.eclipse.jetty.util.thread.ScheduledExecutorScheduler@5a89484a - STARTED
+ |   +- org.eclipse.jetty.io.ArrayByteBufferPool@6f6281e8
+ |   += HttpConnectionFactory@cec0246{HTTP/1.1} - STARTED
+ |   |   +- HttpConfiguration@36ee7f4c{32768/8192,8192/8192,https://:9005,[]}
+ |   += org.eclipse.jetty.server.ServerConnector$ServerConnectorManager@2c3edf79 - STARTED
+ |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector@6632fad3 keys=2 selected=0 id=0
+ |   |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:600)
+ |   |   |   +- sun.nio.ch.EPollSelectorImpl@75e41d53 keys=0
+ |   |   +- org.eclipse.jetty.io.SelectorManager$ManagedSelector@7b828c62 keys=2 selected=0 id=1
+ |   |       +- org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:600)
+ |   |       +- sun.nio.ch.EPollSelectorImpl@2179e0ae keys=0
+ |   +- sun.nio.ch.ServerSocketChannelImpl[/0:0:0:0:0:0:0:0:9480]
+ |   +- qtp1558171694-15-acceptor-0@23130c0a-ServerConnector@6ae920b5{HTTP/1.1}{0.0.0.0:9480}
+ += o.e.j.w.WebAppContext@445ea9d2{/,file:/home/smallgod/NetBeansProjects/ggserver/src/main/ggserver/,AVAILABLE} - STARTED
+ |   += org.eclipse.jetty.server.session.SessionHandler@5608e379 - STARTED
+ |   |   += org.eclipse.jetty.server.session.HashSessionManager@618e490f - STARTED
+ |   |   |   += org.eclipse.jetty.util.thread.ScheduledExecutorScheduler@3b3bdd0e - STARTED
+ |   |   |   +~ org.eclipse.jetty.server.session.HashSessionIdManager@4ee89ac7 - STARTED
+ |   |   |   +~ org.eclipse.jetty.security.SecurityHandler$1@4bd949bc
+ |   |   += org.eclipse.jetty.security.ConstraintSecurityHandler@22df3d0f - STARTED
+ |   |       +- org.eclipse.jetty.security.DefaultAuthenticatorFactory@6e21b5ab
+ |   |       += org.eclipse.jetty.servlet.ServletHandler@671e2609 - STARTED
+ |   |       |   += org.eclipse.jetty.servlet.ListenerHolder@4ff51278 - STARTED
+ |   |       |   += org.eclipse.jetty.servlet.ListenerHolder@6a92b6af - STARTED
+ |   |       |   += default@5c13d641==org.eclipse.jetty.servlet.DefaultServlet,0,true - STARTED
+ |   |       |   |   +- maxCacheSize=256000000
+ |   |       |   |   +- etags=false
+ |   |       |   |   +- dirAllowed=true
+ |   |       |   |   +- gzip=false
+ |   |       |   |   +- maxCachedFileSize=200000000
+ |   |       |   |   +- redirectWelcome=false
+ |   |       |   |   +- acceptRanges=true
+ |   |       |   |   +- welcomeServlets=false
+ |   |       |   |   +- aliases=false
+ |   |       |   |   +- useFileMappedBuffer=true
+ |   |       |   |   +- maxCachedFiles=2048
+ |   |       |   += jsp@19c47==org.eclipse.jetty.servlet.NoJspServlet,0,true - STARTED
+ |   |       |   |   +- compilerTargetVM=1.7
+ |   |       |   |   +- xpoweredBy=false
+ |   |       |   |   +- fork=false
+ |   |       |   |   +- logVerbosityLevel=DEBUG
+ |   |       |   |   +- compilerSourceVM=1.7
+ |   |       |   +- [/]=>default
+ |   |       |   +- [*.jsp, *.jspf, *.jspx, *.xsp, *.JSP, *.JSPF, *.JSPX, *.XSP]=>jsp
+ |   |       |
+ |   |       +> null
+ |   |       +> null
+ |   |       +> null
+ |   |       +> []
+ |   |       +> /={TRACE.omission={RoleInfo[],None}, TRACE={RoleInfo,F,C[],None}}
+ |   += org.eclipse.jetty.servlet.ErrorPageErrorHandler@6c534dc2 - STARTED
+ |   |
+ |   +> WebAppClassLoader=1661698367@630b813f
+ |   |   +- sun.misc.Launcher$AppClassLoader@5b5fdf31
+ |   |       +- file:/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar
+ |   |       +- sun.misc.Launcher$ExtClassLoader@733638d4
+ |   +> javax.servlet.context.tempdir=/tmp/jetty-0.0.0.0-9480-ggserver-_-any-7226263894709664406.dir
+ |   +> org.eclipse.jetty.server.Executor=qtp1558171694{STARTED,8<=8<=200,i=5,q=0}
+ +- {}
+ +- {}
+ +- {}
+ += org.eclipse.jetty.server.session.HashSessionIdManager@4ee89ac7 - STARTED
+ |
+ +> sun.misc.Launcher$AppClassLoader@5b5fdf31
+     +- file:/home/smallgod/NetBeansProjects/ggserver/target/ggserver-test.jar
+     +- sun.misc.Launcher$ExtClassLoader@733638d4
+Daemon stopped successfully
+Daemon destroyed successfully
+Calling System.exit(0)
+Service shut down
