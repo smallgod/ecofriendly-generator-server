@@ -46,7 +46,7 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
 
     @JoinColumn(name = "id")
     @OneToOne
-    private Customer payer;
+    private User payer;
 
     private String recipientHandle;
 
@@ -78,7 +78,7 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
 
     private String payerID;
 
-    private String payerNames; //a customer entered names when paying - we will use to update the Name in Customer incase it is different from what we have
+    private String payerNames; //a customer entered names when paying - we will use to update the Name in User incase it is different from what we have
 
     
     
@@ -344,11 +344,11 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
         this.recieverDetails = recieverDetails;
     }
 
-    public Customer getPayer() {
+    public User getPayer() {
         return payer;
     }
 
-    public void setPayer(Customer payer) {
+    public void setPayer(User payer) {
         this.payer = payer;
     }
 
