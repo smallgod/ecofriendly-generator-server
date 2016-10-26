@@ -40,8 +40,7 @@ public class BaseModel implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private long id;
 
-//    @XmlAttribute(name = "version", required = true)
-//    protected String version;
+
     private String createdBy;
 
     @Type(type = "jodalocaldatetime")

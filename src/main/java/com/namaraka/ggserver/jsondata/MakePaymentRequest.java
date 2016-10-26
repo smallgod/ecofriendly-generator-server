@@ -15,7 +15,9 @@ public class MakePaymentRequest  {
             "creation_date" : "2016-07-25 08:55:09",
   ​​          "invoice_number": "INV00003",
             "amount"        : "50000",
-            "debit_account" : "0774983602"
+            "currency"      : "50000", //add this one to API
+            "debit_account" : "0774983602", //add this one to API
+            "payer_narration" : "3rd installment"
 ​        },
     
         "extra": {
@@ -77,6 +79,12 @@ public class MakePaymentRequest  {
         @SerializedName(value = "amount")
         private String amount;
         
+        @SerializedName(value = "currency")
+        private String currency;
+        
+        @SerializedName(value = "payer_narration")
+        private String payerNarration;
+        
         @SerializedName(value = "debit_account")
         private String debitAccount;
 
@@ -126,6 +134,22 @@ public class MakePaymentRequest  {
 
         public void setDebitAccount(String debitAccount) {
             this.debitAccount = debitAccount;
+        }
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
+        }
+
+        public String getPayerNarration() {
+            return payerNarration;
+        }
+
+        public void setPayerNarration(String payerNarration) {
+            this.payerNarration = payerNarration;
         }
     }
     

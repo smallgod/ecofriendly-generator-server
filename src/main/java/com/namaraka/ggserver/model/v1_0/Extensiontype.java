@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;any/&gt;
+ *         &lt;extra1/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -40,30 +40,48 @@ import javax.xml.bind.annotation.XmlType;
 public class Extensiontype {
 
     @XmlAnyElement(lax = true)
-    protected Object any;
+    private String extra1;
+    private String extra2;
+    private String extra3;
 
     /**
-     * Gets the value of the any property.
+     * Gets the value of the extra1 property.
      * 
      * @return
      *     possible object is
      *     {@link Object }
      *     
      */
-    public Object getAny() {
-        return any;
+    public String getExtra1() {
+        return extra1;
     }
 
     /**
-     * Sets the value of the any property.
+     * Sets the value of the extra1 property.
      * 
      * @param value
      *     allowed object is
      *     {@link Object }
      *     
      */
-    public void setAny(Object value) {
-        this.any = value;
+    public void setExtra1(String value) {
+        this.extra1 = value;
+    }
+
+    public String getExtra2() {
+        return extra2;
+    }
+
+    public void setExtra2(String extra2) {
+        this.extra2 = extra2;
+    }
+
+    public String getExtra3() {
+        return extra3;
+    }
+
+    public void setExtra3(String extra3) {
+        this.extra3 = extra3;
     }
 
 }

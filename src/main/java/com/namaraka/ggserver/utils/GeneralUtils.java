@@ -22,7 +22,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -253,8 +257,7 @@ public class GeneralUtils {
         Gson gson = new Gson();
         return gson.fromJson(stringToConvert.trim(), objectType);
     }
-    
-    
+
     /**
      * Get the method name value with key "method" if Json request or enclosing
      * method root name if xml request
@@ -286,40 +289,6 @@ public class GeneralUtils {
 
         //APIMethodName methodNameEnum = APIMethodName.convertToEnum(methodName);
         return methodName;
-    }
-    
-    
-    
-
-    /**
-     * Generate short UUID (13 characters)
-     *
-     * @return short randomValue
-     */
-    public static String generateShorterRandomID() {
-
-        UUID uuid = UUID.randomUUID();
-        //long longValue = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
-        //randomValue = Long.toString(longValue, Character.MAX_RADIX);
-        long lessSignificantBits = uuid.getLeastSignificantBits();
-        String randomValue = Long.toString(lessSignificantBits, Character.MAX_RADIX);
-
-        return randomValue;
-
-    }
-
-    /**
-     *
-     * @return full randomValue
-     */
-    public static String generateFullRandomID() {
-
-        UUID uuid = UUID.randomUUID();
-
-        long longValue = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
-        String randomValue = Long.toString(longValue, Character.MAX_RADIX);
-
-        return randomValue;
     }
 
     public static void printRequesterHeaderInfo(HttpServletRequest req) throws IOException {
@@ -504,4 +473,53 @@ public class GeneralUtils {
         Random r = new Random(System.currentTimeMillis());
         return 10000 + r.nextInt(20000);
     }
+
+    /**
+     * Generate short UUID (13 characters)
+     *
+     * @return short randomValue
+     */
+    public static String generateShorterRandomID() {
+
+        UUID uuid = UUID.randomUUID();
+        //long longValue = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
+        //randomValue = Long.toString(longValue, Character.MAX_RADIX);
+        long lessSignificantBits = uuid.getLeastSignificantBits();
+        String randomValue = Long.toString(lessSignificantBits, Character.MAX_RADIX);
+
+        return randomValue.toUpperCase();
+
+    }
+
+    /**
+     *
+     * @return full randomValue
+     */
+    public static String generateFullRandomID() {
+
+        UUID uuid = UUID.randomUUID();
+
+        long longValue = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
+        String randomValue = Long.toString(longValue, Character.MAX_RADIX);
+
+        return randomValue.toUpperCase();
+    }
+
+    public static BigDecimal convertStringToBigDecimal(String stringToConvert) throws ParseException {
+
+        // Create a DecimalFormat that fits your requirements
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(',');
+        symbols.setDecimalSeparator('.');
+        String pattern = "#,##0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+
+        // parse the string
+        BigDecimal bigDecimal = (BigDecimal) decimalFormat.parse(stringToConvert);
+
+        return bigDecimal;
+
+    }
+
 }

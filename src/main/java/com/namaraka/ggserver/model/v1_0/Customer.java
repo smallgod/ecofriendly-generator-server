@@ -22,7 +22,7 @@ import org.joda.time.DateTime;
 
 public class Customer extends BaseModel implements Auditable, Serializable {
 
-    private static final long serialVersionUID = -8402038189783325805L;
+    private static final long serialVersionUID = 1278328268329014986L;
 
     private String userMsisdn;
     @Embedded
@@ -37,7 +37,7 @@ public class Customer extends BaseModel implements Auditable, Serializable {
     private DateTime firstInstallmentDate;
     private DateTime finalInstallmentDate;
     @Column(length = 20000)
-    private String customerDetails; // should be embeddable - village, town, etc
+    private String customerDetails; // should be embeddable remove the length attribute - village, town, etc
     @Column(length = 20000)
     private String unitDetais; // should be embeddable - solarKit, Battery, app included etc
 

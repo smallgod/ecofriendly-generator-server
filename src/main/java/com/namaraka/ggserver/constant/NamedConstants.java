@@ -12,6 +12,12 @@ package com.namaraka.ggserver.constant;
 public interface NamedConstants {
 
     /**
+     * The Date format we are using in this application is in the format
+     * "2016-07-25 08:55:09"
+     */
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    
+    /**
      * All JSON request strings must have a root node named 'method' which
      * identifies the name of the API method being called
      */

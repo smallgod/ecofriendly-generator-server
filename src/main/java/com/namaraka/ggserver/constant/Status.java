@@ -7,22 +7,23 @@ import org.slf4j.LoggerFactory;
  * 
  * @author smallgod
  */
-public enum StatusType implements Constants {
+public enum Status implements Constants {
 
-    NOT_LOGGED("NOT_LOGGED"), //Payment NOT logged to DB for some reason
+    NOT_LOGGED("NOT_LOGGED"), //Payment NOT logged to DB for some reason other than 'duplicate', etc
     LOGGED("LOGGED"), //Payment logged to the DB
     PROCESSING("PROCESSING"), //Payment fetched for processing
     SUCCESSFUL("SUCCESSFUL"),
     FAILED("FAILED"),
     REVERSED("REVERSED"),
+    DUPLICATE("DUPLICATE"),
     EXPIRED("EXPIRED"),
     UNKNOWN("UNKNOWN");
     
     private final String statusTypeString;
 
-    private static final Logger logger = LoggerFactory.getLogger(StatusType.class);
+    private static final Logger logger = LoggerFactory.getLogger(Status.class);
 
-    StatusType(String statusType) {
+    Status(String statusType) {
         this.statusTypeString = statusType;
     }
 
@@ -31,11 +32,11 @@ public enum StatusType implements Constants {
         return this.statusTypeString;
     }
 
-    public static StatusType convertToEnum(String statusType) {
+    public static Status convertToEnum(String statusType) {
 
         if (statusType != null) {
 
-            for (StatusType availableStatusType : StatusType.values()) {
+            for (Status availableStatusType : Status.values()) {
 
                 if (statusType.equalsIgnoreCase(availableStatusType.getValue())) {
                     return availableStatusType;
