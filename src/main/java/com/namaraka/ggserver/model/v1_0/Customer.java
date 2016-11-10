@@ -1,6 +1,7 @@
 package com.namaraka.ggserver.model.v1_0;
 
 import com.namaraka.ggserver.constant.ClientPaymentStatus;
+import com.namaraka.ggserver.constant.InPossession;
 import com.namaraka.ggserver.constant.ValueStore;
 import com.namaraka.ggserver.utils.Auditable;
 import com.namaraka.ggserver.utils.DBMSXMLObject;
@@ -23,6 +24,13 @@ import org.joda.time.DateTime;
 public class Customer extends BaseModel implements Auditable, Serializable {
 
     private static final long serialVersionUID = 1278328268329014986L;
+    
+     @Column(nullable = false)
+    private String telesolaAccount;
+     
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private InPossession userKind;
 
     private String userMsisdn;
     @Embedded
@@ -153,6 +161,22 @@ public class Customer extends BaseModel implements Auditable, Serializable {
     @Override
     public String getUsername() {
         return "hardcoded username";
+    }
+
+    public InPossession getUserKind() {
+        return userKind;
+    }
+
+    public void setUserKind(InPossession userKind) {
+        this.userKind = userKind;
+    }
+
+    public String getTelesolaAccount() {
+        return telesolaAccount;
+    }
+
+    public void setTelesolaAccount(String telesolaAccount) {
+        this.telesolaAccount = telesolaAccount;
     }
 
 }

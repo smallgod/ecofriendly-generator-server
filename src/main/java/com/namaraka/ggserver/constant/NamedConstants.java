@@ -12,11 +12,24 @@ package com.namaraka.ggserver.constant;
 public interface NamedConstants {
 
     /**
+     * Date time string formats
+     *
+     * public static final String timeMinAndSecFormat = "HH:mm:ss"; public
+     * static final String timeAndMinutesFormat = "HH:mm"; public static final
+     * String dateOnlyFormat = "dd/MM/yyyy"; public static final String
+     * dateOnlyDashFormat = "dd-MM-yyyy"; public static final String
+     * dateTimeFormat = "dd/MM/yyyy HH:mm"; public static final String
+     * dateOnlyDashYearFirstFormat = "yyyy-MM-dd";
+    *
+     */
+    public static final String KAMPALA_TIME_ZONE = "Africa/Kampala";
+
+    /**
      * The Date format we are using in this application is in the format
      * "2016-07-25 08:55:09"
      */
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    
+    public static final String DATE_TIME_DASH_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     /**
      * All JSON request strings must have a root node named 'method' which
      * identifies the name of the API method being called
@@ -34,8 +47,7 @@ public interface NamedConstants {
      * attribute name
      */
     public static final String APPCONFIGS_ATTR_NAME = "appconfigs";
-    
-    
+
     public static final String APPCONFIGS_FILE = "appconfigs/appconfigs.xsd";
 
     /**
@@ -49,11 +61,11 @@ public interface NamedConstants {
      * this as the attribute name
      */
     public static final String HTTP_POOL_ATTR_NAME = "httppool";
-    
+
     public static final String ADCENTRAL_JSON_HANDLER = "adcentraljsonhandler";
-    
+
     public static final String ADDISPLAY_JSON_HANDLER = "addisplayjsonhandler";
-    
+
     public static final String AD_DBMANAGER_JSON_HANDLER = "addbmanagerjsonhandler";
 
     /**
@@ -120,12 +132,10 @@ public interface NamedConstants {
      * Http header value for the JSON content type
      */
     //public static final String HTTP_CONTENT_TYPE_JSON = "application/json"; //"application/json;charset=UTF-8")
-
     /**
      * Http header value for the XML content type
      */
     //public static final String HTTP_CONTENT_TYPE_XML = "application/xml";
-
     /**
      * An http server can return a success http response but with no content in
      * the body
@@ -140,16 +150,17 @@ public interface NamedConstants {
      * HTTP requestmethod - GET
      */
     public static final String HTTP_REQUESTMETHOD_GET = "GET";
-    
+
     /**
-     * Attribute name for the http parameter name holding the database entity name/type
-     * useful when passing a request to the DB manager unit, so that the entity in context
-     * can be idenitified
+     * Attribute name for the http parameter name holding the database entity
+     * name/type useful when passing a request to the DB manager unit, so that
+     * the entity in context can be idenitified
      */
     public static final String HTTP_PARAM_ENTITYNAME = "entityname";
-    
+
     /**
-     * HTTP parameter name with value to identify which DB operation is being executed
+     * HTTP parameter name with value to identify which DB operation is being
+     * executed
      */
     public static final String HTTP_PARAM_DB_OPERATION = "dboperation";
 

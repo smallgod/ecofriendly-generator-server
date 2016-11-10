@@ -2,7 +2,7 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MakePaymentRequest {
+public class PaymentStatusRequest {
 
     /*
     
@@ -16,11 +16,11 @@ public class MakePaymentRequest {
     JSON Request sample:
     
         {
-            "method": "MAKE_PAYMENT",
+            "method": "PAYMENT_STATUS",
             "params": {
                 "telesola_account": "774983602",
                 "generatorId": "A001",
-                "momo_account": "25677445602",
+                "cms_payment_id": "456674",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },
             "extra": {
@@ -34,13 +34,15 @@ public class MakePaymentRequest {
     
         {
             "telesola_account": "774983602",
-            "generatorId": "A001",
+            "generator_id": "A001",
             "cms_payment_id": "5879594",
-            "status": "LOGGED",
-            "description": "Payment Successfully Logged for processing"
+            "momo_id"       : "452156",
+​​            "payment_date" : "2016-07-25 08:55:09",
+            "enable_duration" : "7",
+  ​​          "activation_code": "5879594",
+            "status": "SUCCESSFUL",
+            "description": "Payment Successfully processed"
         }
-    
-    
     
      */
     @SerializedName(value = "method")
@@ -84,8 +86,8 @@ public class MakePaymentRequest {
         @SerializedName(value = "generator_id")
         private String generatorId;
 
-        @SerializedName(value = "momo_account")
-        private String momoAccount;
+        @SerializedName(value = "cms_payment_id")
+        private String cmsPaymentId;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -106,12 +108,12 @@ public class MakePaymentRequest {
             this.generatorId = generatorId;
         }
 
-        public String getMomoAccount() {
-            return momoAccount;
+        public String getCmsPaymentId() {
+            return cmsPaymentId;
         }
 
-        public void setMomoAccount(String momoAccount) {
-            this.momoAccount = momoAccount;
+        public void setCmsPaymentId(String cmsPaymentId) {
+            this.cmsPaymentId = cmsPaymentId;
         }
 
         public String getAppKey() {

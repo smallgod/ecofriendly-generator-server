@@ -2,25 +2,17 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MakePaymentRequest {
+public class AccountSetupRequest {
 
     /*
-    
-    - warm clothing
-    - bedsheets
-    - towel
-    - curtains
-    - gloves/socks/head sock/sweater/jacket/official
-    - umbrella
     
     JSON Request sample:
     
         {
-            "method": "MAKE_PAYMENT",
+            "method": "ACCOUNT_SETUP",
             "params": {
-                "telesola_account": "774983602",
-                "generatorId": "A001",
-                "momo_account": "25677445602",
+                "telesola_account": "786577309",
+                "otp": "7865",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },
             "extra": {
@@ -30,16 +22,50 @@ public class MakePaymentRequest {
             }
         }
     
-        JSON Response sample:
+    JSON Response sample:
     
-        {
-            "telesola_account": "774983602",
-            "generatorId": "A001",
-            "cms_payment_id": "5879594",
-            "status": "LOGGED",
-            "description": "Payment Successfully Logged for processing"
-        }
-    
+    {
+        "telesola_account": "786577309",
+        "units": [
+            {
+                "generator_id": "A001",
+                "mac_address": "345S35WET55YH",
+                "commercial_status": "INSTALLMENT",
+                "contract_date": "2016-09-28 08:55:09",
+                "distributor_id": "KLA44009",
+                "distributor_key": "561277",
+                "contracted_price": "5450000",
+                "installment_frequency": "WEEKLY",
+                "enable_duration": "7",
+                "installment_day": "1",
+                "momo_account": "256774985275",
+                "outstanding_balance": "550900",
+                "activation_codes": [
+                    757853,
+                    69434
+                ]
+            },
+            {
+                "generator_id": "A002",
+                "mac_address": "345S35T2WSH",
+                "commercial_status": "INSTALLMENT",
+                "contract_date": "2016-04-25 08:55:09",
+                "distributor_id": "KLA84019",
+                "distributor_key": "5644277",
+                "contracted_price": "545000",
+                "installment_frequency": "MONTHLY",
+                "enable_duration": "30",
+                "installment_day": "4",
+                "momo_account": "256774985275",
+                "outstanding_balance": "30900",
+                "activation_codes": [
+                    757258,
+                    343222,
+                    68484
+                ]
+            }
+        ]
+    }
     
     
      */
@@ -81,11 +107,8 @@ public class MakePaymentRequest {
         @SerializedName(value = "telesola_account")
         private String telesolaAccount;
 
-        @SerializedName(value = "generator_id")
-        private String generatorId;
-
-        @SerializedName(value = "momo_account")
-        private String momoAccount;
+        @SerializedName(value = "otp")
+        private String otp;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -98,22 +121,14 @@ public class MakePaymentRequest {
             this.telesolaAccount = telesolaAccount;
         }
 
-        public String getGeneratorId() {
-            return generatorId;
+        public String getOtp() {
+            return otp;
         }
 
-        public void setGeneratorId(String generatorId) {
-            this.generatorId = generatorId;
+        public void setOtp(String otp) {
+            this.otp = otp;
         }
-
-        public String getMomoAccount() {
-            return momoAccount;
-        }
-
-        public void setMomoAccount(String momoAccount) {
-            this.momoAccount = momoAccount;
-        }
-
+        
         public String getAppKey() {
             return appKey;
         }

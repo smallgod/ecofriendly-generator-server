@@ -2,25 +2,17 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MakePaymentRequest {
+public class PaymentHistoryRequest {
 
     /*
-    
-    - warm clothing
-    - bedsheets
-    - towel
-    - curtains
-    - gloves/socks/head sock/sweater/jacket/official
-    - umbrella
-    
+ 
     JSON Request sample:
     
         {
-            "method": "MAKE_PAYMENT",
+            "method": "PAYMENT_HISTORY",
             "params": {
                 "telesola_account": "774983602",
                 "generatorId": "A001",
-                "momo_account": "25677445602",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },
             "extra": {
@@ -33,14 +25,29 @@ public class MakePaymentRequest {
         JSON Response sample:
     
         {
-            "telesola_account": "774983602",
-            "generatorId": "A001",
-            "cms_payment_id": "5879594",
-            "status": "LOGGED",
-            "description": "Payment Successfully Logged for processing"
+            "telesola_account": "786577309",
+            "units": [
+                {
+                    "generator_id": "A001",
+                    "cms_payment_id": "3509866",
+                    "momo_id": "893783739",
+                    "momo_account": "256783937043",
+                    "amount": "59000",
+                    "payment_date": "2016-09-28 08:55:09",
+                    "acknowledge_date": "2016-09-28 08:55:09"
+                },
+                {
+                    "generator_id": "A002",
+                    "cms_payment_id": "61866",
+                    "momo_id": "893783669",
+                    "momo_account": "256783937043",
+                    "amount": "58000",
+                    "payment_date": "2016-07-28 08:55:09",
+                    "acknowledge_date": "2016-09-28 08:55:09"
+                }
+            ]
         }
-    
-    
+        
     
      */
     @SerializedName(value = "method")
@@ -80,12 +87,9 @@ public class MakePaymentRequest {
 
         @SerializedName(value = "telesola_account")
         private String telesolaAccount;
-
+        
         @SerializedName(value = "generator_id")
         private String generatorId;
-
-        @SerializedName(value = "momo_account")
-        private String momoAccount;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -98,28 +102,20 @@ public class MakePaymentRequest {
             this.telesolaAccount = telesolaAccount;
         }
 
-        public String getGeneratorId() {
-            return generatorId;
-        }
-
-        public void setGeneratorId(String generatorId) {
-            this.generatorId = generatorId;
-        }
-
-        public String getMomoAccount() {
-            return momoAccount;
-        }
-
-        public void setMomoAccount(String momoAccount) {
-            this.momoAccount = momoAccount;
-        }
-
         public String getAppKey() {
             return appKey;
         }
 
         public void setAppKey(String appKey) {
             this.appKey = appKey;
+        }
+
+        public String getGeneratorId() {
+            return generatorId;
+        }
+
+        public void setGeneratorId(String generatorId) {
+            this.generatorId = generatorId;
         }
     }
 

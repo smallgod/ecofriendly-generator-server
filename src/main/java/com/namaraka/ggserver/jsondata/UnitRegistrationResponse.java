@@ -2,19 +2,16 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MakePaymentResponse {
+public class UnitRegistrationResponse {
 
     /*
-    
-    {
-        ​"telesola_account"       : "774983602",
-        ​"generator_id": "40003",
-        ​"status"        : "PENDING",
-        ​"cms_payment_id": "794001"
-        ​"description"   : "under processing"
-
-    }
-    
+          {
+            "telesola_account": "774987643",
+            "generator_id": "A001",
+            "installment_amount": "50000",
+            "status": "SUCCESSFUL",
+            "description": "Unit registered successfuly"
+        }
      */
     @SerializedName(value = "telesola_account")
     private String telesolaAccount;
@@ -22,8 +19,8 @@ public class MakePaymentResponse {
     @SerializedName(value = "generator_id")
     private String generatorId;
 
-    @SerializedName(value = "cms_payment_id")
-    private String cmsPaymentId;
+    @SerializedName(value = "installment_amount")
+    private String installmentAmount;
 
     @SerializedName(value = "status")
     private String status;
@@ -55,12 +52,12 @@ public class MakePaymentResponse {
         this.generatorId = generatorId;
     }
 
-    public String getCmsPaymentId() {
-        return cmsPaymentId;
+    public String getInstallmentAmount() {
+        return installmentAmount;
     }
 
-    public void setCmsPaymentId(String cmsPaymentId) {
-        this.cmsPaymentId = cmsPaymentId;
+    public void setInstallmentAmount(String installmentAmount) {
+        this.installmentAmount = installmentAmount;
     }
 
     public String getStatusDescription() {

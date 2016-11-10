@@ -414,6 +414,50 @@ public final class DBManager {
         T actualReturn = returnType.cast(method.invoke(target, argument));
         System.out.print(actualReturn.equals(expectedReturn));
     }
+    
+    
+    public static <T> T fetchRecord(Class<T> persistentClassType, String propertyName, Object propertyValue) {
+
+        StatelessSession tempSession = getStatelessSession();
+        Set<Object> results = new HashSet<>();
+        
+        T result = null; 
+
+        try {
+
+            Criteria criteria = tempSession.createCriteria(persistentClassType);
+            //criteria.addOrder(Order.asc(propertyName));
+            criteria.add(Restrictions.eq(propertyName, propertyValue));
+
+            ScrollableResults scrollableResults = criteria.scroll(ScrollMode.FORWARD_ONLY);
+
+            int count = 0;
+            while (scrollableResults.next()) {
+                if (++count > 0 && count % 10 == 0) {
+                    logger.debug("Fetched " + count + " entities");
+                }
+                
+                if (count > 1){
+                    logger.warn("Fetched more than one record, expected one! ");
+                }
+                results.add(scrollableResults.get()[0]);
+
+            }
+            
+            result = (T) scrollableResults.get()[0];
+            
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception fetching object list: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception fetching object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return result;
+    }
 
     /**
      * fetch records by property name & class type

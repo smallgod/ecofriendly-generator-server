@@ -16,6 +16,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.namaraka.ggserver.constant.APIContentType;
 import com.namaraka.ggserver.constant.NamedConstants;
+import com.namaraka.ggserver.model.v1_0.Amounttype;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -505,6 +506,12 @@ public class GeneralUtils {
         return randomValue.toUpperCase();
     }
 
+    /**
+     * 
+     * @param stringToConvert
+     * @return
+     * @throws ParseException 
+     */
     public static BigDecimal convertStringToBigDecimal(String stringToConvert) throws ParseException {
 
         // Create a DecimalFormat that fits your requirements
@@ -520,6 +527,26 @@ public class GeneralUtils {
 
         return bigDecimal;
 
+    }
+    
+    /**
+     * 
+     * @param amount
+     * @return 
+     */
+    public static Amounttype getAmountType(String amount) {
+
+        Amounttype amountType = new Amounttype();
+        BigDecimal decimalAmount = BigDecimal.ZERO;
+        try {
+            decimalAmount = GeneralUtils.convertStringToBigDecimal(amount);
+        } catch (ParseException ex) {
+            logger.error("Failed to convert string amount: " + amount + " to BigDecimal");
+        }
+        amountType.setAmount(decimalAmount);
+        amountType.setCurrencycode("UGX"); //we will be picking this from the API once updated on app end    
+
+        return amountType;
     }
 
 }

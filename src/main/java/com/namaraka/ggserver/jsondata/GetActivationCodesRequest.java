@@ -2,25 +2,17 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MakePaymentRequest {
+public class GetActivationCodesRequest {
 
     /*
-    
-    - warm clothing
-    - bedsheets
-    - towel
-    - curtains
-    - gloves/socks/head sock/sweater/jacket/official
-    - umbrella
     
     JSON Request sample:
     
         {
-            "method": "MAKE_PAYMENT",
+            "method": "ACTIVATION_CODES",
             "params": {
                 "telesola_account": "774983602",
-                "generatorId": "A001",
-                "momo_account": "25677445602",
+                "generator_id": "7749",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },
             "extra": {
@@ -33,14 +25,10 @@ public class MakePaymentRequest {
         JSON Response sample:
     
         {
-            "telesola_account": "774983602",
-            "generatorId": "A001",
-            "cms_payment_id": "5879594",
-            "status": "LOGGED",
-            "description": "Payment Successfully Logged for processing"
+            "telesola_account": "7749",
+            "generator_id": "63566",
+            "activation_codes": ['757858', '694844', '84647', '68484']
         }
-    
-    
     
      */
     @SerializedName(value = "method")
@@ -84,9 +72,6 @@ public class MakePaymentRequest {
         @SerializedName(value = "generator_id")
         private String generatorId;
 
-        @SerializedName(value = "momo_account")
-        private String momoAccount;
-
         @SerializedName(value = "app_secretkey")
         private String appKey;
 
@@ -98,28 +83,20 @@ public class MakePaymentRequest {
             this.telesolaAccount = telesolaAccount;
         }
 
-        public String getGeneratorId() {
-            return generatorId;
-        }
-
-        public void setGeneratorId(String generatorId) {
-            this.generatorId = generatorId;
-        }
-
-        public String getMomoAccount() {
-            return momoAccount;
-        }
-
-        public void setMomoAccount(String momoAccount) {
-            this.momoAccount = momoAccount;
-        }
-
         public String getAppKey() {
             return appKey;
         }
 
         public void setAppKey(String appKey) {
             this.appKey = appKey;
+        }
+
+        public String getGeneratorId() {
+            return generatorId;
+        }
+
+        public void setGeneratorId(String generatorId) {
+            this.generatorId = generatorId;
         }
     }
 

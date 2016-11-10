@@ -56,14 +56,34 @@ public class DateUtils {
         DateTime convertedTime1 = now.toDateTime(kampalaTimeZone1);
          */
         DateTime dateNow = DateTime.now();
-        DateTimeZone kampalaTimeZone = DateTimeZone.forID(timeZone);
-        DateTime kampalTimeNow = dateNow.toDateTime(kampalaTimeZone);
+        DateTimeZone desiredTimeZone = DateTimeZone.forID(timeZone);
+        DateTime dateTime = dateNow.toDateTime(desiredTimeZone);
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern(dateStringFormat);
         //DateTime dateTime = formatter.parseDateTime(dateString);
-        String formattedDate = formatter.print(kampalTimeNow);
+        String formattedDate = formatter.print(dateTime);
 
         return formattedDate;
+    }
+
+    /**
+     * Get LocalDateTime now
+     * @return 
+     */
+    public static LocalDateTime getDateTimeNow() {
+
+        return LocalDateTime.now();
+    }
+    
+    /**
+     * Get LocalDateTime now
+     * @param timeZoneStr
+     * @return 
+     */
+    public static LocalDateTime getDateTimeNow(String timeZoneStr) {
+
+         DateTimeZone desiredTimeZone = DateTimeZone.forID(timeZoneStr);
+        return LocalDateTime.now(desiredTimeZone);
     }
 
     /**
