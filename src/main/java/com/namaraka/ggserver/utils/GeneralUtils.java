@@ -15,6 +15,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.namaraka.ggserver.constant.APIContentType;
+import com.namaraka.ggserver.constant.ClientType;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.model.v1_0.Amounttype;
 import java.io.BufferedReader;
@@ -38,11 +39,13 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -507,10 +510,10 @@ public class GeneralUtils {
     }
 
     /**
-     * 
+     *
      * @param stringToConvert
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
     public static BigDecimal convertStringToBigDecimal(String stringToConvert) throws ParseException {
 
@@ -528,11 +531,11 @@ public class GeneralUtils {
         return bigDecimal;
 
     }
-    
+
     /**
-     * 
+     *
      * @param amount
-     * @return 
+     * @return
      */
     public static Amounttype getAmountType(String amount) {
 
@@ -547,6 +550,83 @@ public class GeneralUtils {
         amountType.setCurrencycode("UGX"); //we will be picking this from the API once updated on app end    
 
         return amountType;
+    }
+
+    public static List<NameValuePair> convertToNameValuePair(Map<String, String> pairs) {
+
+        if (pairs == null) {
+            return null;
+        }
+
+        List<NameValuePair> nvpList = new ArrayList<>(pairs.size());
+
+        for (Map.Entry<String, String> entry : pairs.entrySet()) {
+            nvpList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        }
+
+        return nvpList;
+
+    }
+
+    /**
+     * formatMSISDN
+     *
+     * @param MSISDN
+     * @return
+     */
+    public static String formatMSISDN(String MSISDN) {
+
+        if (MSISDN.startsWith("+")) {
+            MSISDN = MSISDN.replace("+", "").trim();
+        }
+        Long phoneNumber;
+        try {
+            phoneNumber = Long.valueOf(MSISDN);
+        } catch (NumberFormatException ex) {
+            logger.error("Could not convert number to a Long value: " + ex.getMessage() + ". So returning the number as it was.");
+            return MSISDN;
+        }
+        int length = phoneNumber.toString().length();
+
+        switch (length) {
+            case 12:
+                logger.info("MSISDN [ "
+                        + MSISDN + "] has length: " + MSISDN.length()
+                        + " when converted to a long value. No fix to be done");
+                break;
+            case 9:
+                logger.info("MSISDN [ "
+                        + MSISDN + "] has length: " + MSISDN.length() + ". "
+                        + " when converted to a long value."
+                        + " An attempt to fix the number by adding a prefix "
+                        + "will be done");
+                if (phoneNumber.toString().startsWith("7")) {
+                    MSISDN = 256 + phoneNumber.toString();
+                }
+                break;
+
+            default:
+                logger.info("MSISDN [ "
+                        + MSISDN + "] has length " + MSISDN.length()
+                        + " when converted to a long value. "
+                        + "Will be sent as is.");
+                break;
+        }
+        return MSISDN;
+    }
+    
+    /**
+     * Generate a Telesola account from the client's primaryContact and clientType
+     * @param primaryContact
+     * @param clientType
+     * @return 
+     */
+    public static String generateTelesolaAccount(String primaryContact, ClientType clientType) {
+        String shortContact = primaryContact.substring(3);
+        return (clientType.getValue() + shortContact);
+        
+        //To-Do
+        //Separate accounts by region, especially for distributors e.g. DKLA774983602 for a Kampala Distributor
     }
 
 }

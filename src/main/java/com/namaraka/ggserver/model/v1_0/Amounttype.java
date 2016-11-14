@@ -9,6 +9,7 @@
 package com.namaraka.ggserver.model.v1_0;
 
 import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,6 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Amounttype {
 
     @XmlElement(required = true)
+    
     protected BigDecimal amount;
     @XmlElement(required = true)
     protected String currencycode;

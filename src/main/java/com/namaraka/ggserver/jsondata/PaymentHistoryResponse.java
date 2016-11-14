@@ -15,6 +15,7 @@ public class PaymentHistoryResponse {
             {
                 "generator_id": "A001",
                 "cms_payment_id": "3509866",
+	        "enable_duration":"7",
                 "momo_id": "893783739",
                 "momo_account": "256783937043",
                 "amount": "59000",
@@ -24,6 +25,7 @@ public class PaymentHistoryResponse {
             {
                 "generator_id": "A002",
                 "cms_payment_id": "61866",
+	        "enable_duration":"7",
                 "momo_id": "893783669",
                 "momo_account": "256783937043",
                 "amount": "58000",

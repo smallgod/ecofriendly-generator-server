@@ -1,13 +1,15 @@
 package com.namaraka.ggserver.model.v1_0;
 
 import com.namaraka.ggserver.constant.CommercialStatus;
-import com.namaraka.ggserver.constant.InPossession;
+import com.namaraka.ggserver.constant.ClientType;
 import com.namaraka.ggserver.constant.InstallmentDay;
 import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.PaymentProgress;
 import com.namaraka.ggserver.utils.Auditable;
 import com.namaraka.ggserver.utils.DBMSXMLObject;
 import java.io.Serializable;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,7 +17,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import jaxb.com.namaraka.ggserver.config.v1_0.Credentialstype;
+import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.SelectBeforeUpdate;
@@ -37,7 +39,7 @@ import org.joda.time.LocalDateTime;
 @Entity
 @DynamicUpdate(value = true)
 @SelectBeforeUpdate(value = true)
-@Table(name = "generator")
+@Table(name = "generator", uniqueConstraints = @UniqueConstraint(columnNames = {"generatorId", "macAddress"}))
 
 public class GeneratorUnit extends BaseModel implements Auditable, Serializable {
 
@@ -60,34 +62,50 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private InPossession inPossession;
+    private ClientType registeredTo;
 
     @Type(type = "jodalocaldatetime")
     private LocalDateTime contractDate;
 
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "amount", column = @Column(name = "contractPrice")),
+        @AttributeOverride(name = "currencycode", column = @Column(name = "cp_currencycode"))
+    })
     private Amounttype contractPrice;
-    
-    @Embedded
-    private Amounttype depositAmount;
-    
-    @Column(name = "contractPeriod (months)", nullable = false)
-    private String contractPeriod;
 
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "amount", column = @Column(name = "depositAmount")),
+        @AttributeOverride(name = "currencycode", column = @Column(name = "da_currencycode"))
+    })
+    private Amounttype depositAmount;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "amount", column = @Column(name = "installmentAmount")),
+        @AttributeOverride(name = "currencycode", column = @Column(name = "ia_currencycode"))
+    })
     private Amounttype installmentAmount;
+
+    @Column(name = "contractPeriod_months", nullable = false)
+    private String contractPeriod;
 
     @Enumerated(EnumType.STRING)
     private InstallmentFrequency installmentFrequency;
 
     @Enumerated(EnumType.STRING)
     private InstallmentDay installmentDay;
-    
+
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "amount", column = @Column(name = "outstandingBalance")),
+        @AttributeOverride(name = "currencycode", column = @Column(name = "ob_currencycode"))
+    })
     private Amounttype outstandingBalance;
-    
+
     private int numberOfInstallmentsPaid;
-    
+
     private int totalNumberOfInstallmentsToBePaid;
 
     @Enumerated(EnumType.STRING)
@@ -295,12 +313,12 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
         this.commercialStatus = commercialStatus;
     }
 
-    public InPossession getInPossession() {
-        return inPossession;
+    public ClientType getRegisteredTo() {
+        return registeredTo;
     }
 
-    public void setInPossession(InPossession inPossession) {
-        this.inPossession = inPossession;
+    public void setRegisteredTo(ClientType registeredTo) {
+        this.registeredTo = registeredTo;
     }
 
     public Amounttype getInstallmentAmount() {
@@ -374,4 +392,11 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     public void setDepositAmount(Amounttype depositAmount) {
         this.depositAmount = depositAmount;
     }
+
+    @Override
+    public String toString() {
+        return "GeneratorUnit{" + "generatorId=" + generatorId + ", telesolaAccount=" + telesolaAccount + ", macAddress=" + macAddress + ", mobileMoneyAccount=" + mobileMoneyAccount + ", commercialStatus=" + commercialStatus + ", registeredTo=" + registeredTo + ", contractDate=" + contractDate + ", contractPrice=" + contractPrice.getAmount() + ", depositAmount=" + depositAmount.getAmount() + ", installmentAmount=" + installmentAmount.getAmount() + ", contractPeriod=" + contractPeriod + ", installmentFrequency=" + installmentFrequency + ", installmentDay=" + installmentDay + ", outstandingBalance=" + outstandingBalance.getAmount() + ", numberOfInstallmentsPaid=" + numberOfInstallmentsPaid + ", totalNumberOfInstallmentsToBePaid=" + totalNumberOfInstallmentsToBePaid + ", paymentProgress=" + paymentProgress + '}';
+    }
+    
+    
 }

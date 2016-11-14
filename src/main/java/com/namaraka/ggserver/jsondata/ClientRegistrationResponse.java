@@ -2,11 +2,11 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CustomerRegistrationResponse {
+public class ClientRegistrationResponse {
 
     /*
     {
-        ​"telesola_account"  : "774983602",
+        ​"telesola_account"  : "C774983602",  //C for Customer, D for Disributor, M for manufacturer & T for Telesola employee
         ​"status"            : "LOGGED",
         ​"description"       : "New customer logged"
 

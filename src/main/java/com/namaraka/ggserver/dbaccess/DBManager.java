@@ -107,8 +107,6 @@ public final class DBManager {
         }
     }
 
-    
-
     /**
      * Save object to database
      *
@@ -136,14 +134,12 @@ public final class DBManager {
             }
 
             //throw new MyCustomException("Hibernate Error saving object to DB", ErrorCode.PROCESSING_ERR, "Error saving: " + he.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
 
             //throw new MyCustomException("Error saving object to DB", ErrorCode.PROCESSING_ERR, "Error saving: " + e.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } finally {
             closeSession(tempSession);
         }
@@ -351,8 +347,6 @@ public final class DBManager {
         return committed;
     }
 
-   
-
     /**
      *
      * @param <T>
@@ -414,14 +408,41 @@ public final class DBManager {
         T actualReturn = returnType.cast(method.invoke(target, argument));
         System.out.print(actualReturn.equals(expectedReturn));
     }
-    
-    
+
+    public static <T> T fetchSingleRecord(Class<T> persistentClassType, String propertyName, Object propertyValue) {
+
+        StatelessSession tempSession = getStatelessSession();
+
+        T result = null;
+
+        try {
+
+            Criteria criteria = tempSession.createCriteria(persistentClassType);
+            //criteria.addOrder(Order.asc(propertyName));
+            criteria.add(Restrictions.eq(propertyName, propertyValue));
+            criteria.setMaxResults(1);
+
+            result = (T) criteria.uniqueResult();
+
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception fetching object list: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception fetching object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return result;
+    }
+
     public static <T> T fetchRecord(Class<T> persistentClassType, String propertyName, Object propertyValue) {
 
         StatelessSession tempSession = getStatelessSession();
         Set<Object> results = new HashSet<>();
-        
-        T result = null; 
+
+        T result = null;
 
         try {
 
@@ -436,16 +457,14 @@ public final class DBManager {
                 if (++count > 0 && count % 10 == 0) {
                     logger.debug("Fetched " + count + " entities");
                 }
-                
-                if (count > 1){
+
+                if (count > 1) {
                     logger.warn("Fetched more than one record, expected one! ");
                 }
                 results.add(scrollableResults.get()[0]);
 
             }
-            
-            result = (T) scrollableResults.get()[0];
-            
+
         } catch (HibernateException he) {
 
             logger.error("hibernate exception fetching object list: " + he.getMessage());
@@ -467,10 +486,10 @@ public final class DBManager {
      * @param propertyValue
      * @return
      */
-    public static Set bulkFetchByPropertyName(Class persistentClassType, String propertyName, Object propertyValue) {
+    public static <T> Set<T> bulkFetchByPropertyName(Class<T> persistentClassType, String propertyName, Object propertyValue) {
 
         StatelessSession tempSession = getStatelessSession();
-        Set<Object> results = new HashSet<>();
+        Set<T> results = new HashSet<>();
 
         try {
 
@@ -485,7 +504,7 @@ public final class DBManager {
                 if (++count > 0 && count % 10 == 0) {
                     logger.debug("Fetched " + count + " entities");
                 }
-                results.add(scrollableResults.get()[0]);
+                results.add((T) scrollableResults.get()[0]);
 
             }
         } catch (HibernateException he) {
@@ -1251,11 +1270,9 @@ public final class DBManager {
         } catch (HibernateException he) {
 
             //throw new MyCustomException("Hibernate Error counting", ErrorCode.PROCESSING_ERR, "Error counting: " + he.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } catch (Exception e) {
 
             //throw new MyCustomException("Error saving counting", ErrorCode.PROCESSING_ERR, "Error counting: " + e.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } finally {
             closeSession(tempSession);
         }
@@ -1286,11 +1303,9 @@ public final class DBManager {
         } catch (HibernateException he) {
 
             //throw new MyCustomException("Hibernate Error counting", ErrorCode.PROCESSING_ERR, "Error counting: " + he.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } catch (Exception e) {
 
             //throw new MyCustomException("Error counting", ErrorCode.PROCESSING_ERR, "Error counting: " + e.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } finally {
             closeSession(tempSession);
         }
@@ -1323,11 +1338,9 @@ public final class DBManager {
         } catch (HibernateException he) {
 
             //throw new MyCustomException("Hibernate Error counting", ErrorCode.PROCESSING_ERR, "Error counting: " + he.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } catch (Exception e) {
 
             //throw new MyCustomException("Error counting", ErrorCode.PROCESSING_ERR, "Error counting: " + e.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } finally {
             closeSession(tempSession);
         }
@@ -1358,11 +1371,9 @@ public final class DBManager {
         } catch (HibernateException he) {
 
             //throw new MyCustomException("Hibernate Error deleting", ErrorCode.PROCESSING_ERR, "Error deleting: " + he.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } catch (Exception e) {
 
             //throw new MyCustomException("Error deleting object", ErrorCode.PROCESSING_ERR, "Error deleting: " + e.getMessage(), ErrorCategory.SERVER_ERR_TYPE);
-
         } finally {
             closeSession(tempSession);
         }
@@ -2469,7 +2480,7 @@ public final class DBManager {
      }
      }*/
 
-    /*public Integer persistObjectToDB(DataBaseObject dbObject) {
+ /*public Integer persistObjectToDB(DataBaseObject dbObject) {
      int dbObjectID;
      Transaction transaction = null;
      Session tempSession = getSessionFactory().openSession();
@@ -2482,7 +2493,7 @@ public final class DBManager {
      return dbObjectID;
 
      }*/
-    /* Method to UPDATE salary for an employee 
+ /* Method to UPDATE salary for an employee 
      public void updateEmployee(Integer EmployeeID, int salary ){
      Session session = factory.openSession();
      Transaction tx = null;

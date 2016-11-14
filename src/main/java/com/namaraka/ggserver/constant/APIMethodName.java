@@ -4,25 +4,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ *
  * @author smallgod
  */
 public enum APIMethodName implements Constants {
 
     MAKE_PAYMENT("MAKE_PAYMENT"),
     PAYMENT_HISTORY("PAYMENT_HISTORY"),
-    REGISTER_CUSTOMER("REGISTER_CUSTOMER"),
-    
+    REGISTER_CLIENT("REGISTER_CLIENT"),
     REGISTER_UNIT("REGISTER_UNIT"),
     ACCOUNT_SETUP("ACCOUNT_SETUP"),
     REQUEST_OTP("REQUEST_OTP"),
-    
     ACTIVATION_CODES("ACTIVATION_CODES"),
     SYNC_UNIT("SYNC_UNIT"),
-    
     PAYMENT_STATUS_CALLBACK("PAYMENT_STATUS_CALLBACK"), // callback with status from aggregator (MamboPay)
     PAYMENT_STATUS("PAYMENT_STATUS");
-    
+
     private final String methodNameString;
 
     private static final Logger logger = LoggerFactory.getLogger(APIMethodName.class);

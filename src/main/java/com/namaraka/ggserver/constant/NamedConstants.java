@@ -11,6 +11,11 @@ package com.namaraka.ggserver.constant;
  */
 public interface NamedConstants {
 
+    //To-Do - Put these in configs file
+    public static final String GGSERVER_CALLBACK_URL = "http://namaraka.com:9099/api/json";
+    public static final String MAMBOPAY_DEBIT_URL = "https://mambopay.azure-api.net/api/v1/mtnmobilemoneyapi/debit";
+    public static final String SUBSCRIPTION_KEY = "9389259ec349469682c71910ab6f4ac3";
+
     /**
      * Date time string formats
      *
@@ -20,7 +25,7 @@ public interface NamedConstants {
      * dateOnlyDashFormat = "dd-MM-yyyy"; public static final String
      * dateTimeFormat = "dd/MM/yyyy HH:mm"; public static final String
      * dateOnlyDashYearFirstFormat = "yyyy-MM-dd";
-    *
+     *
      */
     public static final String KAMPALA_TIME_ZONE = "Africa/Kampala";
 

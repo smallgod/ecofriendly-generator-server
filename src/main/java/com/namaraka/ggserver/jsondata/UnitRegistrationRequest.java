@@ -8,14 +8,15 @@ public class UnitRegistrationRequest {
     
      JSON Request sample:
     
+    //in one line:   {"method":"REGISTER_UNIT","credentials":{"user_account":"DKLA84009","user_key":"5644777"},"params":{"telesola_account":"C786577309","mac_address":"3EDFY7654RTYU9","momo_account":"256774794077","commercial_status":"INSTALLMENT","contract_date":"2016-07-25 08:55:09","contract_period":"24","contract_price":"540000","deposit_amount":"40000","installment_frequency":"WEEKLY","installment_day":"5","app_secretkey":"32254kUHE39AH3P90EQ"},"extra":{"extra1":"value1","extra2":"value2","extra3":"value3"}}    
     {
             "method": "REGISTER_UNIT",
             "credentials": {
-                "distributor_id": "KLA84009",
-                "distributor_key": "5644777"
+                "user_account": "DKLA84009",
+                "user_key": "5644777"
             },
             "params": {
-                "telesola_account": "778789543",
+                "telesola_account": "C786577309",
                 "mac_address": "3EDFY7654RTYU9",
                 "momo_account": "256774794077",
                 "commercial_status": "INSTALLMENT",
@@ -95,10 +96,10 @@ public class UnitRegistrationRequest {
 
         @SerializedName(value = "contract_price")
         private String contractPrice;
-        
+
         @SerializedName(value = "deposit_amount")
         private String depositAmount;
-        
+
         @SerializedName(value = "contract_period")
         private String contractPeriod;
 
@@ -115,7 +116,7 @@ public class UnitRegistrationRequest {
         private String appKey;
 
         public String getTelesolaAccount() {
-            return telesolaAccount;
+            return telesolaAccount.trim().toUpperCase();
         }
 
         public void setTelesolaAccount(String telesolaAccount) {
@@ -241,26 +242,26 @@ public class UnitRegistrationRequest {
 
     public class Credentials {
 
-        @SerializedName(value = "distributor_id")
-        private String distributorId;
+        @SerializedName(value = "user_account")
+        private String userAccount;
 
-        @SerializedName(value = "distributor_key")
-        private String distributorKey;
+        @SerializedName(value = "user_key")
+        private String userKey;
 
-        public String getDistributorId() {
-            return distributorId;
+        public String getUserAccount() {
+            return userAccount;
         }
 
-        public void setDistributorId(String distributorId) {
-            this.distributorId = distributorId;
+        public void setUserAccount(String userAccount) {
+            this.userAccount = userAccount;
         }
 
-        public String getDistributorKey() {
-            return distributorKey;
+        public String getUserKey() {
+            return userKey;
         }
 
-        public void setDistributorKey(String distributorKey) {
-            this.distributorKey = distributorKey;
+        public void setUserKey(String userKey) {
+            this.userKey = userKey;
         }
     }
 }

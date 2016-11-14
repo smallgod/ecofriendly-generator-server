@@ -19,7 +19,7 @@ public class MakePaymentRequest {
             "method": "MAKE_PAYMENT",
             "params": {
                 "telesola_account": "774983602",
-                "generatorId": "A001",
+                "generator_id": "A001",
                 "momo_account": "25677445602",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },

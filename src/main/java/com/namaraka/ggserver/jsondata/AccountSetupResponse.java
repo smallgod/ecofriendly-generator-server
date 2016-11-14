@@ -17,8 +17,7 @@ public class AccountSetupResponse {
                 "mac_address": "345S35WET55YH",
                 "commercial_status": "INSTALLMENT",
                 "contract_date": "2016-09-28 08:55:09",
-                "distributor_id": "KLA44009",
-                "distributor_key": "561277",
+                "user_account": "DKLA44009",
                 "contracted_price": "5450000",
                 "installment_frequency": "WEEKLY",
                 "enable_duration": "7",
@@ -35,8 +34,7 @@ public class AccountSetupResponse {
                 "mac_address": "345S35T2WSH",
                 "commercial_status": "INSTALLMENT",
                 "contract_date": "2016-04-25 08:55:09",
-                "distributor_id": "KLA84019",
-                "distributor_key": "5644277",
+                "user_account": "DKLA44009",
                 "contracted_price": "545000",
                 "installment_frequency": "MONTHLY",
                 "enable_duration": "30",
@@ -90,6 +88,9 @@ public class AccountSetupResponse {
 
         @SerializedName(value = "contract_price")
         private String contractPrice;
+        
+         @SerializedName(value = "user_account") //Telesola # of user who registered this unit
+        private String userAccount;
 
         @SerializedName(value = "installment_frequency")
         private String installmentFrequency;
@@ -216,6 +217,14 @@ public class AccountSetupResponse {
 
         public void setActivationCodes(List<String> activationCodes) {
             this.activationCodes = activationCodes;
+        }
+
+        public String getUserAccount() {
+            return userAccount;
+        }
+
+        public void setUserAccount(String userAccount) {
+            this.userAccount = userAccount;
         }
 
     }

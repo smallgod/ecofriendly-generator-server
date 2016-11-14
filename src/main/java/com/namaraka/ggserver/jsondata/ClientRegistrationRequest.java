@@ -2,17 +2,18 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CustomerRegistrationRequest {
+public class ClientRegistrationRequest {
 
     /*
     JSON Request sample:
     
+    //in one-line:    {"method":"REGISTER_CLIENT","credentials":{"user_account":"DKLA84009","user_key":"5644777"},"params":{"first_name":"Davies","second_name":"Mugume","primary_phone":"256786577309","other_phone":"256779009546","email_address":"smallg@gmail.com","physical_address":"Kisasi,Kyanja,Plot55,KisasiRoad","client_type":"CUSTOMER","app_secretkey":"32254kUHE39AH3P90EQ"},"extra":{"extra1":"value1","extra2":"value2","extra3":"value3"}}    
     {
-        "method": "REGISTER_CUSTOMER",
+        "method": "REGISTER_CLIENT",
     
         "credentials": { 
-            "distributor_id": "KLA84009",
-            "distributor_key": "5644777"
+            "user_account": "DKLA84009",
+            "user_key": "5644777"
         },
     
         "params": {
@@ -22,12 +23,13 @@ public class CustomerRegistrationRequest {
             "other_phone": "256779009546",
             "email_address": "smallg@gmail.com",
             "physical_address": "Kisasi, Kyanja,Plot 55, Kisasi Road",
+            "client_type": "CUSTOMER",
             "app_secretkey": "32254kUHE39AH3P90EQ"
         },
     
         "extra": {
-            "distributorId": "value1",
-            "distributorKey": "value2",
+            "extra1": "value1",
+            "extra2": "value2",
             "extra3": "value3"
         }
     }
@@ -106,6 +108,9 @@ public class CustomerRegistrationRequest {
 
         @SerializedName(value = "physical_address")
         private String physicalAddress;
+        
+        @SerializedName(value = "client_type")
+        private String clientType;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -165,30 +170,38 @@ public class CustomerRegistrationRequest {
         public void setPhysicalAddress(String physicalAddress) {
             this.physicalAddress = physicalAddress;
         }
+
+        public String getClientType() {
+            return clientType;
+        }
+
+        public void setClientType(String clientType) {
+            this.clientType = clientType;
+        }
     }
     
      public class Credentials {
 
-        @SerializedName(value = "distributor_id")
-        private String distributorId;
+        @SerializedName(value = "user_account")
+        private String userAccount;
 
-        @SerializedName(value = "distributor_key")
-        private String distributorKey;
+        @SerializedName(value = "user_key")
+        private String userKey;
 
-        public String getDistributorId() {
-            return distributorId;
+        public String getUserAccount() {
+            return userAccount;
         }
 
-        public void setDistributorId(String distributorId) {
-            this.distributorId = distributorId;
+        public void setUserAccount(String userAccount) {
+            this.userAccount = userAccount;
         }
 
-        public String getDistributorKey() {
-            return distributorKey;
+        public String getUserKey() {
+            return userKey;
         }
 
-        public void setDistributorKey(String distributorKey) {
-            this.distributorKey = distributorKey;
+        public void setUserKey(String userKey) {
+            this.userKey = userKey;
         }
     }
 

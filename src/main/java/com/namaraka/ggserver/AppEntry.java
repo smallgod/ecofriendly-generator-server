@@ -5,6 +5,14 @@
  */
 package com.namaraka.ggserver;
 
+import com.namaraka.ggserver.config.v1_0.Appconfig;
+import com.namaraka.ggserver.constant.APIContentType;
+import com.namaraka.ggserver.httpmanager.HttpClientPool;
+import com.namaraka.ggserver.interfaces.SharedAppConfigIF;
+import com.namaraka.ggserver.scheduler.PaymentProcessorJob;
+import com.namaraka.ggserver.scheduler.PaymentProcessorJobListener;
+import com.namaraka.ggserver.scheduler.CustomJobScheduler;
+import com.namaraka.ggserver.scheduler.JobsData;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +26,8 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.Configuration;
+import org.quartz.Job;
+import org.quartz.JobListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +40,14 @@ public class AppEntry implements Daemon, ServletContextListener {
     private static final Logger logger = LoggerFactory.getLogger(AppEntry.class);
 
     private ExecutorService processorService;
-   // private PaymentProcessor paymentProcessor;
+    // private PaymentProcessor paymentProcessor;
     private Server server;
 
     public static DaemonContext context;
+    private static HttpClientPool clientPool;
+    CustomJobScheduler jobScheduler;
 
+    Appconfig appConfigs;
     
     @Override
     public void init(DaemonContext context) throws DaemonInitException {
@@ -44,15 +57,14 @@ public class AppEntry implements Daemon, ServletContextListener {
         try {
 
             System.out.println("init Daemon method () called..");
-            
-            ApplicationPropertyLoader.loadInstance();
+
+            appConfigs = ApplicationPropertyLoader.loadInstance().getAppProps();
 
             //Log.setLog(new Slf4jLog());
             processorService = Executors.newSingleThreadExecutor();
 
             //has the actual worker threads that are going to be processing payments
             //paymentProcessor = new PaymentProcessor();
-
             //our server for accepting external requests
             server = new Server();
 
@@ -96,6 +108,27 @@ public class AppEntry implements Daemon, ServletContextListener {
             server.setDumpAfterStart(true);
             server.setDumpBeforeStop(true);
             server.setStopAtShutdown(true);
+            
+            int interval = appConfigs.getSchedulers().getPickpending().getInterval();
+            String triggerName = appConfigs.getSchedulers().getPickpending().getTriggername();
+            String jobName = appConfigs.getSchedulers().getPickpending().getJobname();
+            String groupName = "PaymentPusherGroup"; //put in configs file
+            
+            int readTimeout = appConfigs.getReadtimeout();
+            int connTimeout = appConfigs.getConntimeout();
+            int connPerRoute = appConfigs.getConnectionsperroute();
+            int maxConnections = appConfigs.getMaxtotalconnections();
+            
+            logger.debug("Details from config file: interval: " +interval+ " triggerName: " + triggerName
+            + ", jobName: " + jobName+ ", readTimeout: " + readTimeout+ ", connTimeout: " + connTimeout
+            + ", connPerroute: " + connPerRoute+ ", maxConn: " + maxConnections);
+
+            //http client pool
+            clientPool = new HttpClientPool(readTimeout, connTimeout, connPerRoute, maxConnections, APIContentType.JSON);
+
+            jobScheduler = new CustomJobScheduler();
+            JobsData jobsData = new JobsData(clientPool, triggerName, jobName, groupName, interval);
+            //jobScheduler.scheduleARepeatJob(jobsData, PaymentProcessorJob.class, new PaymentProcessorJobListener());
 
         } catch (FileNotFoundException fne) {
 
@@ -125,7 +158,6 @@ public class AppEntry implements Daemon, ServletContextListener {
 
             //Future executingProcess = processorService.submit(paymentProcessor);
             //server.join(); //think of putting this inside an executor so that it doesn't hang
-
         } catch (Exception ex) {
 
             System.err.println("Error starting server & processorService: " + ex.getMessage());
@@ -223,6 +255,9 @@ public class AppEntry implements Daemon, ServletContextListener {
         ApplicationPropertyLoader.loadInstance().closeHibernateSessionFactory();
         server.stop(); //stop server
         shutdownProcessor(processorService, 3, TimeUnit.MINUTES); //shutdown the executor service
+
+        clientPool.releaseHttpResources();
+        jobScheduler.cancelAllJobs();
 
     }
 }

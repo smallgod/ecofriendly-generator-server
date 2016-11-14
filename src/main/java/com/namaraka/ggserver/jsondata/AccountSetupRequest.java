@@ -32,8 +32,7 @@ public class AccountSetupRequest {
                 "mac_address": "345S35WET55YH",
                 "commercial_status": "INSTALLMENT",
                 "contract_date": "2016-09-28 08:55:09",
-                "distributor_id": "KLA44009",
-                "distributor_key": "561277",
+                "user_account": "DKLA44009",
                 "contracted_price": "5450000",
                 "installment_frequency": "WEEKLY",
                 "enable_duration": "7",
@@ -50,8 +49,7 @@ public class AccountSetupRequest {
                 "mac_address": "345S35T2WSH",
                 "commercial_status": "INSTALLMENT",
                 "contract_date": "2016-04-25 08:55:09",
-                "distributor_id": "KLA84019",
-                "distributor_key": "5644277",
+                "user_account": "DKLA44009",
                 "contracted_price": "545000",
                 "installment_frequency": "MONTHLY",
                 "enable_duration": "30",
@@ -114,7 +112,7 @@ public class AccountSetupRequest {
         private String appKey;
 
         public String getTelesolaAccount() {
-            return telesolaAccount;
+            return telesolaAccount.trim().toUpperCase();
         }
 
         public void setTelesolaAccount(String telesolaAccount) {
@@ -122,7 +120,7 @@ public class AccountSetupRequest {
         }
 
         public String getOtp() {
-            return otp;
+            return otp.trim().toUpperCase();
         }
 
         public void setOtp(String otp) {
