@@ -17,6 +17,8 @@ import com.namaraka.ggserver.constant.OrderFirst;
 import com.namaraka.ggserver.constant.PaymentProgress;
 import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.dbaccess.DBManager;
+import com.namaraka.ggserver.jsondata.AccountSetupRequest;
+import com.namaraka.ggserver.jsondata.AccountSetupResponse;
 import com.namaraka.ggserver.jsondata.ClientRegistrationRequest;
 import com.namaraka.ggserver.jsondata.ClientRegistrationResponse;
 import com.namaraka.ggserver.jsondata.MakePaymentRequest;
@@ -56,6 +58,90 @@ import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import java.util.ArrayList;
 import java.util.List;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
@@ -138,11 +224,13 @@ public class JsonAPIServer extends HttpServlet {
             case PAYMENT_HISTORY:
                 System.out.println("PAYMENT_HISTORY called");
                 //jsonResponse = "{\"telesola_account\":\"786577309\",\"units\":[{\"generator_id\":\"A001\",\"cms_payment_id\":\"3509866\",\"enable_duration\":\"7\",\"momo_id\":\"893783739\",\"momo_account\":\"256783937043\",\"amount\":\"59000\",\"payment_date\":\"2016-09-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"},{\"generator_id\":\"A002\",\"cms_payment_id\":\"61866\",\"momo_id\":\"893783669\",\"momo_account\":\"256783937043\",\"amount\":\"58000\",\"payment_date\":\"2016-07-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"}]}";
-                jsonResponse = getPaymentHistroy(jsonRequest);
+                jsonResponse = getPaymentHistory(jsonRequest);
                 break;
             case ACCOUNT_SETUP:
                 System.out.println("ACCOUNT_SETUP called");
-                jsonResponse = "{\"telesola_account\":\"C786577309\",\"units\":[{\"generator_id\":\"A001\",\"mac_address\":\"345S35WET55YH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-09-28 08:55:09\",\"distributor_id\":\"KLA44009\",\"distributor_key\":\"561277\",\"contracted_price\":\"5450000\",\"installment_frequency\":\"WEEKLY\",\"enable_duration\":\"7\",\"installment_day\":\"1\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"550900\",\"activation_codes\":[757853,69434]},{\"generator_id\":\"A002\",\"mac_address\":\"345S35T2WSH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-04-25 08:55:09\",\"distributor_id\":\"KLA84019\",\"distributor_key\":\"5644277\",\"contracted_price\":\"545000\",\"installment_frequency\":\"MONTHLY\",\"enable_duration\":\"30\",\"installment_day\":\"4\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"30900\",\"activation_codes\":[757258,343222,68484]}]}";
+                //jsonResponse = "{\"telesola_account\":\"C786577309\",\"units\":[{\"generator_id\":\"A001\",\"mac_address\":\"345S35WET55YH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-09-28 08:55:09\",\"distributor_id\":\"KLA44009\",\"distributor_key\":\"561277\",\"contracted_price\":\"5450000\",\"installment_frequency\":\"WEEKLY\",\"enable_duration\":\"7\",\"installment_day\":\"1\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"550900\",\"activation_codes\":[757853,69434]},{\"generator_id\":\"A002\",\"mac_address\":\"345S35T2WSH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-04-25 08:55:09\",\"distributor_id\":\"KLA84019\",\"distributor_key\":\"5644277\",\"contracted_price\":\"545000\",\"installment_frequency\":\"MONTHLY\",\"enable_duration\":\"30\",\"installment_day\":\"4\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"30900\",\"activation_codes\":[757258,343222,68484]}]}";
+                jsonResponse = accountSetup(jsonRequest);
+
                 break;
             case ACTIVATION_CODES:
                 System.out.println("ACTIVATION_CODES called");
@@ -170,12 +258,83 @@ public class JsonAPIServer extends HttpServlet {
 
     }
 
+    String accountSetup(String accountSetupPayload) {
+
+        AccountSetupResponse accountSetupResponse = new AccountSetupResponse();
+        List<AccountSetupResponse.Unit> units = new ArrayList<>();
+
+        accountSetupResponse.setUnits(units);
+
+        String status = Status.LOGGED.getValue();
+        String statusDescription = "New CLient logged successfully";
+        String telesolaAccount = "";
+
+        try {
+
+            AccountSetupRequest accountSetupRequest = convertFromJson(accountSetupPayload, AccountSetupRequest.class);
+
+            if (accountSetupRequest == null) {
+
+                logger.error("AccountSetupRequest is null, failed to un-marshal JSON");
+
+            } else {
+
+                telesolaAccount = accountSetupRequest.getParams().getTelesolaAccount();
+                String otp = accountSetupRequest.getParams().getOtp();
+                String appKey = accountSetupRequest.getParams().getAppKey();
+
+                //To-Do
+                //Compare OTP with OTP that was generated and sent to client
+                //mark OTP used
+                
+                Set<GeneratorUnit> generators = DBManager.bulkFetchByPropertyName(GeneratorUnit.class, "telesolaAccount", telesolaAccount);
+                Iterator<GeneratorUnit> generatorIter = generators.iterator();
+
+                while (generatorIter.hasNext()) {
+                    GeneratorUnit generator = generatorIter.next();
+
+                    AccountSetupResponse.Unit unit = accountSetupResponse.new Unit();
+                    unit.setCommercialStatus(generator.getCommercialStatus().getValue());
+                    unit.setContractDate(DateUtils.convertLocalDateTimeToString(generator.getContractDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                    unit.setContractPrice(String.valueOf(generator.getContractPrice().getAmount()));
+                    unit.setEnableDuration(String.valueOf(generator.getEnableDurationDefault()));
+                    unit.setGeneratorId(generator.getGeneratorId());
+                    unit.setInstallmentAmount(String.valueOf(generator.getInstallmentAmount().getAmount()));
+                    unit.setInstallmentDay(generator.getInstallmentDay().getValue());
+                    unit.setInstallmentFrequency(generator.getInstallmentFrequency().getValue());
+                    unit.setMomoAccount(generator.getMobileMoneyAccount());
+                    unit.setOutstandingBalance(String.valueOf(generator.getOutstandingBalance().getAmount()));
+                    unit.setUserAccount(generator.get);
+                    unit.setActivationCodes(activationCodes);
+                    
+                    
+                    units.add(unit);
+                
+                }
+            }
+
+        } catch (Exception ex) {
+
+            logger.error("An error occurred while trying to setup an account: " + ex.getMessage());
+
+            status = Status.NOT_LOGGED.getValue();
+            statusDescription = "Errors occurred while trying to setup an account: " + ex.getMessage();
+        }
+
+        accountSetupResponse.setTelesolaAccount(telesolaAccount);
+        accountSetupResponse
+        
+        String jsonResponse = GeneralUtils.convertToJson(accountSetupResponse, AccountSetupResponse.class);
+
+        return jsonResponse;
+    }
+
     /**
      *
      * @param paymentHistoryPayload
      * @return
      */
-    String getPaymentHistroy(String paymentHistoryPayload) {
+    String getPaymentHistory(String paymentHistoryPayload) {
 
         PaymentHistoryResponse paymentHistResponse = new PaymentHistoryResponse();
         List<PaymentHistoryResponse.Unit> units = new ArrayList<>();
@@ -231,11 +390,11 @@ public class JsonAPIServer extends HttpServlet {
                         unit.setCmsPaymentId(payment.getCmsTransactionID());
                         unit.setMomoAccount(payment.getDebitAccount());
                         unit.setAmount(payment.getAmount().getAmount().toString());
-                        unit.setAcknowledgeDate(String.valueOf(payment.getApprovalDate()));
+                        unit.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
                         unit.setMomoId(payment.getMomoId());
                         unit.setStatus(payment.getStatus().getValue());
                         unit.setDescription(payment.getStatusDescription());
-                        unit.setPaymentDate(String.valueOf(payment.getCreatedOn()));
+                        unit.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
                         unit.setEnableDuration(String.valueOf(payment.getEnableDuration()));
                         logger.debug("about to add unit to unit list: " + unit.getCmsPaymentId() + ", status: " + unit.getStatus());
 

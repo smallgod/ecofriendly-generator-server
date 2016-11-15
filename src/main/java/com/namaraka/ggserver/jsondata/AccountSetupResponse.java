@@ -55,7 +55,7 @@ public class AccountSetupResponse {
     private String telesolaAccount;
 
     @SerializedName(value = "units")
-    private List<Units> units;
+    private List<Unit> units;
 
     public String getTelesolaAccount() {
         return telesolaAccount;
@@ -65,15 +65,15 @@ public class AccountSetupResponse {
         this.telesolaAccount = telesolaAccount;
     }
 
-    public List<Units> getUnits() {
+    public List<Unit> getUnits() {
         return units;
     }
 
-    public void setUnits(List<Units> units) {
+    public void setUnits(List<Unit> units) {
         this.units = units;
     }
 
-    public class Units {
+    public class Unit {
 
         @SerializedName(value = "generator_id")
         private String generatorId;
@@ -112,9 +112,6 @@ public class AccountSetupResponse {
         @SerializedName(value = "activation_codes")
         private List<String> activationCodes;
 
-        @SerializedName(value = "app_secretkey")
-        private String appKey;
-
         public String getMacAddress() {
             return macAddress;
         }
@@ -129,14 +126,6 @@ public class AccountSetupResponse {
 
         public void setGeneratorId(String generatorId) {
             this.generatorId = generatorId;
-        }
-
-        public String getAppKey() {
-            return appKey;
-        }
-
-        public void setAppKey(String appKey) {
-            this.appKey = appKey;
         }
 
         public String getCommercialStatus() {

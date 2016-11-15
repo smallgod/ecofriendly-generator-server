@@ -68,21 +68,23 @@ public class DateUtils {
 
     /**
      * Get LocalDateTime now
-     * @return 
+     *
+     * @return
      */
     public static LocalDateTime getDateTimeNow() {
 
         return LocalDateTime.now();
     }
-    
+
     /**
      * Get LocalDateTime now
+     *
      * @param timeZoneStr
-     * @return 
+     * @return
      */
     public static LocalDateTime getDateTimeNow(String timeZoneStr) {
 
-         DateTimeZone desiredTimeZone = DateTimeZone.forID(timeZoneStr);
+        DateTimeZone desiredTimeZone = DateTimeZone.forID(timeZoneStr);
         return LocalDateTime.now(desiredTimeZone);
     }
 
@@ -166,6 +168,20 @@ public class DateUtils {
         String elapsed = formatter.print(period);
 
         return elapsed;
+    }
+
+    /**
+     * convert LocalDateTime to String
+     * @param dateTime
+     * @param dateTimePattern
+     * @return 
+     */
+    public static String convertLocalDateTimeToString(LocalDateTime dateTime, String dateTimePattern) {
+        
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateTimePattern);
+        String formattedDateTime = dateTime.toString(formatter); // "1986-04-08 12:30"
+
+        return formattedDateTime;
     }
 
 }
