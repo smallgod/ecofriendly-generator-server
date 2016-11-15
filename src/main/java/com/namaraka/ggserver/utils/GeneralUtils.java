@@ -31,11 +31,15 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpResponse;
@@ -509,6 +513,45 @@ public class GeneralUtils {
         return randomValue.toUpperCase();
     }
 
+    private static int createRandomInteger(int aStart, long aEnd, Random aRandom) {
+
+        if (aStart > aEnd) {
+            throw new IllegalArgumentException("Start cannot exceed End.");
+        }
+        //get the range, casting to long to avoid overflow problems
+        long range = aEnd - aStart + 1;
+        logger.info("range>>>>>>>>>>>" + range);
+        // compute a fraction of the range, 0 <= frac < range
+        long fraction = (long) (range * aRandom.nextDouble());
+        logger.info("fraction>>>>>>>>>>>>>>>>>>>>" + fraction);
+        long randomNumber = fraction + (long) aStart;
+        logger.info("Generated : " + randomNumber);
+
+        return (int) randomNumber;
+
+    }
+
+    public static synchronized Set<Integer> generateRandomPin(int numberOfValuesToGenerate) {
+
+        int START = 10000000;
+        //int END = Integer.parseInt("9999999999");
+        //long END = Integer.parseInt("9999999999");
+        long END = 99999999L;
+
+        Random random = new Random();
+
+        Set<Integer> set = new HashSet<>(numberOfValuesToGenerate);
+        while (set.size() <= numberOfValuesToGenerate) {
+            int value = createRandomInteger(START, END, random);
+            set.add(value);
+        }
+
+        /*for (int idx = 1; idx <= numberOfValuesToGenerate; ++idx) {
+            createRandomInteger(START, END, random);
+        }*/
+        return set;
+    }
+
     /**
      *
      * @param stringToConvert
@@ -614,19 +657,85 @@ public class GeneralUtils {
         }
         return MSISDN;
     }
-    
+
     /**
-     * Generate a Telesola account from the client's primaryContact and clientType
+     * Generate a Telesola account from the client's primaryContact and
+     * clientType
+     *
      * @param primaryContact
      * @param clientType
-     * @return 
+     * @return
      */
     public static String generateTelesolaAccount(String primaryContact, ClientType clientType) {
         String shortContact = primaryContact.substring(3);
         return (clientType.getValue() + shortContact);
-        
+
         //To-Do
         //Separate accounts by region, especially for distributors e.g. DKLA774983602 for a Kampala Distributor
+    }
+
+    public String generateNextIdAfterThis(String idNumToIncrement) {
+        Pattern compile = Pattern.compile("^(.*?)([0-9]*|[A-Z]*)$");
+        Matcher matcher = compile.matcher(idNumToIncrement);
+        String remaining = idNumToIncrement;
+        String currentGroup = "";
+        String result = "";
+
+        boolean continueToNext = true;
+        while (matcher.matches() && continueToNext) {
+            remaining = matcher.group(1);
+            currentGroup = matcher.group(2);
+            int currentGroupLength = currentGroup.length();
+            int base = currentGroup.matches("[0-9]*") ? 10 : 36;
+            currentGroup = Long.toString(Long.parseLong("1" + currentGroup, base) + 1, base);  // The "1" if just to ensure that "000" doesn't become 0 (and thus losing the original string length)
+            currentGroup = currentGroup.substring(currentGroup.length() - currentGroupLength, currentGroup.length());
+            continueToNext = Long.valueOf(currentGroup, base) == 0;
+            if (base == 36) {
+                currentGroup = currentGroup.replace("0", "A");
+            }
+
+            result = currentGroup + result;
+            matcher = compile.matcher(remaining);
+        }
+
+        result = remaining + result;
+        return result.toUpperCase();
+    }
+
+    public String generateNextIdAfterThis2(String idNumToIncrement) {
+
+        Pattern compile = Pattern.compile("^(.*?)([9Z]*)$");
+        Matcher matcher = compile.matcher(idNumToIncrement);
+        String left = "";
+        String right = "";
+        if (matcher.matches()) {
+            left = matcher.group(1);
+            right = matcher.group(2);
+        }
+        idNumToIncrement = !left.isEmpty() ? Long.toString(Long.parseLong(left, 36) + 1, 36) : "";
+        idNumToIncrement += right.replace("Z", "A").replace("9", "0");
+        return idNumToIncrement.toUpperCase();
+
+    }
+
+    public String generateNextIdAfterThis3(String idNumToIncrement) {
+
+        char[] cars = idNumToIncrement.toUpperCase().toCharArray();
+        OUTER:
+        for (int i = cars.length - 1; i >= 0; i--) {
+            switch (cars[i]) {
+                case 'Z':
+                    cars[i] = 'A';
+                    break;
+                case '9':
+                    cars[i] = '0';
+                    break;
+                default:
+                    cars[i]++;
+                    break OUTER;
+            }
+        }
+        return String.valueOf(cars);
     }
 
 }

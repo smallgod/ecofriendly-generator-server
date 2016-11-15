@@ -13,6 +13,7 @@ import com.namaraka.ggserver.constant.CommercialStatus;
 import com.namaraka.ggserver.constant.InstallmentDay;
 import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.NamedConstants;
+import com.namaraka.ggserver.constant.OrderFirst;
 import com.namaraka.ggserver.constant.PaymentProgress;
 import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.dbaccess.DBManager;
@@ -20,6 +21,8 @@ import com.namaraka.ggserver.jsondata.ClientRegistrationRequest;
 import com.namaraka.ggserver.jsondata.ClientRegistrationResponse;
 import com.namaraka.ggserver.jsondata.MakePaymentRequest;
 import com.namaraka.ggserver.jsondata.MakePaymentResponse;
+import com.namaraka.ggserver.jsondata.PaymentHistoryRequest;
+import com.namaraka.ggserver.jsondata.PaymentHistoryResponse;
 import com.namaraka.ggserver.jsondata.PaymentStatusCallBackRequest;
 import com.namaraka.ggserver.jsondata.PaymentStatusCallBackResponse;
 import com.namaraka.ggserver.jsondata.UnitRegistrationRequest;
@@ -42,17 +45,23 @@ import static com.namaraka.ggserver.utils.GeneralUtils.writeResponse;
 import java.text.ParseException;
 import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDateTime;
+import com.namaraka.ggserver.utils.AlphaNumericIDGenerator;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import java.util.Iterator;
+import java.util.Set;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import java.util.ArrayList;
+import java.util.List;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import com.namaraka.ggserver.utils.IdGenerator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -128,7 +137,8 @@ public class JsonAPIServer extends HttpServlet {
 
             case PAYMENT_HISTORY:
                 System.out.println("PAYMENT_HISTORY called");
-                jsonResponse = "{\"telesola_account\":\"786577309\",\"units\":[{\"generator_id\":\"A001\",\"cms_payment_id\":\"3509866\",\"enable_duration\":\"7\",\"momo_id\":\"893783739\",\"momo_account\":\"256783937043\",\"amount\":\"59000\",\"payment_date\":\"2016-09-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"},{\"generator_id\":\"A002\",\"cms_payment_id\":\"61866\",\"momo_id\":\"893783669\",\"momo_account\":\"256783937043\",\"amount\":\"58000\",\"payment_date\":\"2016-07-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"}]}";
+                //jsonResponse = "{\"telesola_account\":\"786577309\",\"units\":[{\"generator_id\":\"A001\",\"cms_payment_id\":\"3509866\",\"enable_duration\":\"7\",\"momo_id\":\"893783739\",\"momo_account\":\"256783937043\",\"amount\":\"59000\",\"payment_date\":\"2016-09-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"},{\"generator_id\":\"A002\",\"cms_payment_id\":\"61866\",\"momo_id\":\"893783669\",\"momo_account\":\"256783937043\",\"amount\":\"58000\",\"payment_date\":\"2016-07-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"}]}";
+                jsonResponse = getPaymentHistroy(jsonRequest);
                 break;
             case ACCOUNT_SETUP:
                 System.out.println("ACCOUNT_SETUP called");
@@ -158,6 +168,83 @@ public class JsonAPIServer extends HttpServlet {
         System.out.println("---------- Response --------\n" + GeneralUtils.toPrettyJsonFormat(jsonResponse));
         writeResponse(response, jsonResponse);
 
+    }
+
+    /**
+     * 
+     * @param paymentHistoryPayload
+     * @return 
+     */
+    String getPaymentHistroy(String paymentHistoryPayload) {
+
+        PaymentHistoryResponse paymentHistResponse = new PaymentHistoryResponse();
+        List<PaymentHistoryResponse.Unit> units = new ArrayList<>();
+
+        paymentHistResponse.setUnits(units);
+
+        try {
+
+            PaymentHistoryRequest paymentHistRequest = convertFromJson(paymentHistoryPayload, PaymentHistoryRequest.class);
+
+            if (paymentHistRequest == null) {
+
+                logger.error("unitRegistration is null, failed to un-marshal JSON");
+
+            } else {
+                String generatorId = paymentHistRequest.getParams().getGeneratorId();
+                String telesolaAccount = paymentHistRequest.getParams().getTelesolaAccount();
+                String appKey = paymentHistRequest.getParams().getAppKey();
+
+                paymentHistResponse.setTelesolaAccount(telesolaAccount);
+
+                int transactionLimit = (paymentHistRequest.getParams().getTransactionLimit() == null) ? NamedConstants.MAX_NUMBER_PAYMENTS : Integer.parseInt(paymentHistRequest.getParams().getTransactionLimit());
+                OrderFirst orderFirst = OrderFirst.convertToEnum(paymentHistRequest.getParams().getOrderFirst());
+                String status = paymentHistRequest.getParams().getStatus();
+                Status paymentStatus;
+
+                if (status == null || status.trim().isEmpty()) {
+                    paymentStatus = Status.SUCCESSFUL;
+                } else {
+                    paymentStatus = Status.convertToEnum(status);
+                }
+
+                Set<MoMoTransaction> payments = DBManager.fetchPayments(MoMoTransaction.class, transactionLimit, "id", orderFirst, paymentStatus, "generatorId", generatorId);
+
+                if (payments != null) {
+
+                    Iterator<MoMoTransaction> paymentsIter = payments.iterator();
+
+                    while (paymentsIter.hasNext()) {
+
+                        MoMoTransaction payment = paymentsIter.next();
+                        PaymentHistoryResponse.Unit unit = paymentHistResponse.new Unit();
+
+                        payment.getAggregatorTransID();
+
+                        unit.setGeneratorId(payment.getGeneratorId());
+                        unit.setCmsPaymentId(payment.getCmsTransactionID());
+                        unit.setMomoAccount(payment.getDebitAccount());
+                        unit.setAmount(payment.getAmount().getAmount().toString());
+                        unit.setAcknowledgeDate(payment.getApprovalDate().toString(NamedConstants.DATE_TIME_DASH_FORMAT));
+                        unit.setMomoId(payment.getMomoId());
+                        unit.setStatus(payment.getStatus().getValue());
+                        unit.setDescription(payment.getStatusDescription());
+                        unit.setPaymentDate(payment.getCreatedOn().toString(NamedConstants.DATE_TIME_DASH_FORMAT));
+
+                        units.add(unit);
+
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+
+            logger.error("An error occurred while trying to fetch payment history : " + ex.getMessage());
+        }
+
+        String jsonResponse = GeneralUtils.convertToJson(paymentHistResponse, PaymentHistoryResponse.class);
+
+        return jsonResponse;
     }
 
     /**
@@ -252,70 +339,6 @@ public class JsonAPIServer extends HttpServlet {
         return jsonResponse;
     }
 
-    public String generateUnitId1(String number) {
-        Pattern compile = Pattern.compile("^(.*?)([0-9]*|[A-Z]*)$");
-        Matcher matcher = compile.matcher(number);
-        String remaining = number;
-        String currentGroup = "";
-        String result = "";
-
-        boolean continueToNext = true;
-        while (matcher.matches() && continueToNext) {
-            remaining = matcher.group(1);
-            currentGroup = matcher.group(2);
-            int currentGroupLength = currentGroup.length();
-            int base = currentGroup.matches("[0-9]*") ? 10 : 36;
-            currentGroup = Long.toString(Long.parseLong("1" + currentGroup, base) + 1, base);  // The "1" if just to ensure that "000" doesn't become 0 (and thus losing the original string length)
-            currentGroup = currentGroup.substring(currentGroup.length() - currentGroupLength, currentGroup.length());
-            continueToNext = Long.valueOf(currentGroup, base) == 0;
-            if (base == 36) {
-                currentGroup = currentGroup.replace("0", "A");
-            }
-
-            result = currentGroup + result;
-            matcher = compile.matcher(remaining);
-        }
-
-        result = remaining + result;
-        return result.toUpperCase();
-    }
-
-    String generateUnitId2(String number) {
-
-        Pattern compile = Pattern.compile("^(.*?)([9Z]*)$");
-        Matcher matcher = compile.matcher(number);
-        String left = "";
-        String right = "";
-        if (matcher.matches()) {
-            left = matcher.group(1);
-            right = matcher.group(2);
-        }
-        number = !left.isEmpty() ? Long.toString(Long.parseLong(left, 36) + 1, 36) : "";
-        number += right.replace("Z", "A").replace("9", "0");
-        return number.toUpperCase();
-
-    }
-
-    public String generateUnitId(String number) {
-        
-        char[] cars = number.toUpperCase().toCharArray();
-        OUTER:
-        for (int i = cars.length - 1; i >= 0; i--) {
-            switch (cars[i]) {
-                case 'Z':
-                    cars[i] = 'A';
-                    break;
-                case '9':
-                    cars[i] = '0';
-                    break;
-                default:
-                    cars[i]++;
-                    break OUTER;
-            }
-        }
-        return String.valueOf(cars);
-    }
-
     String registerGenerator(String unitRegisterPayload) {
 
         logger.debug("about to Register unit!!");
@@ -346,22 +369,24 @@ public class JsonAPIServer extends HttpServlet {
 
             telesolaAccount = unitRegistration.getParams().getTelesolaAccount();
 
-            String number = "001";
-            long counter = 0L;
-            /*while (!number.equalsIgnoreCase("ZZZZZZ")) {
+            //get the most recently registered generator unit
+            GeneratorUnit recentGenerator = DBManager.getMostRecentRecord(GeneratorUnit.class, "id");
 
-                number = generateUnitId(number);
-                logger.debug("generated: " + number);
+            if (recentGenerator == null) {
+                generatorId = NamedConstants.START_ID;
+            } else {
+                String idToIncrement = recentGenerator.getGeneratorId();
+                generatorId = AlphaNumericIDGenerator.generateNextId(idToIncrement);
+            }
+
+            /*int counter = 0;
+            while (!generatorId.equalsIgnoreCase("ZZZYY")) {
+
+                generatorId = AlphaNumericIDGenerator.generateNextId(generatorId);
                 counter++;
+
+                logger.debug("generated: " + generatorId + " - counter: " + counter);
             }*/
-            
-            IdGenerator.generateId(number);
-
-            //logger.debug("Going out of the loop after generating: [" + counter + "] numbers");
-
-            //To-DO generate a generator ID from the unit's mac address
-            generatorId = generateUnitId("ABAA0000");
-
             String contractDateString = unitRegistration.getParams().getContractDate();
             String contractPeriod = unitRegistration.getParams().getContractPeriod(); //in months
             String contractPriceString = unitRegistration.getParams().getContractPrice();
@@ -467,7 +492,7 @@ public class JsonAPIServer extends HttpServlet {
 
     //String accountSetup() {}
     //String paymentHistory() {}
-    String makePayment(String paymentJsonRequest) {
+    String makePayment(String paymentPayload) {
 
         //steps to implement
         //1. Log payment to DB
@@ -475,7 +500,7 @@ public class JsonAPIServer extends HttpServlet {
         //2. respond with LOGGED if ok to client otherwise NOT_LOGGED
         //3. Notify fetcher to send to aggregator via a call back i think
         //transaction.setCreationDate(DateUtils.convertStringToDate(creationDate, NamedConstants.DATE_TIME_FORMAT));
-        MakePaymentRequest paymentRequest = convertFromJson(paymentJsonRequest, MakePaymentRequest.class
+        MakePaymentRequest paymentRequest = convertFromJson(paymentPayload, MakePaymentRequest.class
         );
 
         String status = Status.LOGGED.getValue();
@@ -487,13 +512,13 @@ public class JsonAPIServer extends HttpServlet {
         String cmsTransactionID = GeneralUtils.generateShorterRandomID();
         String debitAccount = paymentRequest.getParams().getMomoAccount();
 
-        GeneratorUnit generatorUnit = DBManager.fetchRecord(GeneratorUnit.class, "generatorId", generatorId);
+        GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
 
         //check generator being paid for, if it exists
         if (generatorUnit == null) {
 
             status = Status.NOT_LOGGED.getValue();
-            statusDescription = "Failed to log payment: Generator unit with ID: " + generatorId + ", doesn't exist";
+            statusDescription = "Failed to log payment: Generator unit with ID: " + generatorId + ", does not exist";
 
         } else {
 
@@ -554,8 +579,8 @@ public class JsonAPIServer extends HttpServlet {
         int statusCode = Integer.parseInt(statusCallbackRequest.getParams().getStatusCode());
         String finalStatus;
 
-        MoMoTransaction transaction = DBManager.fetchRecord(MoMoTransaction.class, "cmsTransactionID", transactionId);
-        GeneratorUnit generatorUnit = DBManager.fetchRecord(GeneratorUnit.class, "generatorId", transaction.getGeneratorId());
+        MoMoTransaction transaction = DBManager.fetchSingleRecord(MoMoTransaction.class, "cmsTransactionID", transactionId);
+        GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", transaction.getGeneratorId());
 
         int amountPaid = (int) Math.ceil(transaction.getAmount().getAmount().doubleValue());
         int currTotalNoOfInstallmentsPaid = generatorUnit.getNumberOfInstallmentsPaid();

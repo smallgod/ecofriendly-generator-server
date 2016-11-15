@@ -1,6 +1,8 @@
 package com.namaraka.ggserver.dbaccess;
 
 import com.namaraka.ggserver.ApplicationPropertyLoader;
+import com.namaraka.ggserver.constant.OrderFirst;
+import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.utils.AuditTrailInterceptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,6 +25,7 @@ import org.hibernate.SessionException;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -409,6 +412,44 @@ public final class DBManager {
         System.out.print(actualReturn.equals(expectedReturn));
     }
 
+    /**
+     *
+     * @param <T>
+     * @param persistentClassType
+     * @param propertyName
+     * @return
+     */
+    public static <T> T getMostRecentRecord(Class<T> persistentClassType, String propertyName) {
+
+        StatelessSession tempSession = getStatelessSession();
+
+        T result = null;
+
+        try {
+
+            DetachedCriteria maxCriteria = DetachedCriteria.forClass(persistentClassType);
+            maxCriteria.setProjection(Projections.max(propertyName));
+
+            Criteria criteria = tempSession.createCriteria(persistentClassType);
+            criteria.add(Property.forName(propertyName).eq(maxCriteria));
+            //criteria.list();
+            criteria.setMaxResults(1);
+
+            result = (T) criteria.uniqueResult();
+
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception fetching max row: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception fetching max row: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return result;
+    }
+
     public static <T> T fetchSingleRecord(Class<T> persistentClassType, String propertyName, Object propertyValue) {
 
         StatelessSession tempSession = getStatelessSession();
@@ -476,6 +517,70 @@ public final class DBManager {
         }
 
         return result;
+    }
+
+    /**
+     * Fetch payments for payment history
+     * @param <T>
+     * @param persistentClassType
+     * @param maxNoOfResults
+     * @param orderColumn
+     * @param orderFirst
+     * @param status
+     * @param generatorIdProperty
+     * @param generatorIdValue
+     * @return 
+     */
+    public static <T> Set<T> fetchPayments(Class<T> persistentClassType, int maxNoOfResults, String orderColumn, OrderFirst orderFirst, Status status, String generatorIdProperty, String generatorIdValue) {
+
+        StatelessSession tempSession = getStatelessSession();
+        Set<T> results = new HashSet<>();
+
+        try {
+
+            Criteria criteria = tempSession.createCriteria(persistentClassType);
+
+            switch (orderFirst) {
+
+                case NEWEST:
+                    criteria.addOrder(Order.desc(orderColumn));
+                    break;
+
+                case OLDEST:
+                    criteria.addOrder(Order.asc(orderColumn));
+                    break;
+
+                default:
+                    criteria.addOrder(Order.desc(orderColumn));
+                    break;
+            }
+
+            if (!(status == Status.ALL)) {
+                criteria.add(Restrictions.eq("status", status));
+            }
+            criteria.add(Restrictions.eq(generatorIdProperty, generatorIdValue));
+            criteria.setMaxResults(maxNoOfResults);
+            ScrollableResults scrollableResults = criteria.scroll(ScrollMode.FORWARD_ONLY);
+
+            int count = 0;
+            while (scrollableResults.next()) {
+                if (++count > 0 && count % 10 == 0) {
+                    logger.debug("Fetched " + count + " entities");
+                }
+                results.add((T) scrollableResults.get()[0]);
+
+            }
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception saving object list: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception saving object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return results;
     }
 
     /**

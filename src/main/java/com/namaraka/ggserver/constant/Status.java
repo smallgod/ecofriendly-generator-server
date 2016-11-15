@@ -17,7 +17,10 @@ public enum Status implements Constants {
     REVERSED("REVERSED"),
     DUPLICATE("DUPLICATE"),
     EXPIRED("EXPIRED"),
-    UNKNOWN("UNKNOWN");
+    UNKNOWN("UNKNOWN"),
+    
+    
+    ALL("ALL"); //used when we need to pick multiple payments with status n- any
     
     private final String statusTypeString;
 

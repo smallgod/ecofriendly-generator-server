@@ -15,22 +15,25 @@ public class PaymentHistoryResponse {
             {
                 "generator_id": "A001",
                 "cms_payment_id": "3509866",
-	        "enable_duration":"7",
+                "enable_duration":"7",
                 "momo_id": "893783739",
                 "momo_account": "256783937043",
                 "amount": "59000",
                 "payment_date": "2016-09-28 08:55:09",
-                "acknowledge_date": "2016-09-28 08:55:09"
+                "acknowledge_date": "2016-09-28 08:55:09",
+                "status": "SUCCESSFUL"
             },
+    
             {
                 "generator_id": "A002",
                 "cms_payment_id": "61866",
-	        "enable_duration":"7",
+                "enable_duration":"30",
                 "momo_id": "893783669",
                 "momo_account": "256783937043",
                 "amount": "58000",
                 "payment_date": "2016-07-28 08:55:09",
-                "acknowledge_date": "2016-09-28 08:55:09"
+                "acknowledge_date": "2016-09-28 08:55:09",
+                "status": "SUCCESSFUL"
             }
         ]
     }
@@ -40,7 +43,7 @@ public class PaymentHistoryResponse {
     private String telesolaAccount;
 
     @SerializedName(value = "units")
-    private List<Units> units;
+    private List<Unit> units;
 
     public String getTelesolaAccount() {
         return telesolaAccount;
@@ -50,15 +53,18 @@ public class PaymentHistoryResponse {
         this.telesolaAccount = telesolaAccount;
     }
 
-    public List<Units> getUnits() {
+    public List<Unit> getUnits() {
         return units;
     }
 
-    public void setUnits(List<Units> units) {
+    public void setUnits(List<Unit> units) {
         this.units = units;
     }
 
-    public class Units {
+    /**
+     * Generator Unit representation
+     */
+    public class Unit {
 
         @SerializedName(value = "generator_id")
         private String generatorId;
@@ -80,6 +86,15 @@ public class PaymentHistoryResponse {
 
         @SerializedName(value = "acknowledge_date")
         private String acknowledgeDate;
+        
+        @SerializedName(value = "enable_duration")
+        private String enableDuration;
+
+        @SerializedName(value = "status")
+        private String status;
+        
+        @SerializedName(value = "description")
+        private String description;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -146,6 +161,30 @@ public class PaymentHistoryResponse {
 
         public void setMomoAccount(String momoAccount) {
             this.momoAccount = momoAccount;
+        }
+
+        public String getEnableDuration() {
+            return enableDuration;
+        }
+
+        public void setEnableDuration(String enableDuration) {
+            this.enableDuration = enableDuration;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
     }
 }

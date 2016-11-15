@@ -9,14 +9,8 @@ package com.namaraka.ggserver.utils;
  *
  * @author smallgod
  */
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,9 +23,9 @@ import org.slf4j.LoggerFactory;
  * @since 2014-07-13
  * 
  * */
-public class IdGenerator {
+public class AlphaNumericIDGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(IdGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(AlphaNumericIDGenerator.class);
 
     // This is my number set it contains 62 symbols
     private final List<Character> numberset = Arrays.asList(
@@ -42,13 +36,13 @@ public class IdGenerator {
     private int BASE; // base of numberset is 62 so, addition = (anynumber %
     // BASE) and spare = (anynumber / 62)
 
-    public IdGenerator(String initAL) {
+    public AlphaNumericIDGenerator(String initAL) {
         // initializing the values
         this.initAL = initAL;
         this.BASE = numberset.size();
     }
 
-    public synchronized String nextAN() {
+    private synchronized String nextAN() {
 
         char[] number = initAL.toCharArray();
         int spare = 0;
@@ -102,19 +96,23 @@ public class IdGenerator {
         return initAL = new String(number);
     }
 
-    public static void generateId(String number) {
-  
-        IdGenerator docid = new IdGenerator(number);
-        int counter = 0;
+    public static String generateNextId(String idNumberToIncrement) {
+
+        AlphaNumericIDGenerator generator = new AlphaNumericIDGenerator(idNumberToIncrement);
+        String generatedNum = generator.nextAN();
+
+        /*int counter = 0;
         while (true) {
             ++counter;
-            if ((String.valueOf(number)).equalsIgnoreCase("YYYYZ")) {
+            if ((String.valueOf(idNumberToIncrement)).equalsIgnoreCase("YYYYZ")) {
                 break;
             }
-            
-            String generatedNum = docid.nextAN();
+
+            generatedNum = generator.nextAN();
             logger.debug("ID: " + generatedNum + " Counter :" + counter);
-        }
+        }*/
         
+        return generatedNum;
+
     }
 }

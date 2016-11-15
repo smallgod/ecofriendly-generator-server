@@ -11,9 +11,12 @@ public class PaymentHistoryRequest {
         {
             "method": "PAYMENT_HISTORY",
             "params": {
-                "telesola_account": "774983602",
-                "generatorId": "A001",
-                "app_secretkey": "32254kUHE39AH3P90EQ"
+                "telesola_account": "C786577309",
+		"generator_id": "00001",
+		"transaction_limit": "10",
+		"order_first": "NEWEST",
+		"status": "SUCCESSFUL",
+		"app_secretkey": "32254kUHE39AH3P90EQ"
             },
             "extra": {
                 "extra1": "value1",
@@ -30,6 +33,7 @@ public class PaymentHistoryRequest {
                 {
                     "generator_id": "A001",
                     "cms_payment_id": "3509866",
+                    "enable_duration":"7",
                     "momo_id": "893783739",
                     "momo_account": "256783937043",
                     "amount": "59000",
@@ -39,6 +43,7 @@ public class PaymentHistoryRequest {
                 {
                     "generator_id": "A002",
                     "cms_payment_id": "61866",
+                    "enable_duration":"7",
                     "momo_id": "893783669",
                     "momo_account": "256783937043",
                     "amount": "58000",
@@ -90,6 +95,15 @@ public class PaymentHistoryRequest {
         
         @SerializedName(value = "generator_id")
         private String generatorId;
+        
+        @SerializedName(value = "order_first")
+        private String orderFirst;
+        
+        @SerializedName(value = "transaction_limit")
+        private String transactionLimit;
+        
+        @SerializedName(value = "status")
+        private String status;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -116,6 +130,30 @@ public class PaymentHistoryRequest {
 
         public void setGeneratorId(String generatorId) {
             this.generatorId = generatorId;
+        }
+
+        public String getTransactionLimit() {
+            return transactionLimit;
+        }
+
+        public void setTransactionLimit(String transactionLimit) {
+            this.transactionLimit = transactionLimit;
+        }
+
+        public String getOrderFirst() {
+            return orderFirst;
+        }
+
+        public void setOrderFirst(String orderFirst) {
+            this.orderFirst = orderFirst;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 

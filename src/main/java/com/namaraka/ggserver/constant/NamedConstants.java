@@ -16,6 +16,10 @@ public interface NamedConstants {
     public static final String MAMBOPAY_DEBIT_URL = "https://mambopay.azure-api.net/api/v1/mtnmobilemoneyapi/debit";
     public static final String SUBSCRIPTION_KEY = "9389259ec349469682c71910ab6f4ac3";
 
+    public static final String START_ID = "00001"; //Will give us 3.7million ids before introducing 6th digit goes upto YYYYZ
+    public static final int MAX_NUMBER_PAYMENTS = 5;
+    public static final OrderFirst ORDER_FIRST = OrderFirst.NEWEST;
+    
     /**
      * Date time string formats
      *
