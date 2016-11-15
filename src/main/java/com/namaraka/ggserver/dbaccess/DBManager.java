@@ -219,7 +219,7 @@ public final class DBManager {
     }
 
     /**
-     * Bulk insertion using a statelessSession to improve performance
+     * Bulk insert a list of objects using a statelessSession to improve performance
      *
      * @param <T>
      * @param dbObjectList
@@ -248,6 +248,57 @@ public final class DBManager {
             for (T dbObject : dbObjectList) {
                 tempSession.insert(dbObject);
             }
+            transaction.commit();
+            committed = true;
+
+        } catch (HibernateException he) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error("hibernate exception saving object list: " + he.getMessage());
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error("General exception saving object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return committed;
+    }
+    
+    /**
+     * Bulk insert a set of objects
+     * @param <T>
+     * @param dbObjectList
+     * @return 
+     */
+    public static <T> boolean bulkInsert(Set<T> dbObjectList) {
+
+        StatelessSession tempSession = getStatelessSession();
+        Transaction transaction = null;
+        boolean committed = false;
+
+//        ScrollableResults customers = tempSession.getNamedQuery("GetCustomers").scroll(ScrollMode.FORWARD_ONLY);
+//
+//        while (customers.next()) {
+//            Customer customer = (Customer) customers.get(0);
+//            customer.updateStuff(
+//            ....);
+//            tempSession.update(customer);
+//        }
+//
+//        transaction.commit();
+//        tempSession.close();
+        try {
+
+            transaction = tempSession.beginTransaction();
+            
+            while(dbObjectList.iterator().hasNext()){
+                tempSession.insert(dbObjectList.iterator().next());
+            }
+ 
             transaction.commit();
             committed = true;
 
@@ -356,12 +407,12 @@ public final class DBManager {
      * @param persistentClassType
      * @return
      */
-    public static Set bulkFetch(Class persistentClassType) {
+    public static <T> Set<T> bulkFetch(Class persistentClassType) {
 
         logger.debug("going to bulkFetch records");
 
         StatelessSession tempSession = getStatelessSession();
-        Set<Object> results = new HashSet<>();
+        Set<T> results = new HashSet<>();
 
         try {
 
@@ -376,7 +427,7 @@ public final class DBManager {
                 if (++count > 0 && count % 10 == 0) {
                     logger.debug("Fetched " + count + " entities");
                 }
-                results.add(scrollableResults.get()[0]);
+                results.add((T) scrollableResults.get()[0]);
 
             }
 
@@ -739,6 +790,51 @@ public final class DBManager {
         } catch (Exception e) {
 
             logger.error("General exception saving object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return results;
+    }
+    
+    /**
+     * Fetch entire column without restrictions
+     * @param <T>
+     * @param classType
+     * @param columToFetch
+     * @return 
+     */
+    public static <T> List<T> fetchOnlyColumn(Class classType, String columToFetch) {
+
+        StatelessSession tempSession = getStatelessSession();
+        List<T> results = new ArrayList<>();
+
+        try {
+
+            //Criteria.forClass(bob.class.getName())
+            Criteria criteria = tempSession.createCriteria(classType);
+            criteria.setProjection(Projections.property(columToFetch));
+            //criteria.add(Restrictions.gt("id", 10));
+            //criteria.add(Restrictions.eq(restrictToPropertyName, restrictionValue)); //transactions should belong to the same group
+            //criteria.addOrder(Order.asc(propertyName));
+
+            ScrollableResults scrollableResults = criteria.scroll(ScrollMode.FORWARD_ONLY);
+
+            int count = 0;
+            while (scrollableResults.next()) {
+                if (++count > 0 && count % 10 == 0) {
+                    logger.debug("Fetched " + count + " entities");
+                }
+                results.add((T) scrollableResults.get()[0]);
+
+            }
+
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception while fetching: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception while fetching: " + e.getMessage());
         } finally {
             closeSession(tempSession);
         }

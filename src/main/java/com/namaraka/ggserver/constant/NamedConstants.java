@@ -20,6 +20,17 @@ public interface NamedConstants {
     public static final int MAX_NUMBER_PAYMENTS = 5;
     public static final OrderFirst ORDER_FIRST = OrderFirst.NEWEST;
     
+    public static final int NUM_OF_PAYMENT_IDS = 200;
+    
+    public static final int MAMBOPAY_DEBIT_ACCOUNT_UNREGISTERED = 101;
+    public static final int MAMBOPAY_DEBIT_INSUFFICIENT_FUNDS = 106;
+    public static final int MAMBOPAY_DEBIT_BELOW_THRESHOLD = 105;
+    public static final int MAMBOPAY_DEBIT_CUSTOMER_UNAPPROVED = 103;
+    public static final int MAMBOPAY_DEBIT_SUCCESS = 1;
+    public static final String MAMBOPAY_DEBIT_PROCESSING = "01";
+    
+    
+    
     /**
      * Date time string formats
      *

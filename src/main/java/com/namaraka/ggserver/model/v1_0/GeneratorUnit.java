@@ -112,6 +112,9 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     @Enumerated(EnumType.STRING)
     private PaymentProgress paymentProgress;
+    
+    @Column(length = 10000) //might want to change this - what if the data is too long
+    private String paymentIds;
 
     @Embedded
     private Extensiontype extensionType;
@@ -406,6 +409,14 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     public void setEnableDurationDefault(int enableDurationDefault) {
         this.enableDurationDefault = enableDurationDefault;
+    }
+
+    public String getPaymentIds() {
+        return paymentIds;
+    }
+
+    public void setPaymentIds(String paymentIds) {
+        this.paymentIds = paymentIds;
     }
     
     

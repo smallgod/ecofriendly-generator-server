@@ -39,7 +39,7 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
 
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
-        
+
         logger.debug("PaymentProcessorJob running...");
 
         JobDetail jobDetail = jec.getJobDetail();
@@ -109,11 +109,21 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                     debitResponse.getStatusMessage();
                     debitResponse.getTransactionId();
 
+                    /*
+                    [09/09/2016, 17:35:51] Charles Muhindo: "101" your account is not registered on MTN Mobile Money
+                    [09/09/2016, 17:36:17] Charles Muhindo: "106" you do not have sufficient funds in your mobile money account.
+                    [09/09/2016, 17:42:41] Charles Muhindo: '105' "You are below minimum amount threshold e.g below 500/="
+                    [09/09/2016, 17:49:42] Charles Muhindo: 103 Customer did not approve transaction
+                     */
                     //To-Do
                     //Check if status is for duplicate, successfully logged for processing etc and deal accordingly
-                    
-                    status = Status.PROCESSING;
-                    message = "Under processing";
+                    if (debitResponse.getStatusCode().equalsIgnoreCase(NamedConstants.MAMBOPAY_DEBIT_PROCESSING)) {
+                        status = Status.PROCESSING;
+                        message = debitResponse.getStatusMessage();
+                    } else {
+                        status = Status.FAILED;
+                        message = "Transaction failed, after sending to aggregator: " + debitResponse.getStatusMessage();
+                    }
 
                 } else {
                     status = Status.UNKNOWN;

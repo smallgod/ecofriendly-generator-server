@@ -19,7 +19,9 @@ import com.namaraka.ggserver.constant.ClientType;
 import com.namaraka.ggserver.constant.CommercialStatus;
 import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.NamedConstants;
+import com.namaraka.ggserver.dbaccess.DBManager;
 import com.namaraka.ggserver.model.v1_0.Amounttype;
+import com.namaraka.ggserver.model.v1_0.PaymentIdTracker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -269,8 +271,8 @@ public class GeneralUtils {
     }
 
     /**
-     * Get the method name value with key "method" if Json request or enclosing
-     * method root name if xml request
+     * Get the method name generatedPaymentId with key "method" if Json request
+     * or enclosing method root name if xml request
      *
      * @param jsonRequest
      * @param apiType
@@ -344,7 +346,7 @@ public class GeneralUtils {
      */
     public static Object sendJsonRequest(final String url, final JSONObject obj) {
 
-        //String myString = new JSONStringer().object().key("JSON").value("Hello, World!").endObject().toString();
+        //String myString = new JSONStringer().object().key("JSON").generatedPaymentId("Hello, World!").endObject().toString();
         //produces {"JSON":"Hello, World!"}
         //about to convert the  BEEP API request (in whatever form it is now) -> to a JSON string
         CloseableHttpClient httpClient = null;
@@ -420,7 +422,7 @@ public class GeneralUtils {
      */
     public static Object sendJsonRequest(final String url, final String jsonString) {
 
-        //String myString = new JSONStringer().object().key("JSON").value("Hello, World!").endObject().toString();
+        //String myString = new JSONStringer().object().key("JSON").generatedPaymentId("Hello, World!").endObject().toString();
         //produces {"JSON":"Hello, World!"}
         //about to convert the  BEEP API request (in whatever form it is now) -> to a JSON string
         CloseableHttpClient httpClient = null;
@@ -533,25 +535,61 @@ public class GeneralUtils {
 
     }
 
-    public static synchronized Set<Integer> generateRandomPin(int numberOfValuesToGenerate) {
+    /**
+     * Generate Payment Ids
+     * @param numberOfValuesToGenerate
+     * @param telesolaAccount
+     * @param generatorId
+     * @return 
+     */
+    public static synchronized Set<Integer> generatorPaymentIds(int numberOfValuesToGenerate, String telesolaAccount, String generatorId) {
+
+        Set<PaymentIdTracker> paymentIdTrackers = new HashSet<>();
+
+        List<Integer> paymentIdList = DBManager.fetchOnlyColumn(PaymentIdTracker.class, "paymentId");
+        Set<Integer> paymentIdSet = convertListToSet(paymentIdList);
 
         int START = 10000000;
         //int END = Integer.parseInt("9999999999");
         //long END = Integer.parseInt("9999999999");
         long END = 99999999L;
 
+        PaymentIdTracker paymentIdTracker;
+
         Random random = new Random();
 
-        Set<Integer> set = new HashSet<>(numberOfValuesToGenerate);
-        while (set.size() <= numberOfValuesToGenerate) {
-            int value = createRandomInteger(START, END, random);
-            set.add(value);
+        Set<Integer> newPaymentIds = new HashSet<>(numberOfValuesToGenerate);
+        
+        while (newPaymentIds.size() <= numberOfValuesToGenerate) {
+            
+            int generatedPaymentId = createRandomInteger(START, END, random);
+
+            //check if this Id is not already generated and stored in the PaymentsIdTracker Table in DB
+            if (paymentIdSet.contains(generatedPaymentId)) {
+
+                logger.warn("PaymentID generated: " + generatedPaymentId + ", already exists in DB, continuing!!");
+
+            } else {
+
+                paymentIdTracker = new PaymentIdTracker();
+                paymentIdTracker.setGeneratorId(generatorId);
+                paymentIdTracker.setPaymentId(generatedPaymentId);
+                paymentIdTracker.setTelesolaAccount(telesolaAccount);
+
+                paymentIdTrackers.add(paymentIdTracker);
+                newPaymentIds.add(generatedPaymentId);
+
+            }
+
         }
+
+        //insert Database with the new IDs
+        DBManager.bulkInsert(paymentIdTrackers);
 
         /*for (int idx = 1; idx <= numberOfValuesToGenerate; ++idx) {
             createRandomInteger(START, END, random);
         }*/
-        return set;
+        return newPaymentIds;
     }
 
     /**
@@ -741,10 +779,10 @@ public class GeneralUtils {
     }
 
     /**
-     * 
+     *
      * @param commercialStatus
      * @param frequency
-     * @return 
+     * @return
      */
     public static int getEnableDuration(CommercialStatus commercialStatus, InstallmentFrequency frequency) {
 
@@ -775,6 +813,32 @@ public class GeneralUtils {
 
         }
         return duration;
+    }
+
+    /**
+     * Convert Set to List
+     *
+     * @param <T>
+     * @param set
+     * @return
+     */
+    public static <T> List<T> convertSetToList(Set<T> set) {
+
+        List<T> newList = new ArrayList<>(set);
+        return newList;
+    }
+
+    /**
+     * Convert List to Set
+     *
+     * @param <T>
+     * @param list
+     * @return
+     */
+    public static <T> Set<T> convertListToSet(List<T> list) {
+
+        Set<T> set = new HashSet<>(list);
+        return set;
     }
 
 }

@@ -2,6 +2,7 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AccountSetupResponse {
@@ -110,7 +111,7 @@ public class AccountSetupResponse {
         private String installmentAmount;
 
         @SerializedName(value = "activation_codes")
-        private List<String> activationCodes;
+        private List<Integer> activationCodes;
 
         public String getMacAddress() {
             return macAddress;
@@ -200,11 +201,11 @@ public class AccountSetupResponse {
             this.installmentAmount = installmentAmount;
         }
 
-        public List<String> getActivationCodes() {
-            return activationCodes;
+        public List<Integer> getActivationCodes() {
+            return Collections.unmodifiableList(activationCodes);
         }
 
-        public void setActivationCodes(List<String> activationCodes) {
+        public void setActivationCodes(List<Integer> activationCodes) {
             this.activationCodes = activationCodes;
         }
 

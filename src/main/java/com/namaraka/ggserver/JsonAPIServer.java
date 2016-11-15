@@ -25,6 +25,7 @@ import com.namaraka.ggserver.jsondata.MakePaymentRequest;
 import com.namaraka.ggserver.jsondata.MakePaymentResponse;
 import com.namaraka.ggserver.jsondata.PaymentHistoryRequest;
 import com.namaraka.ggserver.jsondata.PaymentHistoryResponse;
+import com.namaraka.ggserver.jsondata.PaymentIds;
 import com.namaraka.ggserver.jsondata.PaymentStatusCallBackRequest;
 import com.namaraka.ggserver.jsondata.PaymentStatusCallBackResponse;
 import com.namaraka.ggserver.jsondata.UnitRegistrationRequest;
@@ -48,105 +49,10 @@ import java.text.ParseException;
 import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDateTime;
 import com.namaraka.ggserver.utils.AlphaNumericIDGenerator;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import java.util.Iterator;
 import java.util.Set;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import java.util.ArrayList;
 import java.util.List;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 
 /**
@@ -286,11 +192,11 @@ public class JsonAPIServer extends HttpServlet {
                 //To-Do
                 //Compare OTP with OTP that was generated and sent to client
                 //mark OTP used
-                
                 Set<GeneratorUnit> generators = DBManager.bulkFetchByPropertyName(GeneratorUnit.class, "telesolaAccount", telesolaAccount);
                 Iterator<GeneratorUnit> generatorIter = generators.iterator();
 
                 while (generatorIter.hasNext()) {
+
                     GeneratorUnit generator = generatorIter.next();
 
                     AccountSetupResponse.Unit unit = accountSetupResponse.new Unit();
@@ -304,12 +210,13 @@ public class JsonAPIServer extends HttpServlet {
                     unit.setInstallmentFrequency(generator.getInstallmentFrequency().getValue());
                     unit.setMomoAccount(generator.getMobileMoneyAccount());
                     unit.setOutstandingBalance(String.valueOf(generator.getOutstandingBalance().getAmount()));
-                    unit.setUserAccount(generator.get);
-                    unit.setActivationCodes(activationCodes);
-                    
-                    
+                    unit.setMacAddress(generator.getMacAddress());
+                    //unit.setUserAccount(generator.get);
+                    PaymentIds paymentIdObj = GeneralUtils.convertFromJson(generator.getPaymentIds(), PaymentIds.class);
+                    unit.setActivationCodes(paymentIdObj.getValidPaymentIds());
+
                     units.add(unit);
-                
+
                 }
             }
 
@@ -322,8 +229,7 @@ public class JsonAPIServer extends HttpServlet {
         }
 
         accountSetupResponse.setTelesolaAccount(telesolaAccount);
-        accountSetupResponse
-        
+
         String jsonResponse = GeneralUtils.convertToJson(accountSetupResponse, AccountSetupResponse.class);
 
         return jsonResponse;
@@ -613,6 +519,16 @@ public class JsonAPIServer extends HttpServlet {
                 generatorUnit.setMacAddress(macAddress);
                 generatorUnit.setEnableDurationDefault(GeneralUtils.getEnableDuration(commercialStatus, installmentFrequency));
 
+                Set<Integer> paymentIdSet = GeneralUtils.generatorPaymentIds(NamedConstants.NUM_OF_PAYMENT_IDS, telesolaAccount, generatorId);
+                List<Integer> paymentIds = GeneralUtils.convertSetToList(paymentIdSet);
+
+                PaymentIds paymentIdObj = new PaymentIds();
+                paymentIdObj.setGeneratorId(generatorId);
+                paymentIdObj.setValidPaymentIds(paymentIds);
+                String paymentIdString = GeneralUtils.convertToJson(paymentIdObj, PaymentIds.class);
+
+                generatorUnit.setPaymentIds(paymentIdString);
+
                 logger.debug("About to save Generator Unit: " + generatorUnit.toString());
 
                 long id = DBManager.persistDatabaseModel(generatorUnit);
@@ -675,8 +591,11 @@ public class JsonAPIServer extends HttpServlet {
         String telesolaAccount = paymentRequest.getParams().getTelesolaAccount();
         String generatorId = paymentRequest.getParams().getGeneratorId();
         String appKey = paymentRequest.getParams().getAppKey();
-        String cmsTransactionID = GeneralUtils.generateShorterRandomID();
         String debitAccount = paymentRequest.getParams().getMomoAccount();
+        
+        //get one of the pre-configured and stored valid/unused Ids
+        
+        String cmsTransactionID = "";
 
         GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
 
@@ -687,7 +606,17 @@ public class JsonAPIServer extends HttpServlet {
             statusDescription = "Failed to log payment: Generator unit with ID: " + generatorId + ", does not exist";
 
         } else {
-
+            
+            
+            PaymentIds paymentIdObj = GeneralUtils.convertFromJson(generatorUnit.getPaymentIds(), PaymentIds.class);
+            
+            //remove the ID from the validPaymentIds
+            int paymentId = paymentIdObj.getValidPaymentIds().remove((paymentIdObj.getValidPaymentIds().size())-1);
+            //add the Id to the usedPaymentIds
+            paymentIdObj.getUsedPaymentIds().add(paymentId);
+            
+            cmsTransactionID = String.valueOf(paymentId);
+            
             Amounttype amountToPay = generatorUnit.getInstallmentAmount();
 
             MoMoTransaction transaction = new MoMoTransaction();
@@ -701,13 +630,14 @@ public class JsonAPIServer extends HttpServlet {
             transaction.setStatus(Status.LOGGED);
             transaction.setDescription("Payment logged successfuly");
 
-            //cumm. total
-            //outstanding bal.
             long id = DBManager.persistDatabaseModel(transaction);
 
             if (id == -1L) {
                 status = Status.NOT_LOGGED.getValue();
                 statusDescription = "Failed to log payment in the database";
+            } else{
+                //update the GeneratorUnit because of the changes we made above
+                DBManager.updateDatabaseModel(generatorUnit);
             }
         }
 
@@ -754,7 +684,7 @@ public class JsonAPIServer extends HttpServlet {
         int currOutstandingBal = (int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue());
         int newOutstandingBal = currOutstandingBal - amountPaid;
 
-        if (statusCode == 200) { //successful
+        if (statusCode == 1) { //successful
 
             finalStatus = Status.SUCCESSFUL.getValue();
             generatorUnit.setNumberOfInstallmentsPaid(++currTotalNoOfInstallmentsPaid);
