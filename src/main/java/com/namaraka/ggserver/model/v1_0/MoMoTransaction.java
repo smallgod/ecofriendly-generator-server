@@ -64,6 +64,8 @@ public class MoMoTransaction extends BaseModel implements Auditable, Serializabl
     
     private String statusDescription;
     
+    private int enableDuration;
+    
     @Embedded
     private Extensiontype extensionType;
 
@@ -333,5 +335,13 @@ public class MoMoTransaction extends BaseModel implements Auditable, Serializabl
 
     public void setGeneratorId(String generatorId) {
         this.generatorId = generatorId;
+    }
+
+    public int getEnableDuration() {
+        return enableDuration;
+    }
+
+    public void setEnableDuration(int enableDuration) {
+        this.enableDuration = enableDuration;
     }
 }

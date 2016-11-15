@@ -534,7 +534,9 @@ public final class DBManager {
     public static <T> Set<T> fetchPayments(Class<T> persistentClassType, int maxNoOfResults, String orderColumn, OrderFirst orderFirst, Status status, String generatorIdProperty, String generatorIdValue) {
 
         StatelessSession tempSession = getStatelessSession();
-        Set<T> results = new HashSet<>();
+        Set<T> results = new HashSet<>(maxNoOfResults);
+        
+        logger.debug("Now anhaaaaa");
 
         try {
 
@@ -555,11 +557,12 @@ public final class DBManager {
                     break;
             }
 
-            if (!(status == Status.ALL)) {
+            if (status != Status.ALL) {
                 criteria.add(Restrictions.eq("status", status));
             }
             criteria.add(Restrictions.eq(generatorIdProperty, generatorIdValue));
             criteria.setMaxResults(maxNoOfResults);
+            
             ScrollableResults scrollableResults = criteria.scroll(ScrollMode.FORWARD_ONLY);
 
             int count = 0;
@@ -572,10 +575,10 @@ public final class DBManager {
             }
         } catch (HibernateException he) {
 
-            logger.error("hibernate exception saving object list: " + he.getMessage());
+            logger.error("hibernate exception fetching payments: " + he.getMessage());
         } catch (Exception e) {
 
-            logger.error("General exception saving object list: " + e.getMessage());
+            logger.error("General exception fetching payments: " + e.getMessage());
         } finally {
             closeSession(tempSession);
         }

@@ -171,9 +171,9 @@ public class JsonAPIServer extends HttpServlet {
     }
 
     /**
-     * 
+     *
      * @param paymentHistoryPayload
-     * @return 
+     * @return
      */
     String getPaymentHistroy(String paymentHistoryPayload) {
 
@@ -202,6 +202,8 @@ public class JsonAPIServer extends HttpServlet {
                 String status = paymentHistRequest.getParams().getStatus();
                 Status paymentStatus;
 
+                logger.debug("transactionLimit: " + transactionLimit + ", orderFirst: " + orderFirst + ", status: " + status);
+
                 if (status == null || status.trim().isEmpty()) {
                     paymentStatus = Status.SUCCESSFUL;
                 } else {
@@ -212,6 +214,8 @@ public class JsonAPIServer extends HttpServlet {
 
                 if (payments != null) {
 
+                    logger.debug("And now again, here, payments size: " + payments.size());
+
                     Iterator<MoMoTransaction> paymentsIter = payments.iterator();
 
                     while (paymentsIter.hasNext()) {
@@ -219,21 +223,27 @@ public class JsonAPIServer extends HttpServlet {
                         MoMoTransaction payment = paymentsIter.next();
                         PaymentHistoryResponse.Unit unit = paymentHistResponse.new Unit();
 
+                        logger.debug("after creating unit object");
+
                         payment.getAggregatorTransID();
 
                         unit.setGeneratorId(payment.getGeneratorId());
                         unit.setCmsPaymentId(payment.getCmsTransactionID());
                         unit.setMomoAccount(payment.getDebitAccount());
                         unit.setAmount(payment.getAmount().getAmount().toString());
-                        unit.setAcknowledgeDate(payment.getApprovalDate().toString(NamedConstants.DATE_TIME_DASH_FORMAT));
+                        unit.setAcknowledgeDate(String.valueOf(payment.getApprovalDate()));
                         unit.setMomoId(payment.getMomoId());
                         unit.setStatus(payment.getStatus().getValue());
                         unit.setDescription(payment.getStatusDescription());
-                        unit.setPaymentDate(payment.getCreatedOn().toString(NamedConstants.DATE_TIME_DASH_FORMAT));
+                        unit.setPaymentDate(String.valueOf(payment.getCreatedOn()));
+                        unit.setEnableDuration(String.valueOf(payment.getEnableDuration()));
+                        logger.debug("about to add unit to unit list: " + unit.getCmsPaymentId() + ", status: " + unit.getStatus());
 
                         units.add(unit);
 
                     }
+                } else {
+                    logger.debug("No Payment transactions found in database");
                 }
             }
 
@@ -327,8 +337,6 @@ public class JsonAPIServer extends HttpServlet {
             statusDescription = "Errors occurred while trying to save the generator unit: " + ex.getMessage();
         }
 
-        logger.debug("about to convert object to json resopnse");
-
         ClientRegistrationResponse clientRegResponse = new ClientRegistrationResponse();
         clientRegResponse.setTelesolaAccount(telesolaAccount);
         clientRegResponse.setStatus(status);
@@ -340,8 +348,6 @@ public class JsonAPIServer extends HttpServlet {
     }
 
     String registerGenerator(String unitRegisterPayload) {
-
-        logger.debug("about to Register unit!!");
 
         String status = Status.LOGGED.getValue();
         String statusDescription = "New Generator Unit logged successfully";
@@ -446,6 +452,7 @@ public class JsonAPIServer extends HttpServlet {
                 generatorUnit.setInstallmentDay(installmentDay);
                 generatorUnit.setMobileMoneyAccount(mobileMonAccount);
                 generatorUnit.setMacAddress(macAddress);
+                generatorUnit.setEnableDurationDefault(GeneralUtils.getEnableDuration(commercialStatus, installmentFrequency));
 
                 logger.debug("About to save Generator Unit: " + generatorUnit.toString());
 
@@ -531,6 +538,9 @@ public class JsonAPIServer extends HttpServlet {
             transaction.setCmsTransactionID(cmsTransactionID);
             transaction.setAmount(amountToPay);
             transaction.setDebitAccount(debitAccount);
+            transaction.setEnableDuration(0);
+            transaction.setStatus(Status.LOGGED);
+            transaction.setDescription("Payment logged successfuly");
 
             //cumm. total
             //outstanding bal.
@@ -552,8 +562,7 @@ public class JsonAPIServer extends HttpServlet {
         paymentResponse.setStatus(status);
         paymentResponse.setStatusDescription(statusDescription);
 
-        String resp = GeneralUtils.convertToJson(paymentResponse, MakePaymentResponse.class
-        );
+        String resp = GeneralUtils.convertToJson(paymentResponse, MakePaymentResponse.class);
 
         return resp;
 
@@ -565,8 +574,7 @@ public class JsonAPIServer extends HttpServlet {
         //1. Log payment to DB
         //2. respond with LOGGED if ok to client otherwise NOT_LOGGED
         //3. 
-        PaymentStatusCallBackRequest statusCallbackRequest = convertFromJson(paymentStatusJsonRequest, PaymentStatusCallBackRequest.class
-        );
+        PaymentStatusCallBackRequest statusCallbackRequest = convertFromJson(paymentStatusJsonRequest, PaymentStatusCallBackRequest.class);
 
         PaymentStatusCallBackResponse statusCallbackResponse = new PaymentStatusCallBackResponse();
 
@@ -602,11 +610,11 @@ public class JsonAPIServer extends HttpServlet {
             DBManager.updateDatabaseModel(generatorUnit);
 
             transaction.setStatus(Status.SUCCESSFUL);
+            transaction.setEnableDuration(generatorUnit.getEnableDurationDefault());
 
         } else {
 
             finalStatus = Status.FAILED.getValue();
-
             transaction.setStatus(Status.FAILED);
         }
 

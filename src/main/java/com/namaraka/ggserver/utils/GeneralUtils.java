@@ -16,6 +16,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.namaraka.ggserver.constant.APIContentType;
 import com.namaraka.ggserver.constant.ClientType;
+import com.namaraka.ggserver.constant.CommercialStatus;
+import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.model.v1_0.Amounttype;
 import java.io.BufferedReader;
@@ -736,6 +738,43 @@ public class GeneralUtils {
             }
         }
         return String.valueOf(cars);
+    }
+
+    /**
+     * 
+     * @param commercialStatus
+     * @param frequency
+     * @return 
+     */
+    public static int getEnableDuration(CommercialStatus commercialStatus, InstallmentFrequency frequency) {
+
+        int duration = 7;
+
+        if (commercialStatus == CommercialStatus.INSTALLMENT) {
+
+            switch (frequency) {
+
+                case WEEKLY:
+                    duration = 7;
+                    break;
+
+                case BIWEEKLY:
+                    duration = 15;
+                    break;
+
+                case MONTHLY:
+                    duration = 30;
+                    break;
+
+                default:
+                    duration = 7;
+                    break;
+
+            }
+        } else if (commercialStatus == CommercialStatus.SOLD) {
+
+        }
+        return duration;
     }
 
 }

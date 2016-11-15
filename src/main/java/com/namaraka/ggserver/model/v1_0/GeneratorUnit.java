@@ -66,6 +66,8 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     @Type(type = "jodalocaldatetime")
     private LocalDateTime contractDate;
+    
+    private int enableDurationDefault; //set it at account setup
 
     @Embedded
     @AttributeOverrides({
@@ -396,6 +398,14 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     @Override
     public String toString() {
         return "GeneratorUnit{" + "generatorId=" + generatorId + ", telesolaAccount=" + telesolaAccount + ", macAddress=" + macAddress + ", mobileMoneyAccount=" + mobileMoneyAccount + ", commercialStatus=" + commercialStatus + ", registeredTo=" + registeredTo + ", contractDate=" + contractDate + ", contractPrice=" + contractPrice.getAmount() + ", depositAmount=" + depositAmount.getAmount() + ", installmentAmount=" + installmentAmount.getAmount() + ", contractPeriod=" + contractPeriod + ", installmentFrequency=" + installmentFrequency + ", installmentDay=" + installmentDay + ", outstandingBalance=" + outstandingBalance.getAmount() + ", numberOfInstallmentsPaid=" + numberOfInstallmentsPaid + ", totalNumberOfInstallmentsToBePaid=" + totalNumberOfInstallmentsToBePaid + ", paymentProgress=" + paymentProgress + '}';
+    }
+
+    public int getEnableDurationDefault() {
+        return enableDurationDefault;
+    }
+
+    public void setEnableDurationDefault(int enableDurationDefault) {
+        this.enableDurationDefault = enableDurationDefault;
     }
     
     
