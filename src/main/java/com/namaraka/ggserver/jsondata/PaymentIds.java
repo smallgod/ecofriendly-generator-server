@@ -34,7 +34,7 @@ public class PaymentIds {
     }
 
     public List<Integer> getValidPaymentIds() {
-        return Collections.unmodifiableList(validPaymentIds);
+        return validPaymentIds;
     }
 
     public void setValidPaymentIds(List<Integer> ValidPaymentIds) {
