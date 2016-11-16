@@ -44,7 +44,7 @@ public class AppEntry implements Daemon, ServletContextListener {
     private Server server;
 
     public static DaemonContext context;
-    private static HttpClientPool clientPool;
+    public static HttpClientPool clientPool;
     CustomJobScheduler jobScheduler;
 
     Appconfig appConfigs;
@@ -124,11 +124,11 @@ public class AppEntry implements Daemon, ServletContextListener {
             + ", connPerroute: " + connPerRoute+ ", maxConn: " + maxConnections);
 
             //http client pool
-            clientPool = new HttpClientPool(readTimeout, connTimeout, connPerRoute, maxConnections, APIContentType.JSON);
+            AppEntry.clientPool = new HttpClientPool(readTimeout, connTimeout, connPerRoute, maxConnections, APIContentType.JSON);
 
             jobScheduler = new CustomJobScheduler();
             JobsData jobsData = new JobsData(clientPool, triggerName, jobName, groupName, interval);
-            //jobScheduler.scheduleARepeatJob(jobsData, PaymentProcessorJob.class, new PaymentProcessorJobListener());
+            jobScheduler.scheduleARepeatJob(jobsData, PaymentProcessorJob.class, new PaymentProcessorJobListener());
 
         } catch (FileNotFoundException fne) {
 

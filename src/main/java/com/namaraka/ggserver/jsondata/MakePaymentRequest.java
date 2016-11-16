@@ -19,7 +19,7 @@ public class MakePaymentRequest {
             "method": "MAKE_PAYMENT",
             "params": {
                 "telesola_account": "C786577309",
-                "generator_id": "00001",
+                "generator_id": "A00001",
                 "momo_account": "25677445602",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },
@@ -33,9 +33,9 @@ public class MakePaymentRequest {
         JSON Response sample:
     
         {
-            "telesola_account": "774983602",
+            "telesola_account": "C774983602",
             "generatorId": "A001",
-            "cms_payment_id": "5879594",
+            "activation_code": "58709594",
             "status": "LOGGED",
             "description": "Payment Successfully Logged for processing"
         }

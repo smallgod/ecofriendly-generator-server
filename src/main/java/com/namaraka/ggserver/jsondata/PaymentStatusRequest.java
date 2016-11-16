@@ -18,9 +18,9 @@ public class PaymentStatusRequest {
         {
             "method": "PAYMENT_STATUS",
             "params": {
-                "telesola_account": "774983602",
-                "generatorId": "A001",
-                "cms_payment_id": "456674",
+                "telesola_account": "C774983602",
+                "generatorId": "A00001",
+                "activation_code": "45672674",
                 "app_secretkey": "32254kUHE39AH3P90EQ"
             },
             "extra": {
@@ -33,13 +33,12 @@ public class PaymentStatusRequest {
         JSON Response sample:
     
         {
-            "telesola_account": "774983602",
-            "generator_id": "A001",
-            "cms_payment_id": "5879594",
+            "telesola_account": "C774983602",
+            "generator_id": "A00001",,
             "momo_id"       : "452156",
 ​​            "payment_date" : "2016-07-25 08:55:09",
             "enable_duration" : "7",
-  ​​          "activation_code": "5879594",
+  ​​          "activation_code": "38790594",
             "status": "SUCCESSFUL",
             "description": "Payment Successfully processed"
         }
@@ -86,8 +85,8 @@ public class PaymentStatusRequest {
         @SerializedName(value = "generator_id")
         private String generatorId;
 
-        @SerializedName(value = "cms_payment_id")
-        private String cmsPaymentId;
+        @SerializedName(value = "activation_code")
+        private String activationCode;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
@@ -108,12 +107,12 @@ public class PaymentStatusRequest {
             this.generatorId = generatorId;
         }
 
-        public String getCmsPaymentId() {
-            return cmsPaymentId;
+        public String getActivationCode() {
+            return activationCode;
         }
 
-        public void setCmsPaymentId(String cmsPaymentId) {
-            this.cmsPaymentId = cmsPaymentId;
+        public void setActivationCode(String activationCode) {
+            this.activationCode = activationCode;
         }
 
         public String getAppKey() {

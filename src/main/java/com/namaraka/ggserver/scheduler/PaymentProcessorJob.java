@@ -5,6 +5,7 @@
  */
 package com.namaraka.ggserver.scheduler;
 
+import com.namaraka.ggserver.constant.HTTPMethod;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.dbaccess.DBManager;
@@ -12,7 +13,8 @@ import com.namaraka.ggserver.httpmanager.HttpClientPool;
 import com.namaraka.ggserver.interfaces.ExecutableJob;
 import com.namaraka.ggserver.jsondata.DebitCustomerRequest;
 import com.namaraka.ggserver.jsondata.DebitCustomerResponse;
-import com.namaraka.ggserver.model.v1_0.MoMoTransaction;
+import com.namaraka.ggserver.jsondata.DebitCustomerResponseFail;
+import com.namaraka.ggserver.model.v1_0.MoMoPayment;
 import com.namaraka.ggserver.utils.GeneralUtils;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,71 +60,106 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
          }
          logger.debug("done sleeping for 30s at: " + new DateTime().getSecondOfDay());
          */
-        Set<MoMoTransaction> transactions = DBManager.bulkFetchByPropertyName(MoMoTransaction.class, "status", Status.LOGGED);
+        Set<MoMoPayment> payments = DBManager.bulkFetchByPropertyName(MoMoPayment.class, "status", Status.LOGGED);
 
-        if (transactions != null) {
+        if (payments != null) {
 
-            logger.info(">>>> NEW, " + transactions.size() + " Pending Payments Found!!! <<<<<");
+            logger.info(">>>> NEW, " + payments.size() + " Pending Payments Found!!! <<<<<");
 
-            Iterator<MoMoTransaction> iterator = transactions.iterator();
+            Iterator<MoMoPayment> iterator = payments.iterator();
 
             while (iterator.hasNext()) {
 
-                MoMoTransaction transaction = iterator.next();
+                MoMoPayment payment = iterator.next();
 
-                String momoAccount = transaction.getDebitAccount();
-                String transactionId = transaction.getCmsTransactionID();
-                String amount = String.valueOf((int) Math.ceil((transaction.getAmount().getAmount()).doubleValue()));
+                String momoAccount = payment.getDebitAccount();
+                String paymentId = String.valueOf(payment.getPaymentId());
+                String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
 
-                DebitCustomerRequest request = new DebitCustomerRequest();
+                /*DebitCustomerRequest request = new DebitCustomerRequest();
 
                 request.setAmount(amount);
                 request.setCallBackUrl(NamedConstants.GGSERVER_CALLBACK_URL);
                 request.setMsisdn(momoAccount);
-                request.setTransactionId(transactionId);
+                request.setTransactionId(paymentId);
 
                 String jsonRequest = GeneralUtils.convertToJson(request, DebitCustomerRequest.class);
 
-                logger.debug("New Request to MamboPay server: " + jsonRequest);
+                logger.debug("New Request to MamboPay server: " + jsonRequest);*/
 
                 HttpClientPool clientPool = jobsData.getHttpClientPool();
 
                 Map<String, String> paramPairs = new HashMap<>();
 
-                paramPairs.put("Ocp-Apim-Subscription-Key", NamedConstants.SUBSCRIPTION_KEY);
+                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_MSISDN, amount);
+                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_AMOUNT, momoAccount);
+                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_TRANSID, paymentId);
+                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_CALLBACKURL, NamedConstants.GGSERVER_CALLBACK_URL);
+                        
                 String url = NamedConstants.MAMBOPAY_DEBIT_URL;
 
-                String response = clientPool.sendRemoteRequest(jsonRequest, url, paramPairs);
+                String response = clientPool.sendRemoteRequest("", url, paramPairs, HTTPMethod.POST);
 
                 logger.info("Response from MamboPay Server: " + response);
 
-                //update transactions table
-                DebitCustomerResponse debitResponse = GeneralUtils.convertFromJson(response, DebitCustomerResponse.class);
-
                 Status status;
                 String message;
+                String reference = "";
+                //String transactionId;
 
-                if (debitResponse != null) {
+                DebitCustomerResponse debitResponse;
+                DebitCustomerResponseFail debitResponseFail;
 
-                    debitResponse.getReference();
-                    debitResponse.getStatusCode();
-                    debitResponse.getStatusMessage();
-                    debitResponse.getTransactionId();
+                if (!(response == null || response.isEmpty())) {
 
-                    /*
-                    [09/09/2016, 17:35:51] Charles Muhindo: "101" your account is not registered on MTN Mobile Money
-                    [09/09/2016, 17:36:17] Charles Muhindo: "106" you do not have sufficient funds in your mobile money account.
-                    [09/09/2016, 17:42:41] Charles Muhindo: '105' "You are below minimum amount threshold e.g below 500/="
-                    [09/09/2016, 17:49:42] Charles Muhindo: 103 Customer did not approve transaction
-                     */
-                    //To-Do
-                    //Check if status is for duplicate, successfully logged for processing etc and deal accordingly
-                    if (debitResponse.getStatusCode().equalsIgnoreCase(NamedConstants.MAMBOPAY_DEBIT_PROCESSING)) {
-                        status = Status.PROCESSING;
-                        message = debitResponse.getStatusMessage();
+                    debitResponse = GeneralUtils.convertFromJson(response, DebitCustomerResponse.class);
+
+                    if (debitResponse != null) {
+
+                        String statusCode = debitResponse.getStatusCode();
+                        logger.debug("statusCode here: " + statusCode);
+
+                        if (!(statusCode == null || statusCode.isEmpty())) {
+
+                            switch (statusCode) {
+
+                                case NamedConstants.MAMBOPAY_DEBIT_PROCESSING:
+
+                                    reference = debitResponse.getReference();
+                                    message = "StatusCode: " + statusCode + ", message: " + debitResponse.getStatusMessage();
+                                    debitResponse.getTransactionId();
+                                    status = Status.PROCESSING;
+
+                                    break;
+                                //To-Do -- Check if status is for duplicate, successfully logged for processing etc and deal accordingly
+
+                                default:
+                                    status = Status.FAILED;
+                                    message = "Transaction failed, after sending to aggregator: " + debitResponse.getStatusMessage();
+                                    break;
+
+                            }
+
+                        } else {
+
+                            debitResponseFail = GeneralUtils.convertFromJson(response, DebitCustomerResponseFail.class);
+
+                            statusCode = debitResponseFail.getStatusCode() != null ? debitResponseFail.getStatusCode() : "";
+
+                            status = Status.FAILED;
+                            message = "Failed with status code: " + statusCode + ", message: " + debitResponseFail.getStatusMessage();
+
+                        }
+
                     } else {
+
+                        debitResponseFail = GeneralUtils.convertFromJson(response, DebitCustomerResponseFail.class);
+
+                        String statusCode = debitResponseFail.getStatusCode() != null ? debitResponseFail.getStatusCode() : "";
+
                         status = Status.FAILED;
-                        message = "Transaction failed, after sending to aggregator: " + debitResponse.getStatusMessage();
+                        message = "Failed with status code: " + statusCode + ", message: " + debitResponseFail.getStatusMessage();
+
                     }
 
                 } else {
@@ -130,10 +167,11 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                     message = "Status is unkown, decide if to re-process or not";
                 }
 
-                transaction.setStatus(status);
-                transaction.setDescription(message);
+                payment.setAggregatorTransID(reference);
+                payment.setStatus(status);
+                payment.setStatusDescription(message);
 
-                DBManager.updateDatabaseModel(transaction);
+                DBManager.updateDatabaseModel(payment);
             }
 
         } else {

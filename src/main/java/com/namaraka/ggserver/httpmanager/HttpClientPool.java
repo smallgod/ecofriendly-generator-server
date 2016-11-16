@@ -60,10 +60,12 @@ import org.json.JSONStringer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.namaraka.ggserver.constant.APIContentType;
+import com.namaraka.ggserver.constant.HTTPMethod;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.interfaces.RemoteRequest;
 import com.namaraka.ggserver.utils.GeneralUtils;
 import java.util.Map;
+import org.apache.http.client.methods.HttpGet;
 
 /**
  * Class to manage all HTTP connection needs of the application
@@ -458,7 +460,7 @@ public final class HttpClientPool {
      * @return CloseableHttpResponse contains a response that needs to be read
      * and decoded into a string
      */
-    private CloseableHttpResponse sendHttpRequest(String requestPayloadString, String urlToCall, Map<String, String> paramPairs) {
+    private CloseableHttpResponse sendHttpRequest(String requestPayloadString, String urlToCall, Map<String, String> paramPairs, HTTPMethod method) {
 
         List<NameValuePair> httpParams = GeneralUtils.convertToNameValuePair(paramPairs);
 
@@ -470,7 +472,20 @@ public final class HttpClientPool {
 
         try {
 
-            request = setHttpPostRequest(requestPayloadString, urlToCall, httpParams);
+            switch(method){
+                case GET:
+                    request = setHttpPostRequest(requestPayloadString, urlToCall, httpParams);
+                    break;
+                    
+                case POST:
+                    request = setHttpGetRequest(requestPayloadString, urlToCall, httpParams);
+                    break;
+                    
+                default:
+                    request = setHttpPostRequest(requestPayloadString, urlToCall, httpParams);
+                    break;
+            }
+            
             //request = Security.setBasicEncoding(request, username, password);
             response = HttpClientPool.getHttpClient().execute(request);
 
@@ -526,6 +541,10 @@ public final class HttpClientPool {
         BufferedReader buffer = null;
 
         try {
+
+            if (response == null) {
+                return null;
+            }
 
             statusCode = response.getStatusLine().getStatusCode();
             message = response.getStatusLine().getReasonPhrase();
@@ -584,9 +603,9 @@ public final class HttpClientPool {
      * @param paramPairs
      * @return string response
      */
-    public String sendRemoteRequest(String requestPayloadString, String urlToCall, Map<String, String> paramPairs) {
+    public String sendRemoteRequest(String requestPayloadString, String urlToCall, Map<String, String> paramPairs, HTTPMethod method) {
 
-        CloseableHttpResponse response = sendHttpRequest(requestPayloadString, urlToCall, paramPairs);
+        CloseableHttpResponse response = sendHttpRequest(requestPayloadString, urlToCall, paramPairs, method);
         String responsePayload = readResponse(response);
 
         return responsePayload;
@@ -796,7 +815,7 @@ public final class HttpClientPool {
     private HttpRequestBase setHttpPostRequest(String requestPayloadString, String urlToCall, List<NameValuePair> httpParams) throws UnsupportedEncodingException, IOException, URISyntaxException {
 
         logger.debug("Sending request to URL: " + urlToCall + " request: " + requestPayloadString);
-        
+
         //List<NameValuePair> httpParams = new ArrayList<>();
         //nvps.add(new BasicNameValuePair("entity-name", "ADVERT"));
         URIBuilder uriBuilder = new URIBuilder(urlToCall);
@@ -806,6 +825,8 @@ public final class HttpClientPool {
 
         //final HttpRequestBase request;
         HttpPost postRequest = new HttpPost(uriBuilder.build());
+
+        postRequest.addHeader(NamedConstants.MAMBOPAY_HEADER_SUBSCKEY, NamedConstants.SUBSCRIPTION_KEY);
         postRequest = (HttpPost) setRequestHeaders(postRequest);
         //postRequest.setEntity(new UrlEncodedFormEntity(httpParams, Consts.UTF_8));
 
@@ -818,6 +839,35 @@ public final class HttpClientPool {
         postRequest.setEntity(entity);
 
         return postRequest;
+    }
+    
+    private HttpRequestBase setHttpGetRequest(String requestPayloadString, String urlToCall, List<NameValuePair> httpParams) throws UnsupportedEncodingException, IOException, URISyntaxException {
+
+        logger.debug("Sending request to URL: " + urlToCall + " request: " + requestPayloadString);
+
+        //List<NameValuePair> httpParams = new ArrayList<>();
+        //nvps.add(new BasicNameValuePair("entity-name", "ADVERT"));
+        URIBuilder uriBuilder = new URIBuilder(urlToCall);
+        if (httpParams != null) {
+            uriBuilder.addParameters(httpParams);
+        }
+
+        //final HttpRequestBase request;
+        HttpGet getRequest = new HttpGet(uriBuilder.build());
+
+        //getRequest.addHeader(NamedConstants.MAMBOPAY_HEADER_SUBSCKEY, NamedConstants.SUBSCRIPTION_KEY);
+        getRequest = (HttpGet) setRequestHeaders(getRequest);
+        //postRequest.setEntity(new UrlEncodedFormEntity(httpParams, Consts.UTF_8));
+
+        //URIBuilder builder = new URIBuilder();
+        //builder.setScheme("http").setHost(host).setPort(port).setPath(restPath + taskUri + "/" + taskId)
+        //builder.setParameter("entity-name", "ADVERT");
+        //HttpPost post = new HttpPost(builder.build());
+        //StringEntity entity = new StringEntity(requestPayloadString);
+        HttpEntity entity = new ByteArrayEntity(requestPayloadString.getBytes("UTF-8"));
+        //getRequest.setEntity(entity);
+
+        return getRequest;
     }
 
     public Boolean validateRequest(String requestingClient, String authorizationHeader, List<String> allowedIps) {

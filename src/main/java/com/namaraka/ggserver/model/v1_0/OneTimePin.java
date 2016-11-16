@@ -1,36 +1,29 @@
 package com.namaraka.ggserver.model.v1_0;
 
+import com.namaraka.ggserver.utils.Auditable;
+import com.namaraka.ggserver.utils.DBMSXMLObject;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
 @Entity
 @DynamicUpdate(value = true)
 @SelectBeforeUpdate(value = true)
-@Table(name = "client", uniqueConstraints = @UniqueConstraint(columnNames = {"paymentId"}))
+@Table(name = "otp")
 
-public class PaymentIdTracker implements Serializable {
+public class OneTimePin extends BaseModel implements Auditable, Serializable {
 
-    private static final long serialVersionUID = 7568430557483372104L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, nullable = false)
-    private long id;
+    private static final long serialVersionUID = -4718360373948530546L;
 
     @Column(nullable = false)
     private String telesolaAccount;
 
     private String generatorId;
 
-    private int paymentId;
+    private int otp;
 
     public String getGeneratorId() {
         return generatorId;
@@ -44,12 +37,12 @@ public class PaymentIdTracker implements Serializable {
         return (this.generatorId != null);
     }
 
-    public int getPaymentId() {
-        return paymentId;
+    public int getOtp() {
+        return otp;
     }
 
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
+    public void setOtp(int otp) {
+        this.otp = otp;
     }
 
     public String getTelesolaAccount() {
@@ -60,12 +53,14 @@ public class PaymentIdTracker implements Serializable {
         this.telesolaAccount = telesolaAccount;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    public String getUsername() {
+        return "Hardcoded user";
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @Override
+    public DBMSXMLObject getXMLObject() {
+        return this;
     }
 
 }

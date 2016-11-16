@@ -7,10 +7,10 @@ public class MakePaymentResponse {
     /*
     
     {
-        ​"telesola_account"       : "774983602",
-        ​"generator_id": "40003",
+        ​"telesola_account": "C774983602",
+        ​"generator_id"  : "40003",
         ​"status"        : "PENDING",
-        ​"cms_payment_id": "794001"
+        ​"activation_code": "79021401"
         ​"description"   : "under processing"
 
     }
@@ -22,8 +22,8 @@ public class MakePaymentResponse {
     @SerializedName(value = "generator_id")
     private String generatorId;
 
-    @SerializedName(value = "cms_payment_id")
-    private String cmsPaymentId;
+    @SerializedName(value = "activation_code")
+    private String activationCode;
 
     @SerializedName(value = "status")
     private String status;
@@ -55,12 +55,12 @@ public class MakePaymentResponse {
         this.generatorId = generatorId;
     }
 
-    public String getCmsPaymentId() {
-        return cmsPaymentId;
+    public String getActivationCode() {
+        return activationCode;
     }
 
-    public void setCmsPaymentId(String cmsPaymentId) {
-        this.cmsPaymentId = cmsPaymentId;
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     public String getStatusDescription() {

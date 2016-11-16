@@ -228,7 +228,7 @@
             <version>5.2.4.Final</version>
         </dependency>
 
-         hibernate files end here -->
+        hibernate files end here -->
         
         <dependency>
             <groupId>joda-time</groupId>
@@ -356,6 +356,21 @@
             <version>2.3.2</version>
             <type>jar</type>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.antlr/stringtemplate -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>stringtemplate</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.codeartisans.thirdparties.swing/org-openide-util -->
+        <dependency>
+            <groupId>org.codeartisans.thirdparties.swing</groupId>
+            <artifactId>org-openide-util</artifactId>
+            <version>8.6.2</version>
+        </dependency>
+
         
         
     </dependencies>

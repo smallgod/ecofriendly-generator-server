@@ -5,6 +5,7 @@
  */
 package com.namaraka.ggserver.utils;
 
+import org.stringtemplate.v4.ST;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +22,8 @@ import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.dbaccess.DBManager;
 import com.namaraka.ggserver.model.v1_0.Amounttype;
-import com.namaraka.ggserver.model.v1_0.PaymentIdTracker;
+import com.namaraka.ggserver.model.v1_0.ActivationCodeTracker;
+import com.namaraka.ggserver.model.v1_0.OneTimePin;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +61,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
+import org.openide.util.MapFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -271,8 +275,8 @@ public class GeneralUtils {
     }
 
     /**
-     * Get the method name generatedPaymentId with key "method" if Json request
-     * or enclosing method root name if xml request
+     * Get the method name generatedActivationCode with key "method" if Json
+     * request or enclosing method root name if xml request
      *
      * @param jsonRequest
      * @param apiType
@@ -346,7 +350,7 @@ public class GeneralUtils {
      */
     public static Object sendJsonRequest(final String url, final JSONObject obj) {
 
-        //String myString = new JSONStringer().object().key("JSON").generatedPaymentId("Hello, World!").endObject().toString();
+        //String myString = new JSONStringer().object().key("JSON").generatedActivationCode("Hello, World!").endObject().toString();
         //produces {"JSON":"Hello, World!"}
         //about to convert the  BEEP API request (in whatever form it is now) -> to a JSON string
         CloseableHttpClient httpClient = null;
@@ -422,7 +426,7 @@ public class GeneralUtils {
      */
     public static Object sendJsonRequest(final String url, final String jsonString) {
 
-        //String myString = new JSONStringer().object().key("JSON").generatedPaymentId("Hello, World!").endObject().toString();
+        //String myString = new JSONStringer().object().key("JSON").generatedActivationCode("Hello, World!").endObject().toString();
         //produces {"JSON":"Hello, World!"}
         //about to convert the  BEEP API request (in whatever form it is now) -> to a JSON string
         CloseableHttpClient httpClient = null;
@@ -536,60 +540,85 @@ public class GeneralUtils {
     }
 
     /**
-     * Generate Payment Ids
+     * Generate Activation Codes
+     *
      * @param numberOfValuesToGenerate
      * @param telesolaAccount
      * @param generatorId
-     * @return 
+     * @return
      */
-    public static synchronized Set<Integer> generatorPaymentIds(int numberOfValuesToGenerate, String telesolaAccount, String generatorId) {
+    public static synchronized Set<Integer> generatorActivationCodes(int numberOfValuesToGenerate, String telesolaAccount, String generatorId) {
 
-        Set<PaymentIdTracker> paymentIdTrackers = new HashSet<>();
+        Set<ActivationCodeTracker> activationCodeTrackers = new HashSet<>();
 
-        List<Integer> paymentIdList = DBManager.fetchOnlyColumn(PaymentIdTracker.class, "paymentId");
-        Set<Integer> paymentIdSet = convertListToSet(paymentIdList);
+        List<Integer> activationCodeList = DBManager.fetchOnlyColumn(ActivationCodeTracker.class, "activationCode");
+        Set<Integer> activationCodeSet = convertListToSet(activationCodeList);
 
         int START = 10000000;
         //int END = Integer.parseInt("9999999999");
         //long END = Integer.parseInt("9999999999");
         long END = 99999999L;
 
-        PaymentIdTracker paymentIdTracker;
+        ActivationCodeTracker activationCodeTracker;
 
         Random random = new Random();
 
-        Set<Integer> newPaymentIds = new HashSet<>(numberOfValuesToGenerate);
-        
-        while (newPaymentIds.size() <= numberOfValuesToGenerate) {
-            
-            int generatedPaymentId = createRandomInteger(START, END, random);
+        Set<Integer> newActivationCodes = new HashSet<>(numberOfValuesToGenerate);
+
+        while (newActivationCodes.size() <= numberOfValuesToGenerate) {
+
+            int generatedActivationCode = createRandomInteger(START, END, random);
 
             //check if this Id is not already generated and stored in the PaymentsIdTracker Table in DB
-            if (paymentIdSet.contains(generatedPaymentId)) {
+            if (activationCodeSet.contains(generatedActivationCode)) {
 
-                logger.warn("PaymentID generated: " + generatedPaymentId + ", already exists in DB, continuing!!");
+                logger.warn("activationCode generated: " + generatedActivationCode + ", already exists in DB, continuing!!");
 
             } else {
 
-                paymentIdTracker = new PaymentIdTracker();
-                paymentIdTracker.setGeneratorId(generatorId);
-                paymentIdTracker.setPaymentId(generatedPaymentId);
-                paymentIdTracker.setTelesolaAccount(telesolaAccount);
+                activationCodeTracker = new ActivationCodeTracker();
+                activationCodeTracker.setGeneratorId(generatorId);
+                activationCodeTracker.setActivationCode(generatedActivationCode);
+                activationCodeTracker.setTelesolaAccount(telesolaAccount);
 
-                paymentIdTrackers.add(paymentIdTracker);
-                newPaymentIds.add(generatedPaymentId);
+                activationCodeTrackers.add(activationCodeTracker);
+                newActivationCodes.add(generatedActivationCode);
 
             }
 
         }
 
         //insert Database with the new IDs
-        DBManager.bulkInsert(paymentIdTrackers);
+        DBManager.bulkInsert(activationCodeTrackers);
 
         /*for (int idx = 1; idx <= numberOfValuesToGenerate; ++idx) {
             createRandomInteger(START, END, random);
         }*/
-        return newPaymentIds;
+        return newActivationCodes;
+    }
+
+    /**
+     * 
+     * @param telesolaAccount
+     * @param generatorId
+     * @return 
+     */
+    public static synchronized int generatorOTP(String telesolaAccount, String generatorId) {
+
+        int START = 10000;
+        long END = 99999L;
+
+        Random random = new Random();
+        int generatedOTP = createRandomInteger(START, END, random);
+
+        OneTimePin otp = new OneTimePin();
+        otp.setGeneratorId(generatorId);
+        otp.setTelesolaAccount(telesolaAccount);
+        otp.setOtp(generatedOTP);
+
+        long id = DBManager.persistDatabaseModel(otp);
+
+        return generatedOTP;
     }
 
     /**
@@ -837,8 +866,84 @@ public class GeneralUtils {
      */
     public static <T> Set<T> convertListToSet(List<T> list) {
 
+        System.out.println("1st : " + MapFormat.format("", new HashMap<>()));
+
         Set<T> set = new HashSet<>(list);
         return set;
     }
 
+    /*public String getActivationCodeMessage(String lastName, String firstName, String phoneNumber) {
+            
+        String templateMessage = IOUtils.readLines(this.getClass().getResourceAsStream("registration.stl"));
+        
+        ST template = new ST(templateMessage);
+        Map params = new HashMap();
+        params.put("phoneNumber", phoneNumber);
+        params.put("lastName", lastName);
+        params.put("firstName", firstName);
+        template.setAttributes(params);
+        return template.toString();
+    }*/
+    /**
+     * getActivationMessage from template
+     *
+     * @param firstName
+     * @param amount
+     * @param activationCode
+     * @return
+     */
+    public static String getActivationCodeMessage(String firstName, String amount, String activationCode) {
+
+        //Object[] params = {"nameRobert", "rhume55@gmail.com"};
+        Map<String, String> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("amount", amount);
+        map.put("activationCode", activationCode);
+
+        String message = MapFormat.format(NamedConstants.SMS_TEMPLATE_ACT_CODE, map);
+        logger.debug("Activation message : " + message);
+
+        return message;
+    }
+
+    /**
+     * getActivationMessage from template
+     *
+     * @param firstName
+     * @param otp
+     * @return
+     */
+    public static String getOTPMessage(String firstName, String otp) {
+
+        //Object[] params = {"nameRobert", "rhume55@gmail.com"};
+        Map<String, String> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("otp", otp);
+
+        String message = MapFormat.format(NamedConstants.SMS_TEMPLATE_OTP, map);
+        logger.debug("OTP message : " + message);
+
+        return message;
+    }
+
+    /**
+     *
+     * @param smsText
+     * @param recipientNumber
+     * @return
+     */
+    public static Map<String, String> prepareTextMsgParams(String smsText, String recipientNumber) {
+
+        Map<String, String> paramPairs = new HashMap<>();
+
+        paramPairs.put(NamedConstants.SMS_API_PARAM_USERNAME, NamedConstants.SMS_API_USERNAME);
+        paramPairs.put(NamedConstants.SMS_API_PARAM_PASSOWRD, NamedConstants.SMS_API_PASSWORD);
+        paramPairs.put(NamedConstants.SMS_API_PARAM_SENDER, NamedConstants.SMS_API_SENDER_NAME);
+        paramPairs.put(NamedConstants.SMS_API_PARAM_TEXT, smsText);
+        paramPairs.put(NamedConstants.SMS_API_PARAM_RECIPIENT, recipientNumber);
+
+        return paramPairs;
+    }
 }

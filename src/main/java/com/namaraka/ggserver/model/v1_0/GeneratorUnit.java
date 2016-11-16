@@ -114,7 +114,7 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     private PaymentProgress paymentProgress;
     
     @Column(length = 10000) //might want to change this - what if the data is too long
-    private String paymentIds;
+    private String activationCodes;
 
     @Embedded
     private Extensiontype extensionType;
@@ -411,12 +411,12 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
         this.enableDurationDefault = enableDurationDefault;
     }
 
-    public String getPaymentIds() {
-        return paymentIds;
+    public String getActivationCodes() {
+        return activationCodes;
     }
 
-    public void setPaymentIds(String paymentIds) {
-        this.paymentIds = paymentIds;
+    public void setActivationCodes(String activationCodes) {
+        this.activationCodes = activationCodes;
     }
     
     

@@ -6,14 +6,13 @@ public class PaymentStatusResponse {
 
     /*
          {
-            "telesola_account": "774983602",
-            "generator_id": "A001",
-            "cms_payment_id": "5879594",
+            "telesola_account": "C774983602",
+            "generator_id": "A00001",
             "momo_id"       : "452156",
 ​​            "payment_date" : "2016-07-25 08:55:09",
             "enable_duration" : "7",
             "outstanding_balance" : "70900",
-  ​​          "activation_code": "5879594",
+  ​​          "activation_code": "58795942",
             "status": "SUCCESSFUL",
             "description": "Payment Successfully processed"
         }
@@ -24,9 +23,6 @@ public class PaymentStatusResponse {
 
     @SerializedName(value = "generator_id")
     private String generatorId;
-
-    @SerializedName(value = "cms_payment_id")
-    private String cmsPaymentId;
 
     @SerializedName(value = "momo_id")
     private String momoId;
@@ -71,14 +67,6 @@ public class PaymentStatusResponse {
 
     public void setGeneratorId(String generatorId) {
         this.generatorId = generatorId;
-    }
-
-    public String getCmsPaymentId() {
-        return cmsPaymentId;
-    }
-
-    public void setCmsPaymentId(String cmsPaymentId) {
-        this.cmsPaymentId = cmsPaymentId;
     }
 
     public String getStatusDescription() {

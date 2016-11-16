@@ -19,18 +19,37 @@ public interface NamedConstants {
     public static final String START_ID = "00001"; //Will give us 3.7million ids before introducing 6th digit goes upto YYYYZ
     public static final int MAX_NUMBER_PAYMENTS = 5;
     public static final OrderFirst ORDER_FIRST = OrderFirst.NEWEST;
-    
+
     public static final int NUM_OF_PAYMENT_IDS = 200;
-    
+
     public static final int MAMBOPAY_DEBIT_ACCOUNT_UNREGISTERED = 101;
     public static final int MAMBOPAY_DEBIT_INSUFFICIENT_FUNDS = 106;
     public static final int MAMBOPAY_DEBIT_BELOW_THRESHOLD = 105;
     public static final int MAMBOPAY_DEBIT_CUSTOMER_UNAPPROVED = 103;
     public static final int MAMBOPAY_DEBIT_SUCCESS = 1;
     public static final String MAMBOPAY_DEBIT_PROCESSING = "01";
-    
-    
-    
+    public static final String MAMBOPAY_DEBIT_DUPLICATE = "02";
+
+    //MAMBO-PAY DEBIT API HTTP PARAMS
+    public static final String MAMBOPAY_PARAM_MSISDN = "msisdn";
+    public static final String MAMBOPAY_PARAM_AMOUNT = "amount";
+    public static final String MAMBOPAY_PARAM_TRANSID = "transaction_id";
+    public static final String MAMBOPAY_PARAM_CALLBACKURL = "callbackurl";
+    public static final String MAMBOPAY_HEADER_SUBSCKEY = "Ocp-Apim-Subscription-Key";
+
+    public static final String SMS_API_URL = "http://api.infobip.com/api/v3/sendsms/plain";
+    public static final String SMS_API_SENDER_NAME = "TELESOLA";
+    public static final String SMS_API_USERNAME = "codev";
+    public static final String SMS_API_PASSWORD = "codev";
+    public static final String SMS_TEMPLATE_ACT_CODE ="Dear {firstName}, we have recieved your payment of {amount}. Your activation code is: {activationCode}. Thank you for using Telesola.";
+    public static final String SMS_TEMPLATE_OTP = "Dear {firstName}, your One-time PIN is: {otp}. Please enter this PIN to activate your Telesola app.";
+
+    public static final String SMS_API_PARAM_USERNAME = "user";
+    public static final String SMS_API_PARAM_PASSOWRD = "password";
+    public static final String SMS_API_PARAM_SENDER = "sender";
+    public static final String SMS_API_PARAM_TEXT = "SMSText";
+    public static final String SMS_API_PARAM_RECIPIENT = "GSM";
+
     /**
      * Date time string formats
      *

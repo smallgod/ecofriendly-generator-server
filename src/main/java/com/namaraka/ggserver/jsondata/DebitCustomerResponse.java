@@ -8,16 +8,20 @@ public class DebitCustomerResponse {
     
 
     JSON Request sample:
-    
+
     {
-	"reference": "36828394",
-	"transaction_id": "98666882",
-	"status_code": "QUEUED",  //put status code equivalent for 'QUEUED'
-	"status_message": "Payment queued for processing"
+    
+        "reference":745115924,
+        "transaction_id":"33322345",
+        "status_code":"01",
+        "status_message":"Transaction Queued for processing"
     }
+    
+    { 
+    "statusCode": 401, 
+    "message": "Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API." }
    
      */
-    
     @SerializedName(value = "reference")
     private String reference;
 
