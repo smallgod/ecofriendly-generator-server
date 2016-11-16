@@ -91,8 +91,8 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
 
                 Map<String, String> paramPairs = new HashMap<>();
 
-                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_MSISDN, amount);
-                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_AMOUNT, momoAccount);
+                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_MSISDN, momoAccount);
+                paramPairs.put(NamedConstants.MAMBOPAY_PARAM_AMOUNT, amount);
                 paramPairs.put(NamedConstants.MAMBOPAY_PARAM_TRANSID, paymentId);
                 paramPairs.put(NamedConstants.MAMBOPAY_PARAM_CALLBACKURL, NamedConstants.GGSERVER_CALLBACK_URL);
                         

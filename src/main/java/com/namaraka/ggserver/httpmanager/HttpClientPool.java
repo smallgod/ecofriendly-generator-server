@@ -473,11 +473,12 @@ public final class HttpClientPool {
         try {
 
             switch(method){
-                case GET:
+                
+                case POST:
                     request = setHttpPostRequest(requestPayloadString, urlToCall, httpParams);
                     break;
                     
-                case POST:
+                case GET:
                     request = setHttpGetRequest(requestPayloadString, urlToCall, httpParams);
                     break;
                     
