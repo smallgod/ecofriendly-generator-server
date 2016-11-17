@@ -24,34 +24,6 @@ public class PaymentHistoryRequest {
                 "extra3": "value3"
             }
         }
-    
-        JSON Response sample:
-    
-        {
-            "telesola_account": "786577309",
-            "units": [
-                {
-                    "generator_id": "A001",
-                    "cms_payment_id": "3509866",
-                    "enable_duration":"7",
-                    "momo_id": "893783739",
-                    "momo_account": "256783937043",
-                    "amount": "59000",
-                    "payment_date": "2016-09-28 08:55:09",
-                    "acknowledge_date": "2016-09-28 08:55:09"
-                },
-                {
-                    "generator_id": "A002",
-                    "cms_payment_id": "61866",
-                    "enable_duration":"7",
-                    "momo_id": "893783669",
-                    "momo_account": "256783937043",
-                    "amount": "58000",
-                    "payment_date": "2016-07-28 08:55:09",
-                    "acknowledge_date": "2016-09-28 08:55:09"
-                }
-            ]
-        }
         
     
      */
@@ -92,16 +64,16 @@ public class PaymentHistoryRequest {
 
         @SerializedName(value = "telesola_account")
         private String telesolaAccount;
-        
+
         @SerializedName(value = "generator_id")
         private String generatorId;
-        
+
         @SerializedName(value = "order_first")
         private String orderFirst;
-        
+
         @SerializedName(value = "transaction_limit")
         private String transactionLimit;
-        
+
         @SerializedName(value = "status")
         private String status;
 

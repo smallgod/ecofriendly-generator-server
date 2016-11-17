@@ -14,11 +14,15 @@ public class PaymentHistoryResponse {
         "units": [
             {
                 "generator_id": "A001",
-                "cms_payment_id": "3509866",
+                "activation_code": "3509866",
                 "enable_duration":"7",
                 "momo_id": "893783739",
                 "momo_account": "256783937043",
-                "amount": "59000",
+                "amount": "59000",": "550900",
+         	"outstanding_balance": "550900",
+	        "cumulative_amount_paid": "120000",
+	        "number_installments_paid":12
+	        "number_installments_remaining":40
                 "payment_date": "2016-09-28 08:55:09",
                 "acknowledge_date": "2016-09-28 08:55:09",
                 "status": "SUCCESSFUL"
@@ -26,11 +30,15 @@ public class PaymentHistoryResponse {
     
             {
                 "generator_id": "A002",
-                "cms_payment_id": "61866",
+                "activation_code": "61866",
                 "enable_duration":"30",
                 "momo_id": "893783669",
                 "momo_account": "256783937043",
-                "amount": "58000",
+                "amount": "58000",": "550900",
+         	"outstanding_balance": "550900",
+	        "cumulative_amount_paid": "120000",
+	        "number_installments_paid":12
+	        "number_installments_remaining":40
                 "payment_date": "2016-07-28 08:55:09",
                 "acknowledge_date": "2016-09-28 08:55:09",
                 "status": "SUCCESSFUL"
@@ -69,8 +77,8 @@ public class PaymentHistoryResponse {
         @SerializedName(value = "generator_id")
         private String generatorId;
 
-        @SerializedName(value = "cms_payment_id")
-        private String cmsPaymentId;
+        @SerializedName(value = "activation_code")
+        private String activationCode;
 
         @SerializedName(value = "momo_id")
         private String momoId;
@@ -80,6 +88,18 @@ public class PaymentHistoryResponse {
 
         @SerializedName(value = "amount")
         private String amount;
+        
+        @SerializedName(value = "outstanding_balance")
+        private String outstandingBalance;
+        
+        @SerializedName(value = "cumulative_amount_paid")
+        private String cummulativeAmountPaid;
+        
+        @SerializedName(value = "number_installments_paid")
+        private String installmentsPaid;
+        
+        @SerializedName(value = "number_installments_remaining")
+        private String remaining_installments;
 
         @SerializedName(value = "payment_date")
         private String paymentDate;
@@ -99,12 +119,12 @@ public class PaymentHistoryResponse {
         @SerializedName(value = "app_secretkey")
         private String appKey;
 
-        public String getCmsPaymentId() {
-            return cmsPaymentId;
+        public String getActivationCode() {
+            return activationCode;
         }
 
-        public void setCmsPaymentId(String cmsPaymentId) {
-            this.cmsPaymentId = cmsPaymentId;
+        public void setActivationCode(String activationCode) {
+            this.activationCode = activationCode;
         }
 
         public String getGeneratorId() {
@@ -185,6 +205,38 @@ public class PaymentHistoryResponse {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public String getOutstandingBalance() {
+            return outstandingBalance;
+        }
+
+        public void setOutstandingBalance(String outstandingBalance) {
+            this.outstandingBalance = outstandingBalance;
+        }
+
+        public String getCummulativeAmountPaid() {
+            return cummulativeAmountPaid;
+        }
+
+        public void setCummulativeAmountPaid(String cummulativeAmountPaid) {
+            this.cummulativeAmountPaid = cummulativeAmountPaid;
+        }
+
+        public String getInstallmentsPaid() {
+            return installmentsPaid;
+        }
+
+        public void setInstallmentsPaid(String installmentsPaid) {
+            this.installmentsPaid = installmentsPaid;
+        }
+
+        public String getRemaining_installments() {
+            return remaining_installments;
+        }
+
+        public void setRemaining_installments(String remaining_installments) {
+            this.remaining_installments = remaining_installments;
         }
     }
 }

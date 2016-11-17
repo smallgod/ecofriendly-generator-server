@@ -30,19 +30,6 @@ public class PaymentStatusRequest {
             }
         }
     
-        JSON Response sample:
-    
-        {
-            "telesola_account": "C774983602",
-            "generator_id": "A00001",,
-            "momo_id"       : "452156",
-​​            "payment_date" : "2016-07-25 08:55:09",
-            "enable_duration" : "7",
-  ​​          "activation_code": "38790594",
-            "status": "SUCCESSFUL",
-            "description": "Payment Successfully processed"
-        }
-    
      */
     @SerializedName(value = "method")
     private String methodName;

@@ -56,6 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 
 /**
  *
@@ -81,11 +83,6 @@ public class JsonAPIServer extends HttpServlet {
         System.out.println("API Servlet called here!!!");
 
         response.setContentType("application/json");
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        //headers.add("Access-Control-Allow-Origin", "http://podcastpedia.org"); //allows CORS requests only coming from podcastpedia.org		
-        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
-        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-        response.addHeader("Access-Control-Allow-Credentials", "true");
 
         //logRequestInfo(request);
         //printRequesterHeaderInfo(request);
@@ -129,7 +126,7 @@ public class JsonAPIServer extends HttpServlet {
                 //jsonResponse = "{\"telesola_account\":\"786577309\",\"units\":[{\"generator_id\":\"A001\",\"cms_payment_id\":\"3509866\",\"enable_duration\":\"7\",\"momo_id\":\"893783739\",\"momo_account\":\"256783937043\",\"amount\":\"59000\",\"payment_date\":\"2016-09-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"},{\"generator_id\":\"A002\",\"cms_payment_id\":\"61866\",\"momo_id\":\"893783669\",\"momo_account\":\"256783937043\",\"amount\":\"58000\",\"payment_date\":\"2016-07-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"}]}";
                 jsonResponse = getPaymentHistory(jsonRequest);
                 break;
-                
+
             case ACCOUNT_SETUP:
                 System.out.println("ACCOUNT_SETUP called");
                 //jsonResponse = "{\"telesola_account\":\"C786577309\",\"units\":[{\"generator_id\":\"A001\",\"mac_address\":\"345S35WET55YH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-09-28 08:55:09\",\"distributor_id\":\"KLA44009\",\"distributor_key\":\"561277\",\"contracted_price\":\"5450000\",\"installment_frequency\":\"WEEKLY\",\"enable_duration\":\"7\",\"installment_day\":\"1\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"550900\",\"activation_codes\":[757853,69434]},{\"generator_id\":\"A002\",\"mac_address\":\"345S35T2WSH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-04-25 08:55:09\",\"distributor_id\":\"KLA84019\",\"distributor_key\":\"5644277\",\"contracted_price\":\"545000\",\"installment_frequency\":\"MONTHLY\",\"enable_duration\":\"30\",\"installment_day\":\"4\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"30900\",\"activation_codes\":[757258,343222,68484]}]}";
@@ -140,7 +137,7 @@ public class JsonAPIServer extends HttpServlet {
                 System.out.println("PAYMENT_STATUS called");
                 jsonResponse = "{\"telesola_account\":\"0774983602\",\"generator_id\":\"A001\",\"cms_payment_id\":\"794001\",\"momo_id\":\"23577744357\",\"payment_date\":\"2016-07-25 08:55:09\",\"enable_duration\":\"7\",\"activation_code\":\"5784\",\"status\":\"SUCCESSFUL\",\"description\":\"Processing processed successfully\"}";
                 break;
-                
+
             case ACTIVATION_CODES:
                 System.out.println("ACTIVATION_CODES called");
                 jsonResponse = "{\"telesola_account\":\"C778789543\",\"generator_id\":\"A001\",\"activation_codes\":[757858,694844,84647,68484,5859484,58555]}";
@@ -274,12 +271,13 @@ public class JsonAPIServer extends HttpServlet {
                 logger.debug("transactionLimit: " + transactionLimit + ", orderFirst: " + orderFirst + ", status: " + status);
 
                 if (status == null || status.trim().isEmpty()) {
-                    paymentStatus = Status.SUCCESSFUL;
+                    paymentStatus = Status.ALL;
                 } else {
                     paymentStatus = Status.convertToEnum(status);
                 }
 
                 Set<MoMoPayment> payments = DBManager.fetchPayments(MoMoPayment.class, transactionLimit, "id", orderFirst, paymentStatus, "generatorId", generatorId);
+                GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
 
                 if (payments != null) {
 
@@ -292,14 +290,18 @@ public class JsonAPIServer extends HttpServlet {
                         MoMoPayment payment = paymentsIter.next();
                         PaymentHistoryResponse.Unit unit = paymentHistResponse.new Unit();
 
-                        logger.debug("after creating unit object");
+                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
 
-                        payment.getAggregatorTransID();
+                        String aggregatorId = payment.getAggregatorTransID();
 
                         unit.setGeneratorId(payment.getGeneratorId());
-                        unit.setCmsPaymentId(payment.getActivationCode());
+                        unit.setActivationCode(payment.getActivationCode());
                         unit.setMomoAccount(payment.getDebitAccount());
                         unit.setAmount(payment.getAmount().getAmount().toString());
+                        unit.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                        unit.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
+                        unit.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                        unit.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
                         //unit.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
                         unit.setAcknowledgeDate(String.valueOf(payment.getApprovalDate()));
                         unit.setMomoId(payment.getMomoId());
@@ -308,7 +310,8 @@ public class JsonAPIServer extends HttpServlet {
                         //unit.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
                         unit.setPaymentDate(String.valueOf(payment.getCreatedOn()));
                         unit.setEnableDuration(String.valueOf(payment.getEnableDuration()));
-                        logger.debug("about to add unit to unit list: " + unit.getCmsPaymentId() + ", status: " + unit.getStatus());
+                        
+                        logger.debug("about to add unit to unit list: " + unit.getActivationCode() + ", status: " + unit.getStatus());
 
                         units.add(unit);
 
@@ -429,6 +432,7 @@ public class JsonAPIServer extends HttpServlet {
         int calculatedInstallment = 0;
         int calculatedTotalInstallments = 0;
         int calculatedOutstandingBal = 0;
+        int cummulativeTotalPaid = 0;
 
         try {
 
@@ -846,6 +850,16 @@ public class JsonAPIServer extends HttpServlet {
     int calculateOutstandingBalance(String contractPriceString, String depositAmountString) {
 
         return (Integer.parseInt(contractPriceString) - Integer.parseInt(depositAmountString));
+    }
+
+    int calculateCummulativeAmountPaid(Amounttype contractAmount, Amounttype outstandingAmount) {
+
+        //return (Integer.parseInt(depositAmountString) + (Integer.parseInt(installmentAmount) * numberOfInstallmentsPaid));
+        int contractPrice = (int) Math.ceil(contractAmount.getAmount().doubleValue());
+        int outstandingBalance = (int) Math.ceil(outstandingAmount.getAmount().doubleValue());
+
+        return (contractPrice - outstandingBalance);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

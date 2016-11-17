@@ -11,6 +11,7 @@ public class PaymentStatusResponse {
             "momo_id"       : "452156",
 ​​            "payment_date" : "2016-07-25 08:55:09",
             "enable_duration" : "7",
+            "amount" : "5500",
             "outstanding_balance" : "70900",
   ​​          "activation_code": "58795942",
             "status": "SUCCESSFUL",
@@ -30,6 +31,12 @@ public class PaymentStatusResponse {
     @SerializedName(value = "payment_date")
     private String paymentDate;
 
+    @SerializedName(value = "amount")
+    private String amount;
+
+    @SerializedName(value = "outstanding_balance")
+    private String outstandingBalance;
+
     @SerializedName(value = "enable_duration")
     private String enableDuration;
 
@@ -41,9 +48,6 @@ public class PaymentStatusResponse {
 
     @SerializedName(value = "description")
     private String statusDescription;
-    
-    @SerializedName(value = "outstanding_balance")
-    private String outstandingBalance;
 
     public String getTelesolaAccount() {
         return telesolaAccount;
@@ -115,6 +119,14 @@ public class PaymentStatusResponse {
 
     public void setOutstandingBalance(String outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
 }
