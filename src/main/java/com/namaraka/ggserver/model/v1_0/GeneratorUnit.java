@@ -24,11 +24,19 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.jadira.usertype.dateandtime.joda.PersistentLocalDate;
 import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 @TypeDefs({
     @TypeDef(name = "jodalocaldatetime", typeClass = PersistentLocalDateTime.class,
+            parameters = {
+                @Parameter(value = "UTC", name = "databaseZone"),
+                @Parameter(value = "UTC", name = "javaZone")
+            }
+    ),
+    @TypeDef(name = "jodalocaldate", typeClass = PersistentLocalDate.class,
             parameters = {
                 @Parameter(value = "UTC", name = "databaseZone"),
                 @Parameter(value = "UTC", name = "javaZone")
@@ -64,8 +72,8 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     @Enumerated(EnumType.STRING)
     private ClientType registeredTo;
 
-    @Type(type = "jodalocaldatetime")
-    private LocalDateTime contractDate;
+    @Type(type = "jodalocaldate")
+    private LocalDate contractDate;
     
     private int enableDurationDefault; //set it at account setup
 
@@ -250,14 +258,14 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     /**
      * @return the contractDate
      */
-    public LocalDateTime getContractDate() {
+    public LocalDate getContractDate() {
         return contractDate;
     }
 
     /**
      * @param contractDate the contractDate to set
      */
-    public void setContractDate(LocalDateTime contractDate) {
+    public void setContractDate(LocalDate contractDate) {
         this.contractDate = contractDate;
     }
 

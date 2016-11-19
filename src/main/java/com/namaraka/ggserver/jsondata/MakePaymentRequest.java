@@ -30,18 +30,6 @@ public class MakePaymentRequest {
             }
         }
     
-        JSON Response sample:
-    
-        {
-            "telesola_account": "C774983602",
-            "generatorId": "A001",
-            "activation_code": "58709594",
-            "status": "LOGGED",
-            "description": "Payment Successfully Logged for processing"
-        }
-    
-    
-    
      */
     @SerializedName(value = "method")
     private String methodName;

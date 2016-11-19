@@ -2,7 +2,7 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PaymentHistoryRequest {
+public class ReportClientsRequest {
 
     /*
  
@@ -76,7 +76,7 @@ public class PaymentHistoryRequest {
 
         @SerializedName(value = "status")
         private String status;
-        
+
         @SerializedName(value = "app_secretkey")
         private String appKey;
 
@@ -127,7 +127,6 @@ public class PaymentHistoryRequest {
         public void setStatus(String status) {
             this.status = status;
         }
-
     }
 
     public class Extra {

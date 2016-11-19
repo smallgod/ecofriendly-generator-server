@@ -2,14 +2,14 @@ package com.namaraka.ggserver.jsondata;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PaymentHistoryRequest {
+public class ReportPaymentsRequest {
 
     /*
  
     JSON Request sample:
     
         {
-            "method": "PAYMENT_HISTORY",
+            "method": "REPORT_PAYMENT_HISTORY",
             "params": {
                 "telesola_account": "C786577309",
 		"generator_id": "00001",
@@ -76,7 +76,7 @@ public class PaymentHistoryRequest {
 
         @SerializedName(value = "status")
         private String status;
-        
+
         @SerializedName(value = "app_secretkey")
         private String appKey;
 
@@ -127,7 +127,6 @@ public class PaymentHistoryRequest {
         public void setStatus(String status) {
             this.status = status;
         }
-
     }
 
     public class Extra {

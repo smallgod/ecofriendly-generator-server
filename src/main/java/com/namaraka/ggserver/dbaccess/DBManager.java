@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.EmptyInterceptor;
@@ -219,13 +220,14 @@ public final class DBManager {
     }
 
     /**
-     * Bulk insert a list of objects using a statelessSession to improve performance
+     * Bulk insert a list of objects using a statelessSession to improve
+     * performance
      *
      * @param <T>
      * @param dbObjectList
      * @return
      */
-    public static <T> boolean bulkInsert(List<T> dbObjectList) {
+    public static <T> boolean bulkInsertDontUseThis(List<T> dbObjectList) {
 
         StatelessSession tempSession = getStatelessSession();
         Transaction transaction = null;
@@ -267,16 +269,20 @@ public final class DBManager {
 
         return committed;
     }
-    
+
     /**
      * Bulk insert a set of objects
+     *
      * @param <T>
      * @param dbObjectList
-     * @return 
+     * @return
      */
-    public static <T> boolean bulkInsert(Set<T> dbObjectList) {
+    public static <T> boolean bulkSave(Set<T> dbObjectList) {
 
-        StatelessSession tempSession = getStatelessSession();
+        int i = 0;
+
+        //StatelessSession tempSession = getStatelessSession();
+        Session tempSession = getSession();
         Transaction transaction = null;
         boolean committed = false;
 
@@ -294,11 +300,18 @@ public final class DBManager {
         try {
 
             transaction = tempSession.beginTransaction();
-            
-            while(dbObjectList.iterator().hasNext()){
-                tempSession.insert(dbObjectList.iterator().next());
+
+            for (T dbObject : dbObjectList) {
+
+                tempSession.save(dbObject);
+
+                if (i % 7 == 0) { // Same as the JDBC batch size
+                    //flush a batch of inserts and release memory:
+                    tempSession.flush();
+                    tempSession.clear();
+                }
             }
- 
+
             transaction.commit();
             committed = true;
 
@@ -501,6 +514,51 @@ public final class DBManager {
         return result;
     }
 
+    /**
+     * Fetch a single record based on multiple restrictions
+     *
+     * @param <T>
+     * @param persistentClassType
+     * @param propertyNameValues
+     * @return
+     */
+    public static <T> T fetchSingleRecord(Class<T> persistentClassType, Map<String, Object> propertyNameValues) {
+
+        StatelessSession tempSession = getStatelessSession();
+
+        T result = null;
+
+        try {
+
+            Criteria criteria = tempSession.createCriteria(persistentClassType);
+            //criteria.addOrder(Order.asc(propertyName));
+            criteria.add(Restrictions.allEq(propertyNameValues));
+            criteria.setMaxResults(1);
+
+            result = (T) criteria.uniqueResult();
+
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception fetching object list: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception fetching object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return result;
+    }
+
+    /**
+     * Fetch a single record based on a single restriction
+     *
+     * @param <T>
+     * @param persistentClassType
+     * @param propertyName
+     * @param propertyValue
+     * @return
+     */
     public static <T> T fetchSingleRecord(Class<T> persistentClassType, String propertyName, Object propertyValue) {
 
         StatelessSession tempSession = getStatelessSession();
@@ -572,6 +630,7 @@ public final class DBManager {
 
     /**
      * Fetch payments for payment history
+     *
      * @param <T>
      * @param persistentClassType
      * @param maxNoOfResults
@@ -580,13 +639,13 @@ public final class DBManager {
      * @param status
      * @param generatorIdProperty
      * @param generatorIdValue
-     * @return 
+     * @return
      */
     public static <T> Set<T> fetchPayments(Class<T> persistentClassType, int maxNoOfResults, String orderColumn, OrderFirst orderFirst, Status status, String generatorIdProperty, String generatorIdValue) {
 
         StatelessSession tempSession = getStatelessSession();
         Set<T> results = new HashSet<>(maxNoOfResults);
-        
+
         logger.debug("Now anhaaaaa");
 
         try {
@@ -613,7 +672,7 @@ public final class DBManager {
             }
             criteria.add(Restrictions.eq(generatorIdProperty, generatorIdValue));
             criteria.setMaxResults(maxNoOfResults);
-            
+
             ScrollableResults scrollableResults = criteria.scroll(ScrollMode.FORWARD_ONLY);
 
             int count = 0;
@@ -796,13 +855,14 @@ public final class DBManager {
 
         return results;
     }
-    
+
     /**
      * Fetch entire column without restrictions
+     *
      * @param <T>
      * @param classType
      * @param columToFetch
-     * @return 
+     * @return
      */
     public static <T> List<T> fetchOnlyColumn(Class classType, String columToFetch) {
 

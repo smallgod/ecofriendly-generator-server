@@ -528,12 +528,12 @@ public class GeneralUtils {
         }
         //get the range, casting to long to avoid overflow problems
         long range = aEnd - aStart + 1;
-        logger.info("range>>>>>>>>>>>" + range);
+        //logger.info("range>>>>>>>>>>>" + range);
         // compute a fraction of the range, 0 <= frac < range
         long fraction = (long) (range * aRandom.nextDouble());
-        logger.info("fraction>>>>>>>>>>>>>>>>>>>>" + fraction);
+        //logger.info("fraction>>>>>>>>>>>>>>>>>>>>" + fraction);
         long randomNumber = fraction + (long) aStart;
-        logger.info("Generated : " + randomNumber);
+        //logger.info("Generated : " + randomNumber);
 
         return (int) randomNumber;
 
@@ -547,11 +547,14 @@ public class GeneralUtils {
      * @param generatorId
      * @return
      */
-    public static synchronized Set<Integer> generatorActivationCodes(int numberOfValuesToGenerate, String telesolaAccount, String generatorId) {
+    public static synchronized Set<Integer> generateActivationCodes(int numberOfValuesToGenerate, String telesolaAccount, String generatorId) {
 
         Set<ActivationCodeTracker> activationCodeTrackers = new HashSet<>();
 
         List<Integer> activationCodeList = DBManager.fetchOnlyColumn(ActivationCodeTracker.class, "activationCode");
+
+        logger.debug("Fetched from activations_tracker table total: " + activationCodeList.size());
+
         Set<Integer> activationCodeSet = convertListToSet(activationCodeList);
 
         int START = 10000000;
@@ -564,32 +567,52 @@ public class GeneralUtils {
         Random random = new Random();
 
         Set<Integer> newActivationCodes = new HashSet<>(numberOfValuesToGenerate);
+        newActivationCodes.clear();
+        Set<Integer> trackDuplicates = new HashSet<>();
 
-        while (newActivationCodes.size() <= numberOfValuesToGenerate) {
+        Integer generatedActivationCode;
 
-            int generatedActivationCode = createRandomInteger(START, END, random);
+        int recordsAdded = newActivationCodes.size();
+        
+        while (recordsAdded < numberOfValuesToGenerate) {
 
-            //check if this Id is not already generated and stored in the PaymentsIdTracker Table in DB
+            generatedActivationCode = createRandomInteger(START, END, random);
+
+            //check if this Id is not already generated and stored in the ActivationCodeTracker Table in DB
             if (activationCodeSet.contains(generatedActivationCode)) {
 
-                logger.warn("activationCode generated: " + generatedActivationCode + ", already exists in DB, continuing!!");
+                logger.debug("activationCode generated: " + generatedActivationCode + ", already exists in DB, continuing!!");
 
             } else {
 
-                activationCodeTracker = new ActivationCodeTracker();
-                activationCodeTracker.setGeneratorId(generatorId);
-                activationCodeTracker.setActivationCode(generatedActivationCode);
-                activationCodeTracker.setTelesolaAccount(telesolaAccount);
+                boolean anotherIsDuplicate = trackDuplicates.contains(generatedActivationCode);
 
-                activationCodeTrackers.add(activationCodeTracker);
-                newActivationCodes.add(generatedActivationCode);
+                if (!anotherIsDuplicate) {
+
+                    logger.debug("NOT Duplicate: " + generatedActivationCode);
+
+                    activationCodeTracker = new ActivationCodeTracker();
+                    activationCodeTracker.setGeneratorId(generatorId);
+                    activationCodeTracker.setActivationCode(generatedActivationCode);
+                    activationCodeTracker.setTelesolaAccount(telesolaAccount);
+
+                    activationCodeTrackers.add(activationCodeTracker);
+                    newActivationCodes.add(generatedActivationCode);
+
+                    trackDuplicates.add(generatedActivationCode);
+                    
+                    recordsAdded++;
+
+                } else {
+                    logger.debug("IS Duplicate code: " + generatedActivationCode);
+                }
 
             }
 
         }
 
         //insert Database with the new IDs
-        DBManager.bulkInsert(activationCodeTrackers);
+        DBManager.bulkSave(activationCodeTrackers);
 
         /*for (int idx = 1; idx <= numberOfValuesToGenerate; ++idx) {
             createRandomInteger(START, END, random);
@@ -598,10 +621,10 @@ public class GeneralUtils {
     }
 
     /**
-     * 
+     *
      * @param telesolaAccount
      * @param generatorId
-     * @return 
+     * @return
      */
     public static synchronized int generatorOTP(String telesolaAccount, String generatorId) {
 
@@ -889,20 +912,24 @@ public class GeneralUtils {
      *
      * @param firstName
      * @param amount
+     * @param outstandingBalance
      * @param activationCode
+     * @param numberOfActiveDays
      * @return
      */
-    public static String getActivationCodeMessage(String firstName, String amount, String activationCode) {
+    public static String getActivationCodeMessage(String firstName, String amount, int outstandingBalance, String activationCode, int numberOfActiveDays) {
 
         //Object[] params = {"nameRobert", "rhume55@gmail.com"};
         Map<String, String> map = new HashMap<>();
 
         map.put("firstName", firstName);
         map.put("amount", amount);
+        map.put("outstandingBalance", String.valueOf(outstandingBalance));
         map.put("activationCode", activationCode);
+        map.put("numberOfActiveDays", String.valueOf(numberOfActiveDays));
 
         String message = MapFormat.format(NamedConstants.SMS_TEMPLATE_ACT_CODE, map);
-        logger.debug("Activation message : " + message);
+        logger.debug("Activation message going out : " + message);
 
         return message;
     }
@@ -912,15 +939,19 @@ public class GeneralUtils {
      *
      * @param firstName
      * @param otp
+     * @param telesolaAccount
+     * @param generatorId
      * @return
      */
-    public static String getOTPMessage(String firstName, String otp) {
+    public static String getOTPMessage(String firstName, String otp, String telesolaAccount, String generatorId) {
 
         //Object[] params = {"nameRobert", "rhume55@gmail.com"};
         Map<String, String> map = new HashMap<>();
 
         map.put("firstName", firstName);
         map.put("otp", otp);
+         map.put("telesolaAccount", telesolaAccount);
+        map.put("generatorId", generatorId);
 
         String message = MapFormat.format(NamedConstants.SMS_TEMPLATE_OTP, map);
         logger.debug("OTP message : " + message);

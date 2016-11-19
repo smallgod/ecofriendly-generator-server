@@ -27,8 +27,10 @@ import com.namaraka.ggserver.jsondata.MakePaymentResponse;
 import com.namaraka.ggserver.jsondata.PaymentHistoryRequest;
 import com.namaraka.ggserver.jsondata.PaymentHistoryResponse;
 import com.namaraka.ggserver.jsondata.ActivationCodes;
+import com.namaraka.ggserver.jsondata.ReportPaymentsResponse;
 import com.namaraka.ggserver.jsondata.PaymentStatusCallBackRequest;
 import com.namaraka.ggserver.jsondata.PaymentStatusCallBackResponse;
+import com.namaraka.ggserver.jsondata.ReportPaymentsRequest;
 import com.namaraka.ggserver.jsondata.UnitRegistrationRequest;
 import com.namaraka.ggserver.jsondata.UnitRegistrationResponse;
 import com.namaraka.ggserver.model.v1_0.Amounttype;
@@ -48,13 +50,15 @@ import javax.servlet.http.HttpServletResponse;
 import static com.namaraka.ggserver.utils.GeneralUtils.writeResponse;
 import java.text.ParseException;
 import org.slf4j.LoggerFactory;
-import org.joda.time.LocalDateTime;
 import com.namaraka.ggserver.utils.AlphaNumericIDGenerator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import org.joda.time.LocalDate;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
@@ -97,6 +101,12 @@ public class JsonAPIServer extends HttpServlet {
 
         switch (methodNameEnum) {
 
+            case REPORT_PAYMENTS:
+
+                System.out.println("REPORT_PAYMENTS called");
+                jsonResponse = reportPayments(jsonRequest);
+                break;
+
             case MAKE_PAYMENT:
 
                 System.out.println("MAKE_PAYMENT called");
@@ -123,13 +133,13 @@ public class JsonAPIServer extends HttpServlet {
 
             case PAYMENT_HISTORY:
                 System.out.println("PAYMENT_HISTORY called");
-                //jsonResponse = "{\"telesola_account\":\"786577309\",\"units\":[{\"generator_id\":\"A001\",\"cms_payment_id\":\"3509866\",\"enable_duration\":\"7\",\"momo_id\":\"893783739\",\"momo_account\":\"256783937043\",\"amount\":\"59000\",\"payment_date\":\"2016-09-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"},{\"generator_id\":\"A002\",\"cms_payment_id\":\"61866\",\"momo_id\":\"893783669\",\"momo_account\":\"256783937043\",\"amount\":\"58000\",\"payment_date\":\"2016-07-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"}]}";
+                //jsonResponse = "{\"telesola_account\":\"786577309\",\"dataList\":[{\"generator_id\":\"A001\",\"cms_payment_id\":\"3509866\",\"enable_duration\":\"7\",\"momo_id\":\"893783739\",\"momo_account\":\"256783937043\",\"amount\":\"59000\",\"payment_date\":\"2016-09-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"},{\"generator_id\":\"A002\",\"cms_payment_id\":\"61866\",\"momo_id\":\"893783669\",\"momo_account\":\"256783937043\",\"amount\":\"58000\",\"payment_date\":\"2016-07-28 08:55:09\",\"acknowledge_date\":\"2016-09-28 08:55:09\"}]}";
                 jsonResponse = getPaymentHistory(jsonRequest);
                 break;
 
             case ACCOUNT_SETUP:
                 System.out.println("ACCOUNT_SETUP called");
-                //jsonResponse = "{\"telesola_account\":\"C786577309\",\"units\":[{\"generator_id\":\"A001\",\"mac_address\":\"345S35WET55YH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-09-28 08:55:09\",\"distributor_id\":\"KLA44009\",\"distributor_key\":\"561277\",\"contracted_price\":\"5450000\",\"installment_frequency\":\"WEEKLY\",\"enable_duration\":\"7\",\"installment_day\":\"1\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"550900\",\"activation_codes\":[757853,69434]},{\"generator_id\":\"A002\",\"mac_address\":\"345S35T2WSH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-04-25 08:55:09\",\"distributor_id\":\"KLA84019\",\"distributor_key\":\"5644277\",\"contracted_price\":\"545000\",\"installment_frequency\":\"MONTHLY\",\"enable_duration\":\"30\",\"installment_day\":\"4\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"30900\",\"activation_codes\":[757258,343222,68484]}]}";
+                //jsonResponse = "{\"telesola_account\":\"C786577309\",\"dataList\":[{\"generator_id\":\"A001\",\"mac_address\":\"345S35WET55YH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-09-28 08:55:09\",\"distributor_id\":\"KLA44009\",\"distributor_key\":\"561277\",\"contracted_price\":\"5450000\",\"installment_frequency\":\"WEEKLY\",\"enable_duration\":\"7\",\"installment_day\":\"1\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"550900\",\"activation_codes\":[757853,69434]},{\"generator_id\":\"A002\",\"mac_address\":\"345S35T2WSH\",\"commercial_status\":\"INSTALLMENT\",\"contract_date\":\"2016-04-25 08:55:09\",\"distributor_id\":\"KLA84019\",\"distributor_key\":\"5644277\",\"contracted_price\":\"545000\",\"installment_frequency\":\"MONTHLY\",\"enable_duration\":\"30\",\"installment_day\":\"4\",\"momo_account\":\"256774985275\",\"outstanding_balance\":\"30900\",\"activation_codes\":[757258,343222,68484]}]}";
                 jsonResponse = accountSetup(jsonRequest);
                 break;
 
@@ -202,7 +212,7 @@ public class JsonAPIServer extends HttpServlet {
 
                     AccountSetupResponse.Unit unit = accountSetupResponse.new Unit();
                     unit.setCommercialStatus(generator.getCommercialStatus().getValue());
-                    unit.setContractDate(DateUtils.convertLocalDateTimeToString(generator.getContractDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                    unit.setContractDate(DateUtils.convertLocalDateToString(generator.getContractDate(), NamedConstants.DATE_DASH_FORMAT));
                     unit.setContractPrice(String.valueOf(generator.getContractPrice().getAmount()));
                     unit.setEnableDuration(String.valueOf(generator.getEnableDurationDefault()));
                     unit.setGeneratorId(generator.getGeneratorId());
@@ -238,6 +248,108 @@ public class JsonAPIServer extends HttpServlet {
 
     /**
      *
+     * @param reportPaymentsRequest
+     * @return
+     */
+    String reportPayments(String reportPaymentsRequest) {
+
+        ReportPaymentsResponse reportPaymentResponse = new ReportPaymentsResponse();
+        String jsonResponse;
+
+        try {
+
+            ReportPaymentsRequest reportPaymentRequest = convertFromJson(reportPaymentsRequest, ReportPaymentsRequest.class);
+
+            if (reportPaymentRequest == null) {
+
+                logger.error("unitRegistration is null, failed to un-marshal JSON");
+
+            } else {
+
+                String generatorId = reportPaymentRequest.getParams().getGeneratorId();
+                String telesolaAccount = reportPaymentRequest.getParams().getTelesolaAccount();
+                String appKey = reportPaymentRequest.getParams().getAppKey();
+
+                int transactionLimit = (reportPaymentRequest.getParams().getTransactionLimit() == null) ? NamedConstants.MAX_NUMBER_PAYMENTS : Integer.parseInt(reportPaymentRequest.getParams().getTransactionLimit());
+                OrderFirst orderFirst = OrderFirst.convertToEnum(reportPaymentRequest.getParams().getOrderFirst());
+                String status = reportPaymentRequest.getParams().getStatus();
+                Status paymentStatus;
+
+                logger.debug("transactionLimit: " + transactionLimit + ", orderFirst: " + orderFirst + ", status: " + status);
+
+                if (status == null || status.trim().isEmpty()) {
+                    paymentStatus = Status.ALL;
+                } else {
+                    paymentStatus = Status.convertToEnum(status);
+                }
+
+                List<ReportPaymentsResponse.Data> dataList = new ArrayList<>();
+
+                reportPaymentResponse.setData(dataList);
+
+                Set<MoMoPayment> payments = DBManager.fetchPayments(MoMoPayment.class, transactionLimit, "id", orderFirst, paymentStatus, "generatorId", generatorId);
+                GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
+                Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount);
+
+                if (payments != null) {
+
+                    logger.debug("And now again, here, payments size: " + payments.size());
+
+                    Iterator<MoMoPayment> paymentsIter = payments.iterator();
+
+                    while (paymentsIter.hasNext()) {
+
+                        MoMoPayment payment = paymentsIter.next();
+                        ReportPaymentsResponse.Data data = reportPaymentResponse.new Data();
+
+                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+
+                        String aggregatorId = payment.getAggregatorTransID();
+
+                        data.setId((int) payment.getId());
+                        data.setTelesolaAccount(telesolaAccount);
+                        data.setFirstName(client.getName().getFirstname() + " " + client.getName().getSecondname());
+                        data.setGeneratorId(payment.getGeneratorId());
+                        data.setActivationCode(payment.getActivationCode());
+                        data.setMomoAccount(payment.getDebitAccount());
+                        data.setAmount(payment.getAmount().getAmount().toString());
+                        data.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                        data.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
+                        data.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                        data.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                        data.setAcknowledgeDate("");
+                        if (payment.getApprovalDate() != null) {
+                            data.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                        }
+                        data.setMomoId(payment.getMomoId());
+                        data.setStatus(payment.getStatus().getValue());
+                        data.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                        data.setEnableDuration(String.valueOf(payment.getEnableDuration()));
+
+                        logger.debug("about to add unit to unit list: " + data.getActivationCode() + ", status: " + data.getStatus());
+
+                        dataList.add(data);
+
+                    }
+                } else {
+                    logger.debug("No Payment transactions found in database");
+                }
+
+            }
+        } catch (Exception ex) {
+
+            logger.error("An error occurred while trying to fetch payment history : " + ex.getMessage());
+
+        } finally {
+
+            jsonResponse = GeneralUtils.convertToJson(reportPaymentResponse, ReportPaymentsResponse.class);
+        }
+
+        return jsonResponse;
+    }
+
+    /**
+     *
      * @param paymentHistoryPayload
      * @return
      */
@@ -245,8 +357,9 @@ public class JsonAPIServer extends HttpServlet {
 
         PaymentHistoryResponse paymentHistResponse = new PaymentHistoryResponse();
         List<PaymentHistoryResponse.Unit> units = new ArrayList<>();
-
         paymentHistResponse.setUnits(units);
+
+        String jsonResponse;
 
         try {
 
@@ -302,15 +415,15 @@ public class JsonAPIServer extends HttpServlet {
                         unit.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
                         unit.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
                         unit.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
-                        //unit.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
-                        unit.setAcknowledgeDate(String.valueOf(payment.getApprovalDate()));
+                        unit.setAcknowledgeDate("");
+                        if (payment.getApprovalDate() != null) {
+                            unit.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                        }
                         unit.setMomoId(payment.getMomoId());
                         unit.setStatus(payment.getStatus().getValue());
-                        unit.setDescription(payment.getStatusDescription());
-                        //unit.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
-                        unit.setPaymentDate(String.valueOf(payment.getCreatedOn()));
+                        unit.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
                         unit.setEnableDuration(String.valueOf(payment.getEnableDuration()));
-                        
+
                         logger.debug("about to add unit to unit list: " + unit.getActivationCode() + ", status: " + unit.getStatus());
 
                         units.add(unit);
@@ -324,22 +437,199 @@ public class JsonAPIServer extends HttpServlet {
         } catch (Exception ex) {
 
             logger.error("An error occurred while trying to fetch payment history : " + ex.getMessage());
-        }
+        } finally {
 
-        String jsonResponse = GeneralUtils.convertToJson(paymentHistResponse, PaymentHistoryResponse.class);
+            jsonResponse = GeneralUtils.convertToJson(paymentHistResponse, PaymentHistoryResponse.class);
+        }
 
         return jsonResponse;
     }
 
     /**
+     *
+     * @param paymentHistoryPayload
+     * @return
+     */
+    String getPaymentHistoryModified(String paymentHistoryReportPayload) {
+
+        String jsonResponse;
+
+        try {
+
+            PaymentHistoryRequest paymentHistRequest = convertFromJson(paymentHistoryReportPayload, PaymentHistoryRequest.class);
+
+            if (paymentHistRequest == null) {
+
+                logger.error("unitRegistration is null, failed to un-marshal JSON");
+
+            } else {
+
+                String generatorId = paymentHistRequest.getParams().getGeneratorId();
+                String telesolaAccount = paymentHistRequest.getParams().getTelesolaAccount();
+                String appKey = paymentHistRequest.getParams().getAppKey();
+
+                int transactionLimit = (paymentHistRequest.getParams().getTransactionLimit() == null) ? NamedConstants.MAX_NUMBER_PAYMENTS : Integer.parseInt(paymentHistRequest.getParams().getTransactionLimit());
+                OrderFirst orderFirst = OrderFirst.convertToEnum(paymentHistRequest.getParams().getOrderFirst());
+                String status = paymentHistRequest.getParams().getStatus();
+                Status paymentStatus;
+
+                logger.debug("transactionLimit: " + transactionLimit + ", orderFirst: " + orderFirst + ", status: " + status);
+
+                if (status == null || status.trim().isEmpty()) {
+                    paymentStatus = Status.ALL;
+                } else {
+                    paymentStatus = Status.convertToEnum(status);
+                }
+
+                //String cmsReport = paymentHistRequest.getParams().getRequesType();
+                String cmsReport = null;
+
+                logger.debug("We are here!!!");
+
+                if (null != cmsReport) {
+
+                    if (cmsReport.equalsIgnoreCase("CMS_REPORT")) { //put this in ENUM
+
+                        ReportPaymentsResponse paymentHistResponse = new ReportPaymentsResponse();
+                        List<ReportPaymentsResponse.Data> dataList = new ArrayList<>();
+
+                        paymentHistResponse.setData(dataList);
+
+                        Set<MoMoPayment> payments = DBManager.fetchPayments(MoMoPayment.class, transactionLimit, "id", orderFirst, paymentStatus, "generatorId", generatorId);
+                        GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
+                        Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount);
+
+                        if (payments != null) {
+
+                            logger.debug("And now again, here, payments size: " + payments.size());
+
+                            Iterator<MoMoPayment> paymentsIter = payments.iterator();
+
+                            while (paymentsIter.hasNext()) {
+
+                                MoMoPayment payment = paymentsIter.next();
+                                ReportPaymentsResponse.Data data = paymentHistResponse.new Data();
+
+                                int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+
+                                String aggregatorId = payment.getAggregatorTransID();
+
+                                data.setId((int) payment.getId());
+                                data.setTelesolaAccount(telesolaAccount);
+                                data.setFirstName(client.getName().getFirstname() + " " + client.getName().getSecondname());
+                                data.setGeneratorId(payment.getGeneratorId());
+                                data.setActivationCode(payment.getActivationCode());
+                                data.setMomoAccount(payment.getDebitAccount());
+                                data.setAmount(payment.getAmount().getAmount().toString());
+                                data.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                                data.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
+                                data.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                                data.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                                data.setAcknowledgeDate("");
+                                if (payment.getApprovalDate() != null) {
+                                    data.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                                }
+                                //unit.setAcknowledgeDate(String.valueOf(payment.getApprovalDate()));
+                                data.setMomoId(payment.getMomoId());
+                                data.setStatus(payment.getStatus().getValue());
+                                //unit.setDescription(payment.getStatusDescription());
+                                data.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                                data.setPaymentDate(String.valueOf(payment.getCreatedOn()));
+                                data.setEnableDuration(String.valueOf(payment.getEnableDuration()));
+
+                                logger.debug("about to add unit to unit list: " + data.getActivationCode() + ", status: " + data.getStatus());
+
+                                dataList.add(data);
+
+                            }
+                        } else {
+                            logger.debug("No Payment transactions found in database");
+                        }
+
+                        jsonResponse = GeneralUtils.convertToJson(paymentHistResponse, ReportPaymentsResponse.class);
+
+                        return jsonResponse;
+                    }
+                }
+
+                PaymentHistoryResponse paymentHistResponse = new PaymentHistoryResponse();
+                List<PaymentHistoryResponse.Unit> units = new ArrayList<>();
+
+                paymentHistResponse.setUnits(units);
+                paymentHistResponse.setTelesolaAccount(telesolaAccount);
+
+                Set<MoMoPayment> payments = DBManager.fetchPayments(MoMoPayment.class, transactionLimit, "id", orderFirst, paymentStatus, "generatorId", generatorId);
+                GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
+
+                if (payments != null) {
+
+                    logger.debug("And now again, here, payments size: " + payments.size());
+
+                    Iterator<MoMoPayment> paymentsIter = payments.iterator();
+
+                    while (paymentsIter.hasNext()) {
+
+                        MoMoPayment payment = paymentsIter.next();
+                        PaymentHistoryResponse.Unit unit = paymentHistResponse.new Unit();
+
+                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+
+                        String aggregatorId = payment.getAggregatorTransID();
+
+                        unit.setGeneratorId(payment.getGeneratorId());
+                        unit.setActivationCode(payment.getActivationCode());
+                        unit.setMomoAccount(payment.getDebitAccount());
+                        unit.setAmount(payment.getAmount().getAmount().toString());
+                        unit.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                        unit.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
+                        unit.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                        unit.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumberOfInstallmentsToBePaid()));
+                        unit.setAcknowledgeDate("");
+                        if (payment.getApprovalDate() != null) {
+                            unit.setAcknowledgeDate(DateUtils.convertLocalDateTimeToString(payment.getApprovalDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                        }
+                        //unit.setAcknowledgeDate(String.valueOf(payment.getApprovalDate()));
+                        unit.setMomoId(payment.getMomoId());
+                        unit.setStatus(payment.getStatus().getValue());
+                        //unit.setDescription(payment.getStatusDescription());
+                        unit.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                        unit.setPaymentDate(String.valueOf(payment.getCreatedOn()));
+                        unit.setEnableDuration(String.valueOf(payment.getEnableDuration()));
+
+                        logger.debug("about to add unit to unit list: " + unit.getActivationCode() + ", status: " + unit.getStatus());
+
+                        units.add(unit);
+
+                    }
+                } else {
+                    logger.debug("No Payment transactions found in database");
+                }
+
+                jsonResponse = GeneralUtils.convertToJson(paymentHistResponse, PaymentHistoryResponse.class);
+
+                return jsonResponse;
+            }
+
+        } catch (Exception ex) {
+
+            logger.error("An error occurred while trying to fetch payment history : " + ex.getMessage());
+        }
+
+        return "{}";
+    }
+
+    /**
      * A client is anyone who wishes to take possession of a Generator Unit such
-     * as an end-user, Distributor, Telesola employee (wanting to test the unit)
+     * as an end-user, Distributor, Telesola employee (wanting to test the data)
      * etc
      *
      * @param registerClientPayload
      * @return
      */
     String registerClient(String registerClientPayload) {
+
+        ClientRegistrationResponse clientRegResponse = new ClientRegistrationResponse();
+        String response;
 
         String status = Status.LOGGED.getValue();
         String statusDescription = "New CLient logged successfully";
@@ -362,7 +652,7 @@ public class JsonAPIServer extends HttpServlet {
 
                 //To-Do
                 //Check if userAccount & key are allowed to register Clients
-                ClientType clientType = ClientType.valueOf(clientRegRequest.getParams().getClientType());
+                ClientType clientType = ClientType.convertToEnum(clientRegRequest.getParams().getClientType());
                 String primaryContact = GeneralUtils.formatMSISDN(clientRegRequest.getParams().getPrimaryPhone());
                 //generate a Telesola account # from the user's primary contact number
 
@@ -409,19 +699,22 @@ public class JsonAPIServer extends HttpServlet {
 
             status = Status.NOT_LOGGED.getValue();
             statusDescription = "Errors occurred while trying to save the generator unit: " + ex.getMessage();
+            
+        } finally {
+            
+            clientRegResponse.setTelesolaAccount(telesolaAccount);
+            clientRegResponse.setStatus(status);
+            clientRegResponse.setStatusDescription(statusDescription);
+
+            response = GeneralUtils.convertToJson(clientRegResponse, ClientRegistrationResponse.class);
+
         }
-
-        ClientRegistrationResponse clientRegResponse = new ClientRegistrationResponse();
-        clientRegResponse.setTelesolaAccount(telesolaAccount);
-        clientRegResponse.setStatus(status);
-        clientRegResponse.setStatusDescription(statusDescription);
-
-        String jsonResponse = GeneralUtils.convertToJson(clientRegResponse, ClientRegistrationResponse.class);
-
-        return jsonResponse;
+        
+        return response;
     }
 
-    String registerGenerator(String unitRegisterPayload) {
+    String registerGenerator(String unitRegisterPayload
+    ) {
 
         String status = Status.LOGGED.getValue();
         String statusDescription = "New Generator Unit logged successfully";
@@ -450,7 +743,7 @@ public class JsonAPIServer extends HttpServlet {
 
             telesolaAccount = unitRegistration.getParams().getTelesolaAccount();
 
-            //get the most recently registered generator unit
+            //get the most recently registered generator data
             GeneratorUnit recentGenerator = DBManager.getMostRecentRecord(GeneratorUnit.class, "id");
 
             if (recentGenerator == null) {
@@ -473,7 +766,7 @@ public class JsonAPIServer extends HttpServlet {
             String contractPriceString = unitRegistration.getParams().getContractPrice();
             String depositAmountString = unitRegistration.getParams().getDepositAmount();
 
-            InstallmentDay installmentDay = InstallmentDay.convertToEnum(unitRegistration.getParams().getInstallmentDay());
+            InstallmentDay installmentDay = InstallmentDay.convertToEnum(String.valueOf(unitRegistration.getParams().getInstallmentDay()));
             InstallmentFrequency installmentFrequency = InstallmentFrequency.convertToEnum(unitRegistration.getParams().getInstallmentFrequency());
 
             String macAddress = unitRegistration.getParams().getMacAddress();
@@ -484,7 +777,7 @@ public class JsonAPIServer extends HttpServlet {
             Amounttype contractPrice = GeneralUtils.getAmountType(contractPriceString);
             Amounttype depositAmount = GeneralUtils.getAmountType(depositAmountString);
 
-            LocalDateTime contractDate = DateUtils.convertStringToDate(contractDateString, NamedConstants.DATE_TIME_DASH_FORMAT);
+            LocalDate contractDate = DateUtils.convertStringToDate(contractDateString, NamedConstants.DATE_DASH_FORMAT);
 
             Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount.toUpperCase());
 
@@ -529,7 +822,7 @@ public class JsonAPIServer extends HttpServlet {
                 generatorUnit.setMacAddress(macAddress);
                 generatorUnit.setEnableDurationDefault(GeneralUtils.getEnableDuration(commercialStatus, installmentFrequency));
 
-                Set<Integer> activationCodeSet = GeneralUtils.generatorActivationCodes(NamedConstants.NUM_OF_PAYMENT_IDS, telesolaAccount, generatorId);
+                Set<Integer> activationCodeSet = GeneralUtils.generateActivationCodes(NamedConstants.NUM_OF_ACTIVATION_CODES, telesolaAccount, generatorId);
                 List<Integer> validactivationCodes = GeneralUtils.convertSetToList(activationCodeSet);
                 List<Integer> usedActivationCodes = new ArrayList<>();
 
@@ -547,7 +840,7 @@ public class JsonAPIServer extends HttpServlet {
                 long id = DBManager.persistDatabaseModel(generatorUnit);
 
                 //To-Do 
-                //add condition to check for duplicate generator unit and return appropriately
+                //add condition to check for duplicate generator data and return appropriately
                 if (id == -1L) {
                     status = Status.NOT_LOGGED.getValue();
                     statusDescription = "Failed, while saving Generator Unit";
@@ -562,7 +855,7 @@ public class JsonAPIServer extends HttpServlet {
                     //send OTP to client for activating the app
                     //send activation code in SMS
                     String otp = String.valueOf(GeneralUtils.generatorOTP(telesolaAccount, generatorId));
-                    String smsText = GeneralUtils.getOTPMessage(client.getName().getFirstname(), otp);
+                    String smsText = GeneralUtils.getOTPMessage(client.getName().getFirstname(), otp, telesolaAccount, generatorId);
                     String recipientPhone = client.getPrimaryContactPhone();
 
                     Map<String, String> paramPairs = GeneralUtils.prepareTextMsgParams(smsText, recipientPhone);
@@ -598,16 +891,21 @@ public class JsonAPIServer extends HttpServlet {
 
     }
 
-    //String accountSetup() {}
-    //String paymentHistory() {}
+    /**
+     * 
+     * @param paymentPayload
+     * @return 
+     */
     String makePayment(String paymentPayload) {
 
+        MakePaymentResponse paymentResponse = new MakePaymentResponse();
+        
         //steps to implement
         //1. Log payment to DB
         //2. update the GeneratorUnit table
         //2. respond with LOGGED if ok to client otherwise NOT_LOGGED
         //3. Notify fetcher to send to aggregator via a call back i think
-        //transaction.setCreationDate(DateUtils.convertStringToDate(creationDate, NamedConstants.DATE_TIME_FORMAT));
+        //transaction.setCreationDate(DateUtils.convertStringToDateTime(creationDate, NamedConstants.DATE_TIME_FORMAT));
         MakePaymentRequest paymentRequest = convertFromJson(paymentPayload, MakePaymentRequest.class
         );
 
@@ -619,16 +917,20 @@ public class JsonAPIServer extends HttpServlet {
         String appKey = paymentRequest.getParams().getAppKey();
         String debitAccount = paymentRequest.getParams().getMomoAccount();
 
-        //get one of the pre-configured and stored valid/unused Ids
+        //get one of the pre-configured and stored valid/unused activation codes
         String activationCode = "";
 
-        GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", generatorId);
+        Map<String, Object> restrictions = new HashMap<>();
+        restrictions.put("generatorId", generatorId);
+        restrictions.put("telesolaAccount", telesolaAccount);
+
+        GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, restrictions);
 
         //check generator being paid for, if it exists
         if (generatorUnit == null) {
 
             status = Status.NOT_LOGGED.getValue();
-            statusDescription = "Failed to log payment: Generator unit with ID: " + generatorId + ", does not exist";
+            statusDescription = "Failed to log payment: Failed to match Unit ID " + generatorId + " and Telesola: " + telesolaAccount;
 
         } else {
 
@@ -670,7 +972,7 @@ public class JsonAPIServer extends HttpServlet {
         //send payment to handler service for processing with aggregator
         //update the GeneratorUnit table
         //response
-        MakePaymentResponse paymentResponse = new MakePaymentResponse();
+       
         paymentResponse.setTelesolaAccount(telesolaAccount);
         paymentResponse.setGeneratorId(generatorId);
         paymentResponse.setActivationCode(activationCode);
@@ -755,8 +1057,9 @@ public class JsonAPIServer extends HttpServlet {
         //send activation code in SMS
         Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", generatorUnit.getTelesolaAccount().toUpperCase());
 
+        int numberOfActiveDays = calculateNumberOfActiveDays(generatorUnit.getInstallmentFrequency());
         String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
-        String smsText = GeneralUtils.getActivationCodeMessage(client.getName().getFirstname(), amount, payment.getActivationCode());
+        String smsText = GeneralUtils.getActivationCodeMessage(client.getName().getFirstname(), amount, newOutstandingBal, payment.getActivationCode(), numberOfActiveDays);
         String recipientPhone = client.getPrimaryContactPhone();
 
         Map<String, String> paramPairs = GeneralUtils.prepareTextMsgParams(smsText, recipientPhone);
@@ -780,7 +1083,36 @@ public class JsonAPIServer extends HttpServlet {
 
     }
 
-    int calculateTotalNumberOfInstallments(InstallmentFrequency installmentFrequency, String contractPeriod) {
+    int calculateNumberOfActiveDays(InstallmentFrequency installmentFrequency
+    ) {
+
+        int numberOfActiveDays = 0;
+
+        switch (installmentFrequency) {
+
+            case BIWEEKLY:
+                numberOfActiveDays = 14;
+                break;
+
+            case MONTHLY:
+                numberOfActiveDays = 30;
+                break;
+
+            case WEEKLY:
+                numberOfActiveDays = 7;
+                break;
+
+            default:
+                numberOfActiveDays = 0;
+
+        }
+
+        return numberOfActiveDays;
+
+    }
+
+    int calculateTotalNumberOfInstallments(InstallmentFrequency installmentFrequency, String contractPeriod
+    ) {
 
         int numberOfInstallments = 0;
         int numberOfWeeksInMonth = 4;
@@ -808,7 +1140,8 @@ public class JsonAPIServer extends HttpServlet {
         return numberOfInstallments;
     }
 
-    int calculateInstallmentAmount(InstallmentFrequency installmentFrequency, String contractPeriod, String contractPriceString, String depositAmountString) {
+    int calculateInstallmentAmount(InstallmentFrequency installmentFrequency, String contractPeriod, String contractPriceString, String depositAmountString
+    ) {
 
         int calculatedInstallment = 0;
 
@@ -847,12 +1180,14 @@ public class JsonAPIServer extends HttpServlet {
         return calculatedInstallment;
     }
 
-    int calculateOutstandingBalance(String contractPriceString, String depositAmountString) {
+    int calculateOutstandingBalance(String contractPriceString, String depositAmountString
+    ) {
 
         return (Integer.parseInt(contractPriceString) - Integer.parseInt(depositAmountString));
     }
 
-    int calculateCummulativeAmountPaid(Amounttype contractAmount, Amounttype outstandingAmount) {
+    int calculateCummulativeAmountPaid(Amounttype contractAmount, Amounttype outstandingAmount
+    ) {
 
         //return (Integer.parseInt(depositAmountString) + (Integer.parseInt(installmentAmount) * numberOfInstallmentsPaid));
         int contractPrice = (int) Math.ceil(contractAmount.getAmount().doubleValue());

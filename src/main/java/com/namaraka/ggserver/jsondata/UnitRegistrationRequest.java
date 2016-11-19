@@ -107,7 +107,7 @@ public class UnitRegistrationRequest {
         private String installmentFrequency;
 
         @SerializedName(value = "installment_day")
-        private String installmentDay;
+        private int installmentDay;
 
         @SerializedName(value = "momo_account")
         private String momoAccount;
@@ -171,11 +171,11 @@ public class UnitRegistrationRequest {
             this.installmentFrequency = installmentFrequency;
         }
 
-        public String getInstallmentDay() {
+        public int getInstallmentDay() {
             return installmentDay;
         }
 
-        public void setInstallmentDay(String installmentDay) {
+        public void setInstallmentDay(int installmentDay) {
             this.installmentDay = installmentDay;
         }
 

@@ -6,27 +6,26 @@ public class ClientRegistrationRequest {
 
     /*
     JSON Request sample:
-    
-    //in one-line:    {"method":"REGISTER_CLIENT","credentials":{"user_account":"DKLA84009","user_key":"5644777"},"params":{"first_name":"Davies","second_name":"Mugume","primary_phone":"256786577309","other_phone":"256779009546","email_address":"smallg@gmail.com","physical_address":"Kisasi,Kyanja,Plot55,KisasiRoad","client_type":"CUSTOMER","app_secretkey":"32254kUHE39AH3P90EQ"},"extra":{"extra1":"value1","extra2":"value2","extra3":"value3"}}    
+
     {
         "method": "REGISTER_CLIENT",
-    
-        "credentials": { 
+
+        "credentials": {
             "user_account": "DKLA84009",
             "user_key": "5644777"
         },
-    
+
         "params": {
             "first_name": "Davies",
             "second_name": "Mugume",
-            "primary_phone": "256786577309",
-            "other_phone": "256779009546",
+            "primary_phone": "256774983602",
+            "other_phone": "256790790491",
             "email_address": "smallg@gmail.com",
-            "physical_address": "Kisasi, Kyanja,Plot 55, Kisasi Road",
+            "physical_address": "Kisasi,Kyanja,Plot55,KisasiRoad",
             "client_type": "CUSTOMER",
             "app_secretkey": "32254kUHE39AH3P90EQ"
         },
-    
+
         "extra": {
             "extra1": "value1",
             "extra2": "value2",
@@ -34,20 +33,11 @@ public class ClientRegistrationRequest {
         }
     }
     
-    
-    
-    JSON Response sample:
-    
-    {
-        "telesola_account": "774983602",
-        "status": "LOGGED",
-        "description": "New customer successfully registered"
-    }
 
      */
     @SerializedName(value = "method")
     private String methodName;
-    
+
     @SerializedName(value = "credentials")
     private Credentials credentials;
 
@@ -108,7 +98,7 @@ public class ClientRegistrationRequest {
 
         @SerializedName(value = "physical_address")
         private String physicalAddress;
-        
+
         @SerializedName(value = "client_type")
         private String clientType;
 
@@ -179,8 +169,8 @@ public class ClientRegistrationRequest {
             this.clientType = clientType;
         }
     }
-    
-     public class Credentials {
+
+    public class Credentials {
 
         @SerializedName(value = "user_account")
         private String userAccount;

@@ -20,7 +20,7 @@ public interface NamedConstants {
     public static final int MAX_NUMBER_PAYMENTS = 5;
     public static final OrderFirst ORDER_FIRST = OrderFirst.NEWEST;
 
-    public static final int NUM_OF_PAYMENT_IDS = 200;
+    public static final int NUM_OF_ACTIVATION_CODES = 100;
 
     public static final int MAMBOPAY_DEBIT_ACCOUNT_UNREGISTERED = 101;
     public static final int MAMBOPAY_DEBIT_INSUFFICIENT_FUNDS = 106;
@@ -41,8 +41,8 @@ public interface NamedConstants {
     public static final String SMS_API_SENDER_NAME = "TELESOLA";
     public static final String SMS_API_USERNAME = "codev";
     public static final String SMS_API_PASSWORD = "codev";
-    public static final String SMS_TEMPLATE_ACT_CODE ="Dear {firstName}, we have recieved your payment of {amount}. Your activation code is: {activationCode}. Thank you for using Telesola.";
-    public static final String SMS_TEMPLATE_OTP = "Dear {firstName}, your One-time PIN is: {otp}. Please enter this PIN to activate your Telesola app.";
+    public static final String SMS_TEMPLATE_ACT_CODE ="Hello {firstName}, you have paid {amount}, remaining balance is: {outstandingBalance}. Enter this code: {activationCode}, in your Telesola app to activate {numberOfActiveDays} days. Thank you.";
+    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your unit details are; One-time PIN: {otp}, Telesola account: {telesolaAccount}, unit ID: {generatorId}. Please enter the details to activate your app";
 
     public static final String SMS_API_PARAM_USERNAME = "user";
     public static final String SMS_API_PARAM_PASSOWRD = "password";
@@ -64,10 +64,17 @@ public interface NamedConstants {
     public static final String KAMPALA_TIME_ZONE = "Africa/Kampala";
 
     /**
-     * The Date format we are using in this application is in the format
+     * The DateTime format we are using in this application is in the format
      * "2016-07-25 08:55:09"
      */
     public static final String DATE_TIME_DASH_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    
+    
+    /**
+     * The Date only format we are using in this application is in the format
+     * "2016-07-25"
+     */
+    public static final String DATE_DASH_FORMAT = "yyyy-MM-dd";
 
     /**
      * All JSON request strings must have a root node named 'method' which

@@ -5,17 +5,17 @@ import com.namaraka.ggserver.interfaces.CMSReport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentHistoryResponse implements CMSReport {
+public class ReportPaymentsResponse implements CMSReport{
 
     /*
     JSON Response sample:
     
    {
-        "telesola_account": "786577309",
-        "status":"SUCCESSFUL",
-        "description":"Okay",
-        "units": [
+        
+        "data": [
             {
+                "id": 1,
+                "telesola_account": "786577309",
                 "generator_id": "A001",
                 "activation_code": "3509866",
                 "enable_duration":"7",
@@ -32,6 +32,8 @@ public class PaymentHistoryResponse implements CMSReport {
             },
     
             {
+                "id": 2,
+                "telesola_account": "786577309",
                 "generator_id": "A002",
                 "activation_code": "61866",
                 "enable_duration":"30",
@@ -50,35 +52,30 @@ public class PaymentHistoryResponse implements CMSReport {
     }
     
      */
-    @SerializedName(value = "telesola_account")
-    private String telesolaAccount;
+    @SerializedName(value = "data")
+    private List<Data> data;
 
-    @SerializedName(value = "units")
-    private List<Unit> units;
-
-    public String getTelesolaAccount() {
-        return telesolaAccount;
+    public List<Data> getData() {
+        return data;
     }
 
-    public void setTelesolaAccount(String telesolaAccount) {
-        this.telesolaAccount = telesolaAccount;
-    }
-
-    public List<Unit> getUnits() {
-        return units;
-    }
-
-    public void setUnits(List<Unit> units) {
-        this.units = units;
+    public void setData(List<Data> data) {
+        this.data = data;
     }
 
     /**
-     * Generator Unit representation
+     * Generator Data representation
      */
-    public class Unit {
+    public class Data {
+
+        @SerializedName(value = "id")
+        private int id;
 
         @SerializedName(value = "generator_id")
         private String generatorId;
+
+        @SerializedName(value = "telesola_account")
+        private String telesolaAccount;
 
         @SerializedName(value = "activation_code")
         private String activationCode;
@@ -88,19 +85,22 @@ public class PaymentHistoryResponse implements CMSReport {
 
         @SerializedName(value = "momo_account")
         private String momoAccount;
+        
+        @SerializedName(value = "first_name")
+        private String firstName;
 
         @SerializedName(value = "amount")
         private String amount;
-        
+
         @SerializedName(value = "outstanding_balance")
         private String outstandingBalance;
-        
+
         @SerializedName(value = "cumulative_amount_paid")
         private String cummulativeAmountPaid;
-        
+
         @SerializedName(value = "number_installments_paid")
         private String installmentsPaid;
-        
+
         @SerializedName(value = "number_installments_remaining")
         private String remaining_installments;
 
@@ -109,18 +109,26 @@ public class PaymentHistoryResponse implements CMSReport {
 
         @SerializedName(value = "acknowledge_date")
         private String acknowledgeDate;
-        
+
         @SerializedName(value = "enable_duration")
         private String enableDuration;
 
         @SerializedName(value = "status")
         private String status;
-        
+
         @SerializedName(value = "description")
         private String description;
 
         @SerializedName(value = "app_secretkey")
         private String appKey;
+
+        public String getTelesolaAccount() {
+            return telesolaAccount;
+        }
+
+        public void setTelesolaAccount(String telesolaAccount) {
+            this.telesolaAccount = telesolaAccount;
+        }
 
         public String getActivationCode() {
             return activationCode;
@@ -240,6 +248,22 @@ public class PaymentHistoryResponse implements CMSReport {
 
         public void setRemaining_installments(String remaining_installments) {
             this.remaining_installments = remaining_installments;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
         }
     }
 }

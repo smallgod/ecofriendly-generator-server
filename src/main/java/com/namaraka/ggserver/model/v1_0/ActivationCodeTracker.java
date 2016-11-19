@@ -18,7 +18,7 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 
 public class ActivationCodeTracker implements Serializable {
 
-    private static final long serialVersionUID = 7568430557483372104L;
+    private static final long serialVersionUID = -2524419981222564449L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -7,6 +7,7 @@ package com.namaraka.ggserver.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
@@ -24,18 +25,30 @@ public class DateUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
-    //patterns
-    //   "dd/MM/yyyy HH:mm:ss"
     /**
-     *
+     *Pattern - yyyy/MM/dd HH:mm:ss
      * @param string
      * @param dateStringFormat
      * @return
      */
-    public static LocalDateTime convertStringToDate(String string, String dateStringFormat) {
+    public static LocalDateTime convertStringToDateTime(String string, String dateStringFormat) {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern(dateStringFormat);
         LocalDateTime dt = formatter.parseLocalDateTime(string);
+
+        return dt;
+    }
+    
+    /**
+     * Pattern - yyyy/MM/dd
+     * @param string
+     * @param dateStringFormat
+     * @return 
+     */
+    public static LocalDate convertStringToDate(String string, String dateStringFormat) {
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateStringFormat);
+        LocalDate dt = formatter.parseLocalDate(string);
 
         return dt;
     }
@@ -180,6 +193,14 @@ public class DateUtils {
         
         DateTimeFormatter formatter = DateTimeFormat.forPattern(dateTimePattern);
         String formattedDateTime = dateTime.toString(formatter); // "1986-04-08 12:30"
+
+        return formattedDateTime;
+    }
+    
+     public static String convertLocalDateToString(LocalDate dateTime, String dateTimePattern) {
+        
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateTimePattern);
+        String formattedDateTime = dateTime.toString(formatter); // "1986-04-08"
 
         return formattedDateTime;
     }

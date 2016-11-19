@@ -58,7 +58,7 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
     
     private String debitAccount; //Mobile Money account to debit
 
-    //@Type(type = "jodalocaldatetime")
+    @Type(type = "jodalocaldatetime")
     private LocalDateTime approvalDate;
     
     @Enumerated(EnumType.STRING)
