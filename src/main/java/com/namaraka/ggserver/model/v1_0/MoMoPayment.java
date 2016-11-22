@@ -41,33 +41,33 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
 
     @Column(nullable = false)
     private String telesolaAccount;
-    
+
     @Column(nullable = false)
     private String generatorId;
-    
+
     private String activationCode; //code that can activate the Unit
-    
+
     private String paymentId;
-    
+
     private String aggregatorTransID; //transaction ID issued by aggregator
-    
+
     private String momoId; //ID issued by MNO after user confirms payment
-    
+
     @Embedded
     private Amounttype amount; //initialise this to do away with null pointers
-    
+
     private String debitAccount; //Mobile Money account to debit
 
     @Type(type = "jodalocaldatetime")
     private LocalDateTime approvalDate;
-    
+
     @Enumerated(EnumType.STRING)
     private Status status;
-    
+
     private String statusDescription;
-    
+
     private int enableDuration;
-    
+
     @Embedded
     private Extensiontype extensionType;
 
@@ -98,7 +98,7 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
     public boolean isExtensionType() {
         return (this.getExtensionType() != null);
     }
-    
+
     /**
      * Gets the value of the amount property.
      *
@@ -330,7 +330,6 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
 //            throw new MyCustomException("username `" + name + "` already exists");
 //        }
 //    }
-
     public String getGeneratorId() {
         return generatorId;
     }
@@ -353,5 +352,10 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
 
     public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
+    }
+
+    @Override
+    public String getModifyAction() {
+        return "modify action";
     }
 }

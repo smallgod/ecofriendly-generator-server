@@ -427,5 +427,9 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
         this.activationCodes = activationCodes;
     }
     
+     @Override
+    public String getModifyAction() {
+        return "modify action";
+    }
     
 }

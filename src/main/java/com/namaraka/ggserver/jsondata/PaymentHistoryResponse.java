@@ -77,6 +77,9 @@ public class PaymentHistoryResponse implements CMSReport {
      */
     public class Unit {
 
+        @SerializedName(value = "id")
+        private long id;
+        
         @SerializedName(value = "generator_id")
         private String generatorId;
 
@@ -240,6 +243,14 @@ public class PaymentHistoryResponse implements CMSReport {
 
         public void setRemaining_installments(String remaining_installments) {
             this.remaining_installments = remaining_installments;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
         }
     }
 }

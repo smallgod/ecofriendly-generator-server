@@ -163,4 +163,9 @@ public class Client extends BaseModel implements Auditable, Serializable {
         this.clientStatus = clientStatus;
     }
 
+    @Override
+    public String getModifyAction() {
+        return "modify action";
+    }
+
 }

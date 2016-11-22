@@ -103,8 +103,12 @@ public class AuditTrailInterceptor extends EmptyInterceptor {
 
             setValue(   currentState, propertyNames, "lastModifiedBy", ((Auditable) entity).getUsername());
             setValue(   currentState, propertyNames, "dateLastModified", new LocalDateTime());
+            setValue(   currentState, propertyNames, "lastModifyAction", ((Auditable) entity).getModifyAction());
+            
             updateValue(currentState, propertyNames, "dateModifiedHistory", ((Auditable) entity).getUsername());
             updateValue(currentState, propertyNames, "modifiedByHistory", ((Auditable) entity).getUsername());
+            updateValue(currentState, propertyNames, "modifyActionsHistory", ((Auditable) entity).getModifyAction());
+            
 
             return true;
         }

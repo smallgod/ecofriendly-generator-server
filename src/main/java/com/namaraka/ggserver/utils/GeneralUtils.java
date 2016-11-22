@@ -573,7 +573,7 @@ public class GeneralUtils {
         Integer generatedActivationCode;
 
         int recordsAdded = newActivationCodes.size();
-        
+
         while (recordsAdded < numberOfValuesToGenerate) {
 
             generatedActivationCode = createRandomInteger(START, END, random);
@@ -600,7 +600,7 @@ public class GeneralUtils {
                     newActivationCodes.add(generatedActivationCode);
 
                     trackDuplicates.add(generatedActivationCode);
-                    
+
                     recordsAdded++;
 
                 } else {
@@ -935,6 +935,29 @@ public class GeneralUtils {
     }
 
     /**
+     * getPaymentFailMessage message from Template
+     * 
+     * @param firstName
+     * @param generatorId
+     * @param statusDescription
+     * @return 
+     */
+    public static String getPaymentFailMessage(String firstName, String generatorId, String statusDescription) {
+
+        //Object[] params = {"nameRobert", "rhume55@gmail.com"};
+        Map<String, String> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("generatorId", generatorId);
+        map.put("statusDescription", statusDescription);
+
+        String message = MapFormat.format(NamedConstants.SMS_PAYMENT_FAILURE, map);
+        logger.debug("Payment Failure message going out : " + message);
+
+        return message;
+    }
+
+    /**
      * getActivationMessage from template
      *
      * @param firstName
@@ -950,7 +973,7 @@ public class GeneralUtils {
 
         map.put("firstName", firstName);
         map.put("otp", otp);
-         map.put("telesolaAccount", telesolaAccount);
+        map.put("telesolaAccount", telesolaAccount);
         map.put("generatorId", generatorId);
 
         String message = MapFormat.format(NamedConstants.SMS_TEMPLATE_OTP, map);

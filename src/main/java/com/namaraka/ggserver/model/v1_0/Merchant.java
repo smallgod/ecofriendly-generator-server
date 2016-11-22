@@ -252,4 +252,8 @@ public class Merchant extends BaseModel implements Auditable, Serializable {
         this.merchantStatus = merchantStatus;
     }
 
+     @Override
+    public String getModifyAction() {
+        return "modify action";
+    }
 }

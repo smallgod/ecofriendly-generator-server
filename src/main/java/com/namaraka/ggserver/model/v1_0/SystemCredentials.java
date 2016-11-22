@@ -156,4 +156,8 @@ public class SystemCredentials extends BaseModel implements Auditable, Serializa
         this.generatorId = generatorId;
     }
 
+     @Override
+    public String getModifyAction() {
+        return "modify action";
+    }
 }

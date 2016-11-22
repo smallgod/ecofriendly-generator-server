@@ -86,7 +86,6 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                 String jsonRequest = GeneralUtils.convertToJson(request, DebitCustomerRequest.class);
 
                 logger.debug("New Request to MamboPay server: " + jsonRequest);*/
-
                 HttpClientPool clientPool = jobsData.getHttpClientPool();
 
                 Map<String, String> paramPairs = new HashMap<>();
@@ -95,7 +94,7 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                 paramPairs.put(NamedConstants.MAMBOPAY_PARAM_AMOUNT, amount);
                 paramPairs.put(NamedConstants.MAMBOPAY_PARAM_TRANSID, paymentId);
                 paramPairs.put(NamedConstants.MAMBOPAY_PARAM_CALLBACKURL, NamedConstants.GGSERVER_CALLBACK_URL);
-                        
+
                 String url = NamedConstants.MAMBOPAY_DEBIT_URL;
 
                 String response = clientPool.sendRemoteRequest("", url, paramPairs, HTTPMethod.POST);
@@ -171,7 +170,13 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                 payment.setStatus(status);
                 payment.setStatusDescription(message);
 
-                DBManager.updateDatabaseModel(payment);
+                boolean updated = DBManager.updateDatabaseModel(payment);
+
+                if (!updated) {
+                    logger.error("Application Failed to update Payment status, to avoid sending to many requests to Aggregator or MoMo servers, let's terminate the program!!");
+                    System.exit(1);
+
+                }
             }
 
         } else {

@@ -1156,10 +1156,16 @@ public final class DBManager {
         }
     }
 
-    public static void updateDatabaseModel(Object dbObject) {
+    /**
+     * 
+     * @param dbObject
+     * @return 
+     */
+    public static boolean updateDatabaseModel(Object dbObject) {
 
         Session tempSession = getSession();
         Transaction transaction = null;
+        boolean updated  = false;
 
         try {
             transaction = tempSession.beginTransaction();
@@ -1173,13 +1179,20 @@ public final class DBManager {
             //tempSession.update(retrievedDatabaseModel);
             tempSession.flush();
             transaction.commit();
+            updated = Boolean.TRUE;
 
         } catch (HibernateException he) {
+            
+            updated = Boolean.FALSE;
+            
             if (transaction != null) {
                 transaction.rollback();
             }
             logger.error("hibernate exception updating DB object: " + he.getMessage());
         } catch (Exception e) {
+            
+             updated = Boolean.FALSE;
+             
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -1187,6 +1200,8 @@ public final class DBManager {
         } finally {
             closeSession(tempSession);
         }
+        
+        return updated;
     }
 
     /**

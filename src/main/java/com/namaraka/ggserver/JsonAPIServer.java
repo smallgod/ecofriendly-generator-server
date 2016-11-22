@@ -58,10 +58,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import org.joda.time.LocalDate;
+import com.namaraka.ggserver.utils.PayHistoryUnitComparator;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import java.util.Collections;
 
 /**
  *
@@ -407,6 +406,7 @@ public class JsonAPIServer extends HttpServlet {
 
                         String aggregatorId = payment.getAggregatorTransID();
 
+                        unit.setId(payment.getId());
                         unit.setGeneratorId(payment.getGeneratorId());
                         unit.setActivationCode(payment.getActivationCode());
                         unit.setMomoAccount(payment.getDebitAccount());
@@ -434,6 +434,9 @@ public class JsonAPIServer extends HttpServlet {
                 }
             }
 
+            Collections.sort(units, new PayHistoryUnitComparator());
+
+            //units.sort(new PayHistoryUnitComparator());
         } catch (Exception ex) {
 
             logger.error("An error occurred while trying to fetch payment history : " + ex.getMessage());
@@ -699,9 +702,9 @@ public class JsonAPIServer extends HttpServlet {
 
             status = Status.NOT_LOGGED.getValue();
             statusDescription = "Errors occurred while trying to save the generator unit: " + ex.getMessage();
-            
+
         } finally {
-            
+
             clientRegResponse.setTelesolaAccount(telesolaAccount);
             clientRegResponse.setStatus(status);
             clientRegResponse.setStatusDescription(statusDescription);
@@ -709,7 +712,7 @@ public class JsonAPIServer extends HttpServlet {
             response = GeneralUtils.convertToJson(clientRegResponse, ClientRegistrationResponse.class);
 
         }
-        
+
         return response;
     }
 
@@ -892,14 +895,14 @@ public class JsonAPIServer extends HttpServlet {
     }
 
     /**
-     * 
+     *
      * @param paymentPayload
-     * @return 
+     * @return
      */
     String makePayment(String paymentPayload) {
 
         MakePaymentResponse paymentResponse = new MakePaymentResponse();
-        
+
         //steps to implement
         //1. Log payment to DB
         //2. update the GeneratorUnit table
@@ -956,7 +959,7 @@ public class JsonAPIServer extends HttpServlet {
             payment.setDebitAccount(debitAccount);
             payment.setEnableDuration(0);
             payment.setStatus(Status.LOGGED);
-            payment.setDescription("Payment logged successfuly");
+            payment.setStatusDescription("Payment logged successfuly");
 
             long id = DBManager.persistDatabaseModel(payment);
 
@@ -972,7 +975,6 @@ public class JsonAPIServer extends HttpServlet {
         //send payment to handler service for processing with aggregator
         //update the GeneratorUnit table
         //response
-       
         paymentResponse.setTelesolaAccount(telesolaAccount);
         paymentResponse.setGeneratorId(generatorId);
         paymentResponse.setActivationCode(activationCode);
@@ -995,7 +997,7 @@ public class JsonAPIServer extends HttpServlet {
 
         PaymentStatusCallBackResponse statusCallbackResponse = new PaymentStatusCallBackResponse();
 
-        String reference = statusCallbackRequest.getParams().getReference();
+        //String reference = statusCallbackRequest.getParams().getReference();
         String paymentId = statusCallbackRequest.getParams().getTransactionId();
         String momoId = statusCallbackRequest.getParams().getMomoId();
         String subscriptionId = statusCallbackRequest.getParams().getSubscriptionId();
@@ -1006,75 +1008,109 @@ public class JsonAPIServer extends HttpServlet {
         Status finalStatus;
 
         MoMoPayment payment = DBManager.fetchSingleRecord(MoMoPayment.class, "paymentId", paymentId);
-        GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", payment.getGeneratorId());
+        String ackStatusDesc;
 
-        int amountPaid = (int) Math.ceil(payment.getAmount().getAmount().doubleValue());
-        int currTotalNoOfInstallmentsPaid = generatorUnit.getNumberOfInstallmentsPaid();
-        int currOutstandingBal = (int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue());
-        int newOutstandingBal = currOutstandingBal - amountPaid;
+        if (payment.getStatus() == Status.FAILED || payment.getStatus() == Status.SUCCESSFUL) {
 
-        if (statusCode == NamedConstants.MAMBOPAY_DEBIT_SUCCESS) { //successful
-
-            ActivationCodes activationCodeObj = GeneralUtils.convertFromJson(generatorUnit.getActivationCodes(), ActivationCodes.class);
-            //remove the ID from the validactivationCodes
-            int activationCode = activationCodeObj.getValidActivationCodes().remove((activationCodeObj.getValidActivationCodes().size()) - 1);
-            //add the Id to the usedActivationCodes
-            activationCodeObj.getUsedActivationCodes().add(activationCode);
-
-            String activationCodes = GeneralUtils.convertToJson(activationCodeObj, ActivationCodes.class);
-
-            generatorUnit.setActivationCodes(activationCodes);
-            generatorUnit.setNumberOfInstallmentsPaid(++currTotalNoOfInstallmentsPaid);
-            generatorUnit.setOutstandingBalance(GeneralUtils.getAmountType(String.valueOf(newOutstandingBal)));
-            generatorUnit.setPaymentProgress(PaymentProgress.NORMAL);
-
-            if (newOutstandingBal <= 0) {
-                generatorUnit.setPaymentProgress(PaymentProgress.COMPLETED);
-            }
-
-            finalStatus = Status.SUCCESSFUL;
-            finalStatusDesc = "Payment processed successfuly";
-            payment.setEnableDuration(generatorUnit.getEnableDurationDefault());
-
-            //update generator table
-            DBManager.updateDatabaseModel(generatorUnit);
+            logger.warn("New status from aggregator: " + statusCode + " - Trying to acknowledge payment already in Final status of: " + payment.getStatus());
+            ackStatusDesc = "Payment already acknowledged as: " + payment.getStatus();
 
         } else {
 
-            finalStatus = Status.FAILED;
-            finalStatusDesc = "Payment Failed: " + statusDescription;
+            GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", payment.getGeneratorId());
+
+            int amountPaid = (int) Math.ceil(payment.getAmount().getAmount().doubleValue());
+            int currTotalNoOfInstallmentsPaid = generatorUnit.getNumberOfInstallmentsPaid();
+            int currOutstandingBal = (int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue());
+            int newOutstandingBal = currOutstandingBal - amountPaid;
+
+            String smsText;
+            String recipientPhone;
+
+            switch (statusCode) {
+
+                case NamedConstants.MAMBOPAY_DEBIT_SUCCESS:
+                    //successful
+
+                    ActivationCodes activationCodeObj = GeneralUtils.convertFromJson(generatorUnit.getActivationCodes(), ActivationCodes.class);
+                    //remove the ID from the validactivationCodes
+                    int activationCode = activationCodeObj.getValidActivationCodes().remove((activationCodeObj.getValidActivationCodes().size()) - 1);
+                    //add the Id to the usedActivationCodes
+                    activationCodeObj.getUsedActivationCodes().add(activationCode);
+                    String activationCodes = GeneralUtils.convertToJson(activationCodeObj, ActivationCodes.class);
+                    generatorUnit.setActivationCodes(activationCodes);
+                    generatorUnit.setNumberOfInstallmentsPaid(++currTotalNoOfInstallmentsPaid);
+                    generatorUnit.setOutstandingBalance(GeneralUtils.getAmountType(String.valueOf(newOutstandingBal)));
+                    generatorUnit.setPaymentProgress(PaymentProgress.NORMAL);
+
+                    if (newOutstandingBal <= 0) {
+                        generatorUnit.setPaymentProgress(PaymentProgress.COMPLETED);
+                    }
+
+                    finalStatus = Status.SUCCESSFUL;
+                    finalStatusDesc = "Payment processed successfuly";
+                    payment.setEnableDuration(generatorUnit.getEnableDurationDefault());
+
+                    //update generator table
+                    DBManager.updateDatabaseModel(generatorUnit);
+
+                    break;
+
+                case NamedConstants.MAMBOPAY_DEBIT_CUSTOMER_UNAPPROVED:
+
+                    finalStatus = Status.FAILED;
+                    finalStatusDesc = "Failed to approve payment in about 6 min.: " + statusDescription;
+                    break;
+
+                default:
+
+                    finalStatus = Status.FAILED;
+                    finalStatusDesc = "Payment Failed: " + statusDescription;
+                    break;
+
+            }
+
+            //update payments table
+            payment.setStatus(finalStatus);
+            payment.setStatusDescription(finalStatusDesc);
+            payment.setApprovalDate(DateUtils.getDateTimeNow(NamedConstants.KAMPALA_TIME_ZONE));
+            payment.setMomoId(momoId);
+            //payment.setAggregatorTransID(reference);
+
+            DBManager.updateDatabaseModel(payment);
+
+            //Only send SMS with code, if Payment is successful
+            Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", generatorUnit.getTelesolaAccount().toUpperCase());
+
+            int numberOfActiveDays = calculateNumberOfActiveDays(generatorUnit.getInstallmentFrequency());
+            String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
+
+            switch (finalStatus) {
+                
+                case SUCCESSFUL:
+                    smsText = GeneralUtils.getActivationCodeMessage(client.getName().getFirstname(), amount, newOutstandingBal, payment.getActivationCode(), numberOfActiveDays);
+                    break;
+
+                default:
+                    smsText = GeneralUtils.getPaymentFailMessage(client.getName().getFirstname(), generatorUnit.getGeneratorId(), finalStatusDesc);
+
+            }
+
+            recipientPhone = client.getPrimaryContactPhone();
+            Map<String, String> paramPairs = GeneralUtils.prepareTextMsgParams(smsText, recipientPhone);
+            String response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
+
+            logger.info("Response from SMS web API Server: " + response);
+
+            ackStatusDesc = "Payment acknowledged successfuly";
+
         }
 
-        //update payments table
-        payment.setStatus(finalStatus);
-        payment.setStatusDescription(finalStatusDesc);
-        payment.setApprovalDate(DateUtils.getDateTimeNow(NamedConstants.KAMPALA_TIME_ZONE));
-        payment.setMomoId(momoId);
-        payment.setAggregatorTransID(reference);
-
-        DBManager.updateDatabaseModel(payment);
-
-        //send activation code in SMS
-        Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", generatorUnit.getTelesolaAccount().toUpperCase());
-
-        int numberOfActiveDays = calculateNumberOfActiveDays(generatorUnit.getInstallmentFrequency());
-        String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
-        String smsText = GeneralUtils.getActivationCodeMessage(client.getName().getFirstname(), amount, newOutstandingBal, payment.getActivationCode(), numberOfActiveDays);
-        String recipientPhone = client.getPrimaryContactPhone();
-
-        Map<String, String> paramPairs = GeneralUtils.prepareTextMsgParams(smsText, recipientPhone);
-
-        String url = NamedConstants.SMS_API_URL;
-
-        String response = AppEntry.clientPool.sendRemoteRequest("", url, paramPairs, HTTPMethod.GET);
-
-        logger.info("Response from SMS web API Server: " + response);
-
         //response
-        statusCallbackResponse.setReference(reference);
+        //statusCallbackResponse.setReference(reference);
         statusCallbackResponse.setTransactionId(paymentId);
         statusCallbackResponse.setAcknowledgeStatus(Status.SUCCESSFUL.getValue());
-        statusCallbackResponse.setAcknowledgeDescription("Payment final status acknowledged successfuly");
+        statusCallbackResponse.setAcknowledgeDescription(ackStatusDesc);
 
         String resp = GeneralUtils.convertToJson(statusCallbackResponse, PaymentStatusCallBackResponse.class
         );

@@ -11,4 +11,5 @@ package com.namaraka.ggserver.utils;
  */
 public interface Auditable extends DBMSXMLObject{
     String getUsername();
+    String getModifyAction();
 }

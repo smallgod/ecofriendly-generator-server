@@ -40,22 +40,25 @@ public class BaseModel implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private long id;
 
-
     private String createdBy;
 
     @Type(type = "jodalocaldatetime")
     private LocalDateTime createdOn;
 
-    private String lastModifiedBy;
-
     @Type(type = "jodalocaldatetime")
     private LocalDateTime dateLastModified;
 
+    private String lastModifiedBy;
+
+    private String lastModifyAction;
+
     private String dateModifiedHistory; // '|' separated strings
-    private String modifiedByHistory; // '|' separated strings    
 
-    private String description;
+    private String modifiedByHistory; // '|' separated strings 
 
+    private String modifyActionsHistory; // '|' separated strings    
+
+    //private String description;
     /**
      * Get Id of the Object
      *
@@ -87,9 +90,9 @@ public class BaseModel implements Serializable {
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
-        
+
         System.out.println(">>>>>>>>>>>>>>... >>>>>>>>>>>... CreatedON called!!");
-        
+
         this.createdOn = LocalDateTime.now();
     }
 
@@ -125,11 +128,26 @@ public class BaseModel implements Serializable {
         this.modifiedByHistory = modifiedByHistory;
     }
 
-    public String getDescription() {
+    /*public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }*/
+    public String getModifyActionsHistory() {
+        return modifyActionsHistory;
+    }
+
+    public void setModifyActionsHistory(String modifyActionsHistory) {
+        this.modifyActionsHistory = modifyActionsHistory;
+    }
+
+    public String getLastModifyAction() {
+        return lastModifyAction;
+    }
+
+    public void setLastModifyAction(String lastModifyAction) {
+        this.lastModifyAction = lastModifyAction;
     }
 }

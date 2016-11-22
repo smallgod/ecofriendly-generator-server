@@ -42,6 +42,7 @@ public interface NamedConstants {
     public static final String SMS_API_USERNAME = "codev";
     public static final String SMS_API_PASSWORD = "codev";
     public static final String SMS_TEMPLATE_ACT_CODE ="Hello {firstName}, you have paid {amount}, remaining balance is: {outstandingBalance}. Enter this code: {activationCode}, in your Telesola app to activate {numberOfActiveDays} days. Thank you.";
+    public static final String SMS_PAYMENT_FAILURE ="Hello {firstName}, payment inititiated for generator ID: {generatorId}, has Failed. Reason: {statusDescription}. Please initiate/approve another payment to activate your generator. Thank you.";
     public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your unit details are; One-time PIN: {otp}, Telesola account: {telesolaAccount}, unit ID: {generatorId}. Please enter the details to activate your app";
 
     public static final String SMS_API_PARAM_USERNAME = "user";

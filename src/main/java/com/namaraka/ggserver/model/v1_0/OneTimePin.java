@@ -63,4 +63,8 @@ public class OneTimePin extends BaseModel implements Auditable, Serializable {
         return this;
     }
 
+     @Override
+    public String getModifyAction() {
+        return "modify action";
+    }
 }

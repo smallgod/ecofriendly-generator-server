@@ -392,4 +392,8 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
         this.payerID = payerID;
     }
 
+     @Override
+    public String getModifyAction() {
+        return "modify action";
+    }
 }
