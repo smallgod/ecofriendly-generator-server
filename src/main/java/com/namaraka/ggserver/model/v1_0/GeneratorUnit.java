@@ -72,10 +72,17 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     @Enumerated(EnumType.STRING)
     private ClientType registeredTo;
 
-    @Type(type = "jodalocaldate")
-    private LocalDate contractDate;
-    
+    @Type(type = "jodalocaldatetime")
+    private LocalDateTime contractDate;
+
     private int enableDurationDefault; //set it at account setup
+
+    private int remainingDays;  //Number of days remaining to next installment payment
+
+    private boolean isDepositAmountPaid; //shows if the client has paid the initial deposit amount for this generator
+
+    @Type(type = "jodalocaldatetime")
+    private LocalDateTime nextPaymentDueDate;
 
     @Embedded
     @AttributeOverrides({
@@ -98,7 +105,7 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     })
     private Amounttype installmentAmount;
 
-    @Column(name = "contractPeriod_months", nullable = false)
+    @Column(name = "repayment_period_months", nullable = false)
     private String contractPeriod;
 
     @Enumerated(EnumType.STRING)
@@ -114,13 +121,13 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     })
     private Amounttype outstandingBalance;
 
-    private int numberOfInstallmentsPaid;
+    private int totalNumOfInstallmentsSoFarPaid;
 
-    private int totalNumberOfInstallmentsToBePaid;
+    private int totalNumOfInstallmentsToBePaid;
 
     @Enumerated(EnumType.STRING)
     private PaymentProgress paymentProgress;
-    
+
     @Column(length = 10000) //might want to change this - what if the data is too long
     private String activationCodes;
 
@@ -258,14 +265,14 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     /**
      * @return the contractDate
      */
-    public LocalDate getContractDate() {
+    public LocalDateTime getContractDate() {
         return contractDate;
     }
 
     /**
      * @param contractDate the contractDate to set
      */
-    public void setContractDate(LocalDate contractDate) {
+    public void setContractDate(LocalDateTime contractDate) {
         this.contractDate = contractDate;
     }
 
@@ -374,20 +381,20 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
         this.outstandingBalance = outstandingBalance;
     }
 
-    public int getNumberOfInstallmentsPaid() {
-        return numberOfInstallmentsPaid;
+    public int getTotalNumOfInstallmentsSoFarPaid() {
+        return totalNumOfInstallmentsSoFarPaid;
     }
 
-    public void setNumberOfInstallmentsPaid(int numberOfInstallmentsPaid) {
-        this.numberOfInstallmentsPaid = numberOfInstallmentsPaid;
+    public void setTotalNumOfInstallmentsSoFarPaid(int totalNumOfInstallmentsSoFarPaid) {
+        this.totalNumOfInstallmentsSoFarPaid = totalNumOfInstallmentsSoFarPaid;
     }
 
-    public int getTotalNumberOfInstallmentsToBePaid() {
-        return totalNumberOfInstallmentsToBePaid;
+    public int getTotalNumOfInstallmentsToBePaid() {
+        return totalNumOfInstallmentsToBePaid;
     }
 
-    public void setTotalNumberOfInstallmentsToBePaid(int totalNumberOfInstallmentsToBePaid) {
-        this.totalNumberOfInstallmentsToBePaid = totalNumberOfInstallmentsToBePaid;
+    public void setTotalNumOfInstallmentsToBePaid(int totalNumOfInstallmentsToBePaid) {
+        this.totalNumOfInstallmentsToBePaid = totalNumOfInstallmentsToBePaid;
     }
 
     public String getContractPeriod() {
@@ -408,7 +415,7 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     @Override
     public String toString() {
-        return "GeneratorUnit{" + "generatorId=" + generatorId + ", telesolaAccount=" + telesolaAccount + ", macAddress=" + macAddress + ", mobileMoneyAccount=" + mobileMoneyAccount + ", commercialStatus=" + commercialStatus + ", registeredTo=" + registeredTo + ", contractDate=" + contractDate + ", contractPrice=" + contractPrice.getAmount() + ", depositAmount=" + depositAmount.getAmount() + ", installmentAmount=" + installmentAmount.getAmount() + ", contractPeriod=" + contractPeriod + ", installmentFrequency=" + installmentFrequency + ", installmentDay=" + installmentDay + ", outstandingBalance=" + outstandingBalance.getAmount() + ", numberOfInstallmentsPaid=" + numberOfInstallmentsPaid + ", totalNumberOfInstallmentsToBePaid=" + totalNumberOfInstallmentsToBePaid + ", paymentProgress=" + paymentProgress + '}';
+        return "GeneratorUnit{" + "generatorId=" + generatorId + ", telesolaAccount=" + telesolaAccount + ", macAddress=" + macAddress + ", mobileMoneyAccount=" + mobileMoneyAccount + ", commercialStatus=" + commercialStatus + ", registeredTo=" + registeredTo + ", contractDate=" + contractDate + ", contractPrice=" + contractPrice.getAmount() + ", depositAmount=" + depositAmount.getAmount() + ", installmentAmount=" + installmentAmount.getAmount() + ", contractPeriod=" + contractPeriod + ", installmentFrequency=" + installmentFrequency + ", installmentDay=" + installmentDay + ", outstandingBalance=" + outstandingBalance.getAmount() + ", numberOfInstallmentsPaid=" + totalNumOfInstallmentsSoFarPaid + ", totalNumberOfInstallmentsToBePaid=" + totalNumOfInstallmentsToBePaid + ", paymentProgress=" + paymentProgress + '}';
     }
 
     public int getEnableDurationDefault() {
@@ -426,10 +433,33 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     public void setActivationCodes(String activationCodes) {
         this.activationCodes = activationCodes;
     }
-    
-     @Override
+
+    @Override
     public String getModifyAction() {
         return "modify action";
     }
-    
+
+    public int getRemainingDays() {
+        return remainingDays;
+    }
+
+    public void setRemainingDays(int remainingDays) {
+        this.remainingDays = remainingDays;
+    }
+
+    public boolean isIsDepositAmountPaid() {
+        return isDepositAmountPaid;
+    }
+
+    public void setIsDepositAmountPaid(boolean isDepositAmountPaid) {
+        this.isDepositAmountPaid = isDepositAmountPaid;
+    }
+
+    public LocalDateTime getNextPaymentDueDate() {
+        return nextPaymentDueDate;
+    }
+
+    public void setNextPaymentDueDate(LocalDateTime nextPaymentDueDate) {
+        this.nextPaymentDueDate = nextPaymentDueDate;
+    }
 }

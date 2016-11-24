@@ -11,6 +11,7 @@ public class MakePaymentResponse {
         ​"generator_id"  : "40003",
         ​"status"        : "PENDING",
         ​"activation_code": "79021401"
+        "amount_payable": "55000"
         ​"description"   : "under processing"
 
     }
@@ -24,6 +25,9 @@ public class MakePaymentResponse {
 
     @SerializedName(value = "activation_code")
     private String activationCode;
+    
+    @SerializedName(value = "amount_payable")
+    private int amountPayable;
 
     @SerializedName(value = "status")
     private String status;
@@ -69,6 +73,14 @@ public class MakePaymentResponse {
 
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+
+    public int getAmountPayable() {
+        return amountPayable;
+    }
+
+    public void setAmountPayable(int amountPayable) {
+        this.amountPayable = amountPayable;
     }
 
 }

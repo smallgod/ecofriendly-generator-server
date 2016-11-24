@@ -89,8 +89,8 @@ public class AccountSetupResponse {
 
         @SerializedName(value = "contract_price")
         private String contractPrice;
-        
-         @SerializedName(value = "user_account") //Telesola # of user who registered this unit
+
+        @SerializedName(value = "user_account") //Telesola # of user who registered this unit
         private String userAccount;
 
         @SerializedName(value = "installment_frequency")
@@ -98,6 +98,9 @@ public class AccountSetupResponse {
 
         @SerializedName(value = "enable_duration")
         private String enableDuration;
+
+        @SerializedName(value = "remaining_days")
+        private int remainingDays;
 
         @SerializedName(value = "installment_day")
         private String installmentDay;
@@ -215,6 +218,14 @@ public class AccountSetupResponse {
 
         public void setUserAccount(String userAccount) {
             this.userAccount = userAccount;
+        }
+
+        public int getRemainingDays() {
+            return remainingDays;
+        }
+
+        public void setRemainingDays(int remainingDays) {
+            this.remainingDays = remainingDays;
         }
 
     }

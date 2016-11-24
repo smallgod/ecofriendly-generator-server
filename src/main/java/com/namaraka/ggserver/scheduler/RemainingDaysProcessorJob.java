@@ -15,6 +15,7 @@ import com.namaraka.ggserver.jsondata.DebitCustomerRequest;
 import com.namaraka.ggserver.jsondata.DebitCustomerResponse;
 import com.namaraka.ggserver.jsondata.DebitCustomerResponseFail;
 import com.namaraka.ggserver.model.v1_0.MoMoPayment;
+import com.namaraka.ggserver.utils.DateUtils;
 import com.namaraka.ggserver.utils.GeneralUtils;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,14 +36,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author smallgod
  */
-public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob {
+public class RemainingDaysProcessorJob implements Job, InterruptableJob, ExecutableJob {
 
-    private static final Logger logger = LoggerFactory.getLogger(PaymentProcessorJob.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemainingDaysProcessorJob.class);
 
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
 
-        logger.debug("PaymentProcessorJob running...");
+        logger.debug("RemainingDaysProcessorJob running at...: " + DateUtils.getDateTimeNow());
 
         JobDetail jobDetail = jec.getJobDetail();
         String jobName = jobDetail.getKey().getName();
@@ -74,12 +75,7 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
 
                 String momoAccount = payment.getDebitAccount();
                 String paymentId = String.valueOf(payment.getPaymentId());
-                int amount = GeneralUtils.roundUpToNextInt(payment.getAmount().getAmount().doubleValue());
-
-                //UPDATE THIS PAYMENT TO PROCESS IN DB TO PREVENT THE PROCESSOR_JOB FROM PICKING IT AFTER 5 SECONDS WHILE IT IS STILL PROCESSING
-                payment.setStatus(Status.PROCESSING);
-                payment.setStatusDescription("Payment fetched for processing");
-                DBManager.updateDatabaseModel(payment);
+                String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
 
                 /*DebitCustomerRequest request = new DebitCustomerRequest();
 
@@ -108,7 +104,7 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
 
                 Status status;
                 String message;
-                String reference;
+                String reference = "";
                 //String transactionId;
 
                 DebitCustomerResponse debitResponse;
@@ -130,19 +126,12 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                                 case NamedConstants.MAMBOPAY_DEBIT_PROCESSING:
 
                                     reference = debitResponse.getReference();
-                                    payment.setAggregatorTransID(reference);
-
                                     message = "StatusCode: " + statusCode + ", message: " + debitResponse.getStatusMessage();
                                     debitResponse.getTransactionId();
                                     status = Status.PROCESSING;
 
                                     break;
                                 //To-Do -- Check if status is for duplicate, successfully logged for processing etc and deal accordingly
-
-                                case NamedConstants.MAMBOPAY_DEBIT_DUPLICATE:
-
-                                    logger.debug("Sent a Duplicate Payment to Aggregator, ignoring aggregator response");
-                                    continue;
 
                                 default:
                                     status = Status.FAILED;
@@ -178,6 +167,7 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
                     message = "Status is unkown, decide if to re-process or not";
                 }
 
+                payment.setAggregatorTransID(reference);
                 payment.setStatus(status);
                 payment.setStatusDescription(message);
 

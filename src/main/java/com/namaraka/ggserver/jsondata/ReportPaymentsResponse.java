@@ -113,6 +113,19 @@ public class ReportPaymentsResponse implements CMSReport{
         @SerializedName(value = "enable_duration")
         private String enableDuration;
 
+        public int getRemainingDays() {
+            return remainingDays;
+        }
+
+        public void setRemainingDays(int remainingDays) {
+            this.remainingDays = remainingDays;
+        }
+        
+        
+        @SerializedName(value = "remaining_days")
+        private int remainingDays;
+
+
         @SerializedName(value = "status")
         private String status;
 

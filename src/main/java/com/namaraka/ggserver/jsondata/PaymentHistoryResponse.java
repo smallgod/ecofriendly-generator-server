@@ -19,6 +19,7 @@ public class PaymentHistoryResponse implements CMSReport {
                 "generator_id": "A001",
                 "activation_code": "3509866",
                 "enable_duration":"7",
+                "remaining_days":"7",
                 "momo_id": "893783739",
                 "momo_account": "256783937043",
                 "amount": "59000",": "550900",
@@ -35,6 +36,7 @@ public class PaymentHistoryResponse implements CMSReport {
                 "generator_id": "A002",
                 "activation_code": "61866",
                 "enable_duration":"30",
+                "remaining_days":"30",
                 "momo_id": "893783669",
                 "momo_account": "256783937043",
                 "amount": "58000",": "550900",
@@ -115,6 +117,9 @@ public class PaymentHistoryResponse implements CMSReport {
         
         @SerializedName(value = "enable_duration")
         private String enableDuration;
+        
+        @SerializedName(value = "remaining_days")
+        private int remainingDays;
 
         @SerializedName(value = "status")
         private String status;
@@ -251,6 +256,14 @@ public class PaymentHistoryResponse implements CMSReport {
 
         public void setId(long id) {
             this.id = id;
+        }
+
+        public int getRemainingDays() {
+            return remainingDays;
+        }
+
+        public void setRemainingDays(int remainingDays) {
+            this.remainingDays = remainingDays;
         }
     }
 }

@@ -41,15 +41,17 @@ public interface NamedConstants {
     public static final String SMS_API_SENDER_NAME = "TELESOLA";
     public static final String SMS_API_USERNAME = "codev";
     public static final String SMS_API_PASSWORD = "codev";
-    public static final String SMS_TEMPLATE_ACT_CODE ="Hello {firstName}, you have paid {amount}, remaining balance is: {outstandingBalance}. Enter this code: {activationCode}, in your Telesola app to activate {numberOfActiveDays} days. Thank you.";
-    public static final String SMS_PAYMENT_FAILURE ="Hello {firstName}, payment inititiated for generator ID: {generatorId}, has Failed. Reason: {statusDescription}. Please initiate/approve another payment to activate your generator. Thank you.";
-    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your unit details are; One-time PIN: {otp}, Telesola account: {telesolaAccount}, unit ID: {generatorId}. Please enter the details to activate your app";
+    public static final String SMS_TEMPLATE_ACT_CODE = "Hello {firstName}, you have paid {amount}, remaining balance is: {outstandingBalance}. Enter this code: {activationCode}, in your Telesola app to activate {numberOfActiveDays} days. Thank you.";
+    public static final String SMS_PAYMENT_FAILURE = "Hello {firstName}, payment of {amount} for generator: {generatorId}, has Failed. Reason: {statusDescription}. Please initiate another payment to activate your generator. Thank you.";
+    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your PIN is: {otp} and Generator ID: {generatorId}. Please open your Telesola app and enter the details. However, you need to clear the deposit to activate the generator";
 
     public static final String SMS_API_PARAM_USERNAME = "user";
     public static final String SMS_API_PARAM_PASSOWRD = "password";
     public static final String SMS_API_PARAM_SENDER = "sender";
     public static final String SMS_API_PARAM_TEXT = "SMSText";
     public static final String SMS_API_PARAM_RECIPIENT = "GSM";
+
+    public static final String INTERNAL_USE_APP_SECRET_KEY = "32254kUHE39AH3P90EQ";
 
     /**
      * Date time string formats
@@ -69,8 +71,7 @@ public interface NamedConstants {
      * "2016-07-25 08:55:09"
      */
     public static final String DATE_TIME_DASH_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    
-    
+
     /**
      * The Date only format we are using in this application is in the format
      * "2016-07-25"

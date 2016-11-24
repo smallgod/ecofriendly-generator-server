@@ -687,7 +687,7 @@ public class GeneralUtils {
         return amountType;
     }
 
-    public static List<NameValuePair> convertToNameValuePair(Map<String, String> pairs) {
+    public static List<NameValuePair> convertToNameValuePair(Map<String, Object> pairs) {
 
         if (pairs == null) {
             return null;
@@ -695,8 +695,8 @@ public class GeneralUtils {
 
         List<NameValuePair> nvpList = new ArrayList<>(pairs.size());
 
-        for (Map.Entry<String, String> entry : pairs.entrySet()) {
-            nvpList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, Object> entry : pairs.entrySet()) {
+            nvpList.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
         }
 
         return nvpList;
@@ -842,22 +842,28 @@ public class GeneralUtils {
 
         if (commercialStatus == CommercialStatus.INSTALLMENT) {
 
+            // For installments, let's set it to zero till confirmation of payment of the deposit 
+            //or the generator Unit in full
             switch (frequency) {
 
                 case WEEKLY:
                     duration = 7;
+                    //duration = 0;
                     break;
 
                 case BIWEEKLY:
                     duration = 15;
+                    //duration = 0;
                     break;
 
                 case MONTHLY:
                     duration = 30;
+                    //duration = 0;
                     break;
 
                 default:
                     duration = 7;
+                    //duration = 0;
                     break;
 
             }
@@ -936,18 +942,20 @@ public class GeneralUtils {
 
     /**
      * getPaymentFailMessage message from Template
-     * 
+     *
      * @param firstName
+     * @param amount
      * @param generatorId
      * @param statusDescription
-     * @return 
+     * @return
      */
-    public static String getPaymentFailMessage(String firstName, String generatorId, String statusDescription) {
+    public static String getPaymentFailMessage(String firstName, int amount, String generatorId, String statusDescription) {
 
         //Object[] params = {"nameRobert", "rhume55@gmail.com"};
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("firstName", firstName);
+        map.put("amount", amount);
         map.put("generatorId", generatorId);
         map.put("statusDescription", statusDescription);
 
@@ -973,7 +981,7 @@ public class GeneralUtils {
 
         map.put("firstName", firstName);
         map.put("otp", otp);
-        map.put("telesolaAccount", telesolaAccount);
+        //map.put("telesolaAccount", telesolaAccount);
         map.put("generatorId", generatorId);
 
         String message = MapFormat.format(NamedConstants.SMS_TEMPLATE_OTP, map);
@@ -988,9 +996,9 @@ public class GeneralUtils {
      * @param recipientNumber
      * @return
      */
-    public static Map<String, String> prepareTextMsgParams(String smsText, String recipientNumber) {
+    public static Map<String, Object> prepareTextMsgParams(String smsText, String recipientNumber) {
 
-        Map<String, String> paramPairs = new HashMap<>();
+        Map<String, Object> paramPairs = new HashMap<>();
 
         paramPairs.put(NamedConstants.SMS_API_PARAM_USERNAME, NamedConstants.SMS_API_USERNAME);
         paramPairs.put(NamedConstants.SMS_API_PARAM_PASSOWRD, NamedConstants.SMS_API_PASSWORD);
@@ -1000,4 +1008,26 @@ public class GeneralUtils {
 
         return paramPairs;
     }
+
+    /**
+     * Round up to next 100th integer
+     *
+     * @param value
+     * @return
+     */
+    public static int roundUpToNext100(double value) {
+
+        return (int) (Math.ceil(value / 100.0) * 100);
+    }
+
+    /**
+     * Round up to next integer
+     *
+     * @param value
+     * @return
+     */
+    public static int roundUpToNextInt(double value) {
+        return (int) Math.ceil(value);
+    }
+
 }

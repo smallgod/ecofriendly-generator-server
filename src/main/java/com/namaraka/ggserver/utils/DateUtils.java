@@ -5,6 +5,7 @@
  */
 package com.namaraka.ggserver.utils;
 
+import com.namaraka.ggserver.constant.NamedConstants;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
@@ -26,7 +27,8 @@ public class DateUtils {
     private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
     /**
-     *Pattern - yyyy/MM/dd HH:mm:ss
+     * Pattern - yyyy/MM/dd HH:mm:ss
+     *
      * @param string
      * @param dateStringFormat
      * @return
@@ -38,12 +40,13 @@ public class DateUtils {
 
         return dt;
     }
-    
+
     /**
      * Pattern - yyyy/MM/dd
+     *
      * @param string
      * @param dateStringFormat
-     * @return 
+     * @return
      */
     public static LocalDate convertStringToDate(String string, String dateStringFormat) {
 
@@ -185,24 +188,38 @@ public class DateUtils {
 
     /**
      * convert LocalDateTime to String
+     *
      * @param dateTime
      * @param dateTimePattern
-     * @return 
+     * @return
      */
     public static String convertLocalDateTimeToString(LocalDateTime dateTime, String dateTimePattern) {
-        
+
         DateTimeFormatter formatter = DateTimeFormat.forPattern(dateTimePattern);
         String formattedDateTime = dateTime.toString(formatter); // "1986-04-08 12:30"
 
         return formattedDateTime;
     }
-    
-     public static String convertLocalDateToString(LocalDate dateTime, String dateTimePattern) {
-        
+
+    public static String convertLocalDateToString(LocalDate dateTime, String dateTimePattern) {
+
         DateTimeFormatter formatter = DateTimeFormat.forPattern(dateTimePattern);
         String formattedDateTime = dateTime.toString(formatter); // "1986-04-08"
 
         return formattedDateTime;
+    }
+
+    /**
+     * Add days to LocalDateTime
+     * @param daysToAdd
+     * @return 
+     */
+    public static LocalDateTime addDaysToLocalDateTimeNow(int daysToAdd) {
+
+        LocalDateTime dateTime = getDateTimeNow(NamedConstants.KAMPALA_TIME_ZONE);
+        dateTime = dateTime.plusDays(daysToAdd);
+
+        return dateTime;
     }
 
 }

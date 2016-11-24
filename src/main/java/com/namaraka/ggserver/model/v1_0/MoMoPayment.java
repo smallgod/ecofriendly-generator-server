@@ -66,8 +66,8 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
 
     private String statusDescription;
 
-    private int enableDuration;
-
+    private boolean isPayingDepositAmount; //Mark this true if user is paying for a deposit amount as opposed to a regular installment payment
+    
     @Embedded
     private Extensiontype extensionType;
 
@@ -338,14 +338,6 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
         this.generatorId = generatorId;
     }
 
-    public int getEnableDuration() {
-        return enableDuration;
-    }
-
-    public void setEnableDuration(int enableDuration) {
-        this.enableDuration = enableDuration;
-    }
-
     public String getPaymentId() {
         return paymentId;
     }
@@ -357,5 +349,13 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
     @Override
     public String getModifyAction() {
         return "modify action";
+    }
+
+    public boolean isIsPayingDepositAmount() {
+        return isPayingDepositAmount;
+    }
+
+    public void setIsPayingDepositAmount(boolean isPayingDepositAmount) {
+        this.isPayingDepositAmount = isPayingDepositAmount;
     }
 }

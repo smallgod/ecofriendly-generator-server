@@ -460,7 +460,7 @@ public final class HttpClientPool {
      * @return CloseableHttpResponse contains a response that needs to be read
      * and decoded into a string
      */
-    private CloseableHttpResponse sendHttpRequest(String requestPayloadString, String urlToCall, Map<String, String> paramPairs, HTTPMethod method) {
+    private CloseableHttpResponse sendHttpRequest(String requestPayloadString, String urlToCall, Map<String, Object> paramPairs, HTTPMethod method) {
 
         List<NameValuePair> httpParams = GeneralUtils.convertToNameValuePair(paramPairs);
 
@@ -604,7 +604,7 @@ public final class HttpClientPool {
      * @param paramPairs
      * @return string response
      */
-    public String sendRemoteRequest(String requestPayloadString, String urlToCall, Map<String, String> paramPairs, HTTPMethod method) {
+    public String sendRemoteRequest(String requestPayloadString, String urlToCall, Map<String, Object> paramPairs, HTTPMethod method) {
 
         CloseableHttpResponse response = sendHttpRequest(requestPayloadString, urlToCall, paramPairs, method);
         String responsePayload = readResponse(response);
