@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 
 public enum ClientType implements Constants {
 
-    MANUFACTURER("M"),
-    TELESOLA("T"),
-    DISTRIBUTOR("D"),
-    CUSTOMER("C");
+    MANUFACTURER("MANUFACTURER"),
+    TELESOLA("TELESOLA"),
+    DISTRIBUTOR("DISTRIBUTOR"),
+    CUSTOMER("CUSTOMER");
 
     private final String clientType;
 

@@ -8,6 +8,7 @@ package com.namaraka.ggserver.utils;
 import com.namaraka.ggserver.constant.NamedConstants;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
@@ -187,6 +188,19 @@ public class DateUtils {
     }
 
     /**
+     * Get Days between 2 Dates
+     * @param startDate
+     * @param endDate
+     * @return 
+     */
+    public static int getDaysBetweenTwoDates(LocalDateTime startDate, LocalDateTime endDate) {
+        
+        Days days = Days.daysBetween(startDate.toLocalDate(), endDate.toLocalDate());
+
+        return days.getDays();
+    }
+
+    /**
      * convert LocalDateTime to String
      *
      * @param dateTime
@@ -211,8 +225,9 @@ public class DateUtils {
 
     /**
      * Add days to LocalDateTime
+     *
      * @param daysToAdd
-     * @return 
+     * @return
      */
     public static LocalDateTime addDaysToLocalDateTimeNow(int daysToAdd) {
 

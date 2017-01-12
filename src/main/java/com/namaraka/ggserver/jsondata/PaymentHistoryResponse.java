@@ -81,7 +81,7 @@ public class PaymentHistoryResponse implements CMSReport {
 
         @SerializedName(value = "id")
         private long id;
-        
+
         @SerializedName(value = "generator_id")
         private String generatorId;
 
@@ -96,16 +96,16 @@ public class PaymentHistoryResponse implements CMSReport {
 
         @SerializedName(value = "amount")
         private String amount;
-        
+
         @SerializedName(value = "outstanding_balance")
         private String outstandingBalance;
-        
+
         @SerializedName(value = "cumulative_amount_paid")
         private String cummulativeAmountPaid;
-        
+
         @SerializedName(value = "number_installments_paid")
         private String installmentsPaid;
-        
+
         @SerializedName(value = "number_installments_remaining")
         private String remaining_installments;
 
@@ -114,16 +114,19 @@ public class PaymentHistoryResponse implements CMSReport {
 
         @SerializedName(value = "acknowledge_date")
         private String acknowledgeDate;
-        
+
         @SerializedName(value = "enable_duration")
         private String enableDuration;
-        
+
         @SerializedName(value = "remaining_days")
         private int remainingDays;
 
+        @SerializedName(value = "next_due_date")
+        private String nextDueDate;
+
         @SerializedName(value = "status")
         private String status;
-        
+
         @SerializedName(value = "description")
         private String description;
 
@@ -265,5 +268,20 @@ public class PaymentHistoryResponse implements CMSReport {
         public void setRemainingDays(int remainingDays) {
             this.remainingDays = remainingDays;
         }
+
+        public String getNextDueDate() {
+            return nextDueDate;
+        }
+
+        public void setNextDueDate(String nextDueDate) {
+            this.nextDueDate = nextDueDate;
+        }
+
+        @Override
+        public String toString() {
+            return "Unit{" + "id=" + id + ", generatorId=" + generatorId + ", activationCode=" + activationCode + ", momoId=" + momoId + ", momoAccount=" + momoAccount + ", amount=" + amount + ", outstandingBalance=" + outstandingBalance + ", cummulativeAmountPaid=" + cummulativeAmountPaid + ", installmentsPaid=" + installmentsPaid + ", remaining_installments=" + remaining_installments + ", paymentDate=" + paymentDate + ", acknowledgeDate=" + acknowledgeDate + ", enableDuration=" + enableDuration + ", remainingDays=" + remainingDays + ", nextDueDate=" + nextDueDate + ", status=" + status + ", description=" + description + ", appKey=" + appKey + '}';
+        }
+        
+        
     }
 }

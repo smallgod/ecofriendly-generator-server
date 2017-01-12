@@ -91,24 +91,17 @@ public class UnitRegistrationRequest {
         @SerializedName(value = "commercial_status")
         private String commercialStatus;
 
-        @SerializedName(value = "contract_date")
-        private String contractDate;
+        @SerializedName(value = "retail_price")
+        private String retailPrice;
 
-        @SerializedName(value = "contract_price")
-        private String contractPrice;
-
-        @SerializedName(value = "deposit_amount")
-        private String depositAmount;
-
-        @SerializedName(value = "contract_period")
-        private String contractPeriod;
+        @SerializedName(value = "repayment_period")
+        private String repaymentPeriod;
 
         @SerializedName(value = "installment_frequency")
         private String installmentFrequency;
 
-        @SerializedName(value = "installment_day")
-        private int installmentDay;
-
+        //@SerializedName(value = "installment_day")
+        //private int installmentDay;
         @SerializedName(value = "momo_account")
         private String momoAccount;
 
@@ -147,20 +140,12 @@ public class UnitRegistrationRequest {
             this.commercialStatus = commercialStatus;
         }
 
-        public String getContractDate() {
-            return contractDate;
+        public String getRetailPrice() {
+            return retailPrice;
         }
 
-        public void setContractDate(String contractDate) {
-            this.contractDate = contractDate;
-        }
-
-        public String getContractPrice() {
-            return contractPrice;
-        }
-
-        public void setContractPrice(String contractPrice) {
-            this.contractPrice = contractPrice;
+        public void setRetailPrice(String retailPrice) {
+            this.retailPrice = retailPrice;
         }
 
         public String getInstallmentFrequency() {
@@ -171,14 +156,6 @@ public class UnitRegistrationRequest {
             this.installmentFrequency = installmentFrequency;
         }
 
-        public int getInstallmentDay() {
-            return installmentDay;
-        }
-
-        public void setInstallmentDay(int installmentDay) {
-            this.installmentDay = installmentDay;
-        }
-
         public String getMomoAccount() {
             return momoAccount;
         }
@@ -187,20 +164,12 @@ public class UnitRegistrationRequest {
             this.momoAccount = momoAccount;
         }
 
-        public String getContractPeriod() {
-            return contractPeriod;
+        public String getRepaymentPeriod() {
+            return repaymentPeriod;
         }
 
-        public void setContractPeriod(String contractPeriod) {
-            this.contractPeriod = contractPeriod;
-        }
-
-        public String getDepositAmount() {
-            return depositAmount;
-        }
-
-        public void setDepositAmount(String depositAmount) {
-            this.depositAmount = depositAmount;
+        public void setRepaymentPeriod(String repaymentPeriod) {
+            this.repaymentPeriod = repaymentPeriod;
         }
     }
 

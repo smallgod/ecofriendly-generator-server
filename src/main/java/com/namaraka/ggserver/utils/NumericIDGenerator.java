@@ -11,11 +11,9 @@ package com.namaraka.ggserver.utils;
  */
 import java.util.Arrays;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
- * This class generates alpha numeric IDs incrementally starting from a 
+ * This class generates numeric IDs incrementally starting from a 
  * given ID
  * 
  * @author imal hasaranga 
@@ -23,18 +21,17 @@ import org.slf4j.LoggerFactory;
  * @since 2014-07-13
  * 
  * */
-public class AlphaNumericIDGenerator {
+public class NumericIDGenerator {
 
     // This is my number set it contains 62 symbols
     private final List<Character> numberset = Arrays.asList(
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     );
     private String initAL; // keep starting AN
     private int BASE; // base of numberset is 62 so, addition = (anynumber %
     // BASE) and spare = (anynumber / 62)
 
-    public AlphaNumericIDGenerator(String initAL) {
+    public NumericIDGenerator(String initAL) {
         // initializing the values
         this.initAL = initAL;
         this.BASE = numberset.size();
@@ -96,7 +93,7 @@ public class AlphaNumericIDGenerator {
 
     public static String generateNextId(String idNumberToIncrement) {
 
-        AlphaNumericIDGenerator generator = new AlphaNumericIDGenerator(idNumberToIncrement);
+        NumericIDGenerator generator = new NumericIDGenerator(idNumberToIncrement);
         String generatedNum = generator.nextAN();
 
         /*int counter = 0;

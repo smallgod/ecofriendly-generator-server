@@ -86,10 +86,10 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "amount", column = @Column(name = "contractPrice")),
+        @AttributeOverride(name = "amount", column = @Column(name = "retail_price")),
         @AttributeOverride(name = "currencycode", column = @Column(name = "cp_currencycode"))
     })
-    private Amounttype contractPrice;
+    private Amounttype retailPrice;
 
     @Embedded
     @AttributeOverrides({
@@ -106,13 +106,13 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     private Amounttype installmentAmount;
 
     @Column(name = "repayment_period_months", nullable = false)
-    private String contractPeriod;
+    private int repaymentPeriod;
 
     @Enumerated(EnumType.STRING)
     private InstallmentFrequency installmentFrequency;
 
-    @Enumerated(EnumType.STRING)
-    private InstallmentDay installmentDay;
+    //@Enumerated(EnumType.STRING)
+    //private InstallmentDay installmentDay;
 
     @Embedded
     @AttributeOverrides({
@@ -163,27 +163,27 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
     }
 
     /**
-     * Gets the value of the contractPrice property.
+     * Gets the value of the retailPrice property.
      *
      * @return possible object is {@link Amounttype }
      *
      */
-    public Amounttype getContractPrice() {
-        return contractPrice;
+    public Amounttype getRetailPrice() {
+        return retailPrice;
     }
 
     /**
-     * Sets the value of the contractPrice property.
+     * Sets the value of the retailPrice property.
      *
      * @param value allowed object is {@link Amounttype }
      *
      */
-    public void setContractPrice(Amounttype value) {
-        this.contractPrice = value;
+    public void setRetailPrice(Amounttype value) {
+        this.retailPrice = value;
     }
 
     public boolean isSetAmount() {
-        return (this.getContractPrice() != null);
+        return (this.getRetailPrice() != null);
     }
 
     /**
@@ -357,14 +357,6 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
         this.installmentFrequency = installmentFrequency;
     }
 
-    public InstallmentDay getInstallmentDay() {
-        return installmentDay;
-    }
-
-    public void setInstallmentDay(InstallmentDay installmentDay) {
-        this.installmentDay = installmentDay;
-    }
-
     public PaymentProgress getPaymentProgress() {
         return paymentProgress;
     }
@@ -397,12 +389,12 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
         this.totalNumOfInstallmentsToBePaid = totalNumOfInstallmentsToBePaid;
     }
 
-    public String getContractPeriod() {
-        return contractPeriod;
+    public int getRepaymentPeriod() {
+        return repaymentPeriod;
     }
 
-    public void setContractPeriod(String contractPeriod) {
-        this.contractPeriod = contractPeriod;
+    public void setRepaymentPeriod(int repaymentPeriod) {
+        this.repaymentPeriod = repaymentPeriod;
     }
 
     public Amounttype getDepositAmount() {
@@ -415,7 +407,7 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     @Override
     public String toString() {
-        return "GeneratorUnit{" + "generatorId=" + generatorId + ", telesolaAccount=" + telesolaAccount + ", macAddress=" + macAddress + ", mobileMoneyAccount=" + mobileMoneyAccount + ", commercialStatus=" + commercialStatus + ", registeredTo=" + registeredTo + ", contractDate=" + contractDate + ", contractPrice=" + contractPrice.getAmount() + ", depositAmount=" + depositAmount.getAmount() + ", installmentAmount=" + installmentAmount.getAmount() + ", contractPeriod=" + contractPeriod + ", installmentFrequency=" + installmentFrequency + ", installmentDay=" + installmentDay + ", outstandingBalance=" + outstandingBalance.getAmount() + ", numberOfInstallmentsPaid=" + totalNumOfInstallmentsSoFarPaid + ", totalNumberOfInstallmentsToBePaid=" + totalNumOfInstallmentsToBePaid + ", paymentProgress=" + paymentProgress + '}';
+        return "GeneratorUnit{" + "generatorId=" + generatorId + ", telesolaAccount=" + telesolaAccount + ", macAddress=" + macAddress + ", mobileMoneyAccount=" + mobileMoneyAccount + ", commercialStatus=" + commercialStatus + ", registeredTo=" + registeredTo + ", contractDate=" + contractDate + ", contractPrice=" + retailPrice.getAmount() + ", depositAmount=" + depositAmount.getAmount() + ", installmentAmount=" + installmentAmount.getAmount() + ", contractPeriod=" + repaymentPeriod + ", installmentFrequency=" + installmentFrequency  + ", outstandingBalance=" + outstandingBalance.getAmount() + ", numberOfInstallmentsPaid=" + totalNumOfInstallmentsSoFarPaid + ", totalNumberOfInstallmentsToBePaid=" + totalNumOfInstallmentsToBePaid + ", paymentProgress=" + paymentProgress + '}';
     }
 
     public int getEnableDurationDefault() {

@@ -24,6 +24,9 @@ public class OneTimePin extends BaseModel implements Auditable, Serializable {
     private String generatorId;
 
     private int otp;
+    
+    private boolean isOTPValid;
+    
 
     public String getGeneratorId() {
         return generatorId;
@@ -67,4 +70,13 @@ public class OneTimePin extends BaseModel implements Auditable, Serializable {
     public String getModifyAction() {
         return "modify action";
     }
+
+    public boolean isIsOTPValid() {
+        return isOTPValid;
+    }
+
+    public void setIsOTPValid(boolean isOTPValid) {
+        this.isOTPValid = isOTPValid;
+    }
+
 }

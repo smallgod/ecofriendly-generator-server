@@ -74,7 +74,7 @@ public class PaymentProcessorJob implements Job, InterruptableJob, ExecutableJob
 
                 String momoAccount = payment.getDebitAccount();
                 String paymentId = String.valueOf(payment.getPaymentId());
-                int amount = GeneralUtils.roundUpToNextInt(payment.getAmount().getAmount().doubleValue());
+                int amount = GeneralUtils.roundUpToNext100(payment.getAmount().getAmount());
 
                 //UPDATE THIS PAYMENT TO PROCESS IN DB TO PREVENT THE PROCESSOR_JOB FROM PICKING IT AFTER 5 SECONDS WHILE IT IS STILL PROCESSING
                 payment.setStatus(Status.PROCESSING);

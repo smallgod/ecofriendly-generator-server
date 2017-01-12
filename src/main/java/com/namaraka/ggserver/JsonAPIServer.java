@@ -10,12 +10,11 @@ import com.namaraka.ggserver.constant.APIMethodName;
 import com.namaraka.ggserver.constant.ClientStatus;
 import com.namaraka.ggserver.constant.ClientType;
 import com.namaraka.ggserver.constant.CommercialStatus;
-import com.namaraka.ggserver.constant.HTTPMethod;
-import com.namaraka.ggserver.constant.InstallmentDay;
 import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.constant.OrderFirst;
 import com.namaraka.ggserver.constant.PaymentProgress;
+import com.namaraka.ggserver.constant.RepaymentPeriod;
 import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.dbaccess.DBManager;
 import com.namaraka.ggserver.jsondata.AccountSetupRequest;
@@ -38,6 +37,7 @@ import com.namaraka.ggserver.model.v1_0.Client;
 import com.namaraka.ggserver.model.v1_0.GeneratorUnit;
 import com.namaraka.ggserver.model.v1_0.MoMoPayment;
 import com.namaraka.ggserver.model.v1_0.Name;
+import com.namaraka.ggserver.model.v1_0.OneTimePin;
 import com.namaraka.ggserver.utils.DateUtils;
 import com.namaraka.ggserver.utils.GeneralUtils;
 import static com.namaraka.ggserver.utils.GeneralUtils.getMethodName;
@@ -50,122 +50,17 @@ import javax.servlet.http.HttpServletResponse;
 import static com.namaraka.ggserver.utils.GeneralUtils.writeResponse;
 import java.text.ParseException;
 import org.slf4j.LoggerFactory;
-import com.namaraka.ggserver.utils.AlphaNumericIDGenerator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import org.joda.time.LocalDate;
 import com.namaraka.ggserver.utils.PayHistoryUnitComparator;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import java.util.Collections;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import org.joda.time.LocalDateTime;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
-import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import com.namaraka.ggserver.utils.NumericIDGenerator;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
@@ -280,7 +175,12 @@ public class JsonAPIServer extends HttpServlet {
 
     }
 
-    String accountSetup(String accountSetupPayload) {
+    /**
+     *
+     * @param accountSetupPayload
+     * @return
+     */
+    public String accountSetup(String accountSetupPayload) {
 
         AccountSetupResponse accountSetupResponse = new AccountSetupResponse();
         List<AccountSetupResponse.Unit> units = new ArrayList<>();
@@ -290,6 +190,7 @@ public class JsonAPIServer extends HttpServlet {
         String status = Status.LOGGED.getValue();
         String statusDescription = "New CLient logged successfully";
         String telesolaAccount = "";
+        String clientType = "CUSTOMER";
 
         try {
 
@@ -301,47 +202,79 @@ public class JsonAPIServer extends HttpServlet {
 
             } else {
 
-                telesolaAccount = accountSetupRequest.getParams().getTelesolaAccount();
-                String otp = accountSetupRequest.getParams().getOtp();
+                telesolaAccount = GeneralUtils.formatMSISDN(accountSetupRequest.getParams().getTelesolaAccount());
+                Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount);
+                clientType = client.getClientType().getValue();
+                logger.debug("Client Type is: " + clientType);
+
+                int otp = Integer.parseInt(accountSetupRequest.getParams().getOtp());
                 String appKey = accountSetupRequest.getParams().getAppKey();
 
-                //To-Do
-                //Compare OTP with OTP that was generated and sent to client
-                //mark OTP used
-                //select most recent PIN from DB
-                //DBManager.fetchSingleRecord(OneTimePin.class, appKey, status)
-                Set<GeneratorUnit> generators = DBManager.bulkFetchByPropertyName(GeneratorUnit.class, "telesolaAccount", telesolaAccount);
-                Iterator<GeneratorUnit> generatorIter = generators.iterator();
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("telesolaAccount", telesolaAccount);
+                properties.put("otp", otp);
+                properties.put("isOTPValid", Boolean.TRUE);
 
-                while (generatorIter.hasNext()) {
+                //check OTP
+                OneTimePin oneTimePin = DBManager.fetchSingleRecord(OneTimePin.class, properties);
 
-                    GeneratorUnit generator = generatorIter.next();
+                if (oneTimePin != null) {
 
-                    AccountSetupResponse.Unit unit = accountSetupResponse.new Unit();
-                    unit.setCommercialStatus(generator.getCommercialStatus().getValue());
-                    unit.setContractDate(DateUtils.convertLocalDateTimeToString(generator.getContractDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
-                    unit.setContractPrice(String.valueOf(generator.getContractPrice().getAmount()));
-                    unit.setEnableDuration(String.valueOf(generator.getEnableDurationDefault()));
-                    unit.setRemainingDays(generator.getRemainingDays());
+                    logger.debug("OTP: " + otp + " - is VALID!");
 
-                    unit.setGeneratorId(generator.getGeneratorId());
-                    unit.setInstallmentAmount(String.valueOf(generator.getInstallmentAmount().getAmount()));
-                    unit.setInstallmentDay(generator.getInstallmentDay().getValue());
-                    unit.setInstallmentFrequency(generator.getInstallmentFrequency().getValue());
-                    unit.setMomoAccount(generator.getMobileMoneyAccount());
-                    unit.setOutstandingBalance(String.valueOf(generator.getOutstandingBalance().getAmount()));
-                    unit.setMacAddress(generator.getMacAddress());
-                    //unit.setUserAccount(generator.get);
-                    ActivationCodes paymentIdObj = GeneralUtils.convertFromJson(generator.getActivationCodes(), ActivationCodes.class);
-                    unit.setActivationCodes(paymentIdObj.getValidActivationCodes());
+                    //check validity period
+                    LocalDateTime startDate = oneTimePin.getCreatedOn();
+                    LocalDateTime endDate = DateUtils.getDateTimeNow();
+                    int daysTaken = DateUtils.getDaysBetweenTwoDates(startDate, endDate);
 
-                    units.add(unit);
+                    if (daysTaken <= NamedConstants.OTP_VALIDITY_PERIOD) {
 
+                        logger.debug("OTP: " + otp + " has daysTaken = " + daysTaken + " which is within VALIDITY PERIOD of: " + NamedConstants.OTP_VALIDITY_PERIOD);
+
+                        //mark OTP used
+                        oneTimePin.setIsOTPValid(Boolean.FALSE);
+
+                        Set<GeneratorUnit> generators = DBManager.bulkFetchByPropertyName(GeneratorUnit.class, "telesolaAccount", telesolaAccount);
+                        Iterator<GeneratorUnit> generatorIter = generators.iterator();
+
+                        while (generatorIter.hasNext()) {
+
+                            GeneratorUnit generator = generatorIter.next();
+
+                            AccountSetupResponse.Unit unit = accountSetupResponse.new Unit();
+                            unit.setCommercialStatus(generator.getCommercialStatus().getValue());
+                            unit.setContractDate(DateUtils.convertLocalDateTimeToString(generator.getContractDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
+                            unit.setRetailPrice(String.valueOf(generator.getRetailPrice().getAmount()));
+                            unit.setEnableDuration(String.valueOf(generator.getEnableDurationDefault()));
+                            unit.setRemainingDays(generator.getRemainingDays());
+
+                            unit.setGeneratorId(generator.getGeneratorId());
+                            unit.setInstallmentAmount(String.valueOf(generator.getInstallmentAmount().getAmount()));
+                            //unit.setInstallmentDay(generator.getInstallmentDay().getValue());
+                            unit.setInstallmentFrequency(generator.getInstallmentFrequency().getValue());
+                            unit.setMomoAccount(generator.getMobileMoneyAccount());
+                            unit.setOutstandingBalance(String.valueOf(generator.getOutstandingBalance().getAmount()));
+                            unit.setMacAddress(generator.getMacAddress());
+                            //unit.setUserAccount(generator.get);
+                            ActivationCodes paymentIdObj = GeneralUtils.convertFromJson(generator.getActivationCodes(), ActivationCodes.class);
+                            unit.setActivationCodes(paymentIdObj.getValidActivationCodes());
+
+                            units.add(unit);
+
+                        }
+                    } else {
+                        logger.error("OTP: " + otp + " is UNUSED but beyond the OTP Validity Period of " + NamedConstants.OTP_VALIDITY_PERIOD);
+                    }
+
+                } else {
+                    logger.error("OTP: " + otp + " - is INVALID!");
                 }
+
             }
 
         } catch (Exception ex) {
 
+            ex.printStackTrace();
             logger.error("An error occurred while trying to setup an account: " + ex.getMessage());
 
             status = Status.NOT_LOGGED.getValue();
@@ -349,6 +282,7 @@ public class JsonAPIServer extends HttpServlet {
         }
 
         accountSetupResponse.setTelesolaAccount(telesolaAccount);
+        accountSetupResponse.setClientType(clientType);
 
         String jsonResponse = GeneralUtils.convertToJson(accountSetupResponse, AccountSetupResponse.class);
 
@@ -376,7 +310,7 @@ public class JsonAPIServer extends HttpServlet {
             } else {
 
                 String generatorId = reportPaymentRequest.getParams().getGeneratorId();
-                String telesolaAccount = reportPaymentRequest.getParams().getTelesolaAccount();
+                String telesolaAccount = GeneralUtils.formatMSISDN(reportPaymentRequest.getParams().getTelesolaAccount());
                 String appKey = reportPaymentRequest.getParams().getAppKey();
 
                 int transactionLimit = (reportPaymentRequest.getParams().getTransactionLimit() == null) ? NamedConstants.MAX_NUMBER_PAYMENTS : Integer.parseInt(reportPaymentRequest.getParams().getTransactionLimit());
@@ -411,7 +345,7 @@ public class JsonAPIServer extends HttpServlet {
                         MoMoPayment payment = paymentsIter.next();
                         ReportPaymentsResponse.Data data = reportPaymentResponse.new Data();
 
-                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getRetailPrice(), generatorUnit.getOutstandingBalance());
 
                         String aggregatorId = payment.getAggregatorTransID();
 
@@ -421,8 +355,8 @@ public class JsonAPIServer extends HttpServlet {
                         data.setGeneratorId(payment.getGeneratorId());
                         data.setActivationCode(payment.getActivationCode());
                         data.setMomoAccount(payment.getDebitAccount());
-                        data.setAmount(payment.getAmount().getAmount().toString());
-                        data.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                        data.setAmount(String.valueOf(payment.getAmount().getAmount()));
+                        data.setOutstandingBalance(String.valueOf(generatorUnit.getOutstandingBalance().getAmount()));
                         data.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
                         data.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid()));
                         data.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid()));
@@ -513,7 +447,9 @@ public class JsonAPIServer extends HttpServlet {
                         MoMoPayment payment = paymentsIter.next();
                         PaymentHistoryResponse.Unit unit = paymentHistResponse.new Unit();
 
-                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+                        logger.debug("Payment Details: " + payment.toString());
+
+                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getRetailPrice(), generatorUnit.getOutstandingBalance());
 
                         String aggregatorId = payment.getAggregatorTransID();
 
@@ -521,8 +457,8 @@ public class JsonAPIServer extends HttpServlet {
                         unit.setGeneratorId(payment.getGeneratorId());
                         unit.setActivationCode(payment.getActivationCode());
                         unit.setMomoAccount(payment.getDebitAccount());
-                        unit.setAmount(payment.getAmount().getAmount().toString());
-                        unit.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                        unit.setAmount(String.valueOf(payment.getAmount().getAmount()));
+                        unit.setOutstandingBalance(String.valueOf(GeneralUtils.roundUpToNext100(generatorUnit.getOutstandingBalance().getAmount())));
                         unit.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
                         unit.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumOfInstallmentsSoFarPaid()));
                         unit.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid() - generatorUnit.getTotalNumOfInstallmentsSoFarPaid()));
@@ -535,8 +471,9 @@ public class JsonAPIServer extends HttpServlet {
                         unit.setPaymentDate(DateUtils.convertLocalDateTimeToString(payment.getCreatedOn(), NamedConstants.DATE_TIME_DASH_FORMAT));
                         unit.setEnableDuration(String.valueOf(generatorUnit.getEnableDurationDefault()));
                         unit.setRemainingDays(generatorUnit.getRemainingDays());
+                        unit.setNextDueDate(DateUtils.convertLocalDateTimeToString(generatorUnit.getNextPaymentDueDate(), NamedConstants.DATE_TIME_DASH_FORMAT));
 
-                        logger.debug("about to add unit to unit list: " + unit.getActivationCode() + ", status: " + unit.getStatus());
+                        logger.debug("About to add unit with details: " + unit.toString());
 
                         units.add(unit);
 
@@ -580,7 +517,8 @@ public class JsonAPIServer extends HttpServlet {
             } else {
 
                 String generatorId = paymentHistRequest.getParams().getGeneratorId();
-                String telesolaAccount = paymentHistRequest.getParams().getTelesolaAccount();
+                String telesolaAccount = GeneralUtils.formatMSISDN(paymentHistRequest.getParams().getTelesolaAccount());
+
                 String appKey = paymentHistRequest.getParams().getAppKey();
 
                 int transactionLimit = (paymentHistRequest.getParams().getTransactionLimit() == null) ? NamedConstants.MAX_NUMBER_PAYMENTS : Integer.parseInt(paymentHistRequest.getParams().getTransactionLimit());
@@ -625,7 +563,7 @@ public class JsonAPIServer extends HttpServlet {
                                 MoMoPayment payment = paymentsIter.next();
                                 ReportPaymentsResponse.Data data = paymentHistResponse.new Data();
 
-                                int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+                                int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getRetailPrice(), generatorUnit.getOutstandingBalance());
 
                                 String aggregatorId = payment.getAggregatorTransID();
 
@@ -635,8 +573,8 @@ public class JsonAPIServer extends HttpServlet {
                                 data.setGeneratorId(payment.getGeneratorId());
                                 data.setActivationCode(payment.getActivationCode());
                                 data.setMomoAccount(payment.getDebitAccount());
-                                data.setAmount(payment.getAmount().getAmount().toString());
-                                data.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                                data.setAmount(String.valueOf(payment.getAmount().getAmount()));
+                                data.setOutstandingBalance(String.valueOf(GeneralUtils.roundUpToNext100(generatorUnit.getOutstandingBalance().getAmount())));
                                 data.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
                                 data.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid()));
                                 data.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid()));
@@ -687,15 +625,15 @@ public class JsonAPIServer extends HttpServlet {
                         MoMoPayment payment = paymentsIter.next();
                         PaymentHistoryResponse.Unit unit = paymentHistResponse.new Unit();
 
-                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getContractPrice(), generatorUnit.getOutstandingBalance());
+                        int cummulativeAmountPaid = calculateCummulativeAmountPaid(generatorUnit.getRetailPrice(), generatorUnit.getOutstandingBalance());
 
                         String aggregatorId = payment.getAggregatorTransID();
 
                         unit.setGeneratorId(payment.getGeneratorId());
                         unit.setActivationCode(payment.getActivationCode());
                         unit.setMomoAccount(payment.getDebitAccount());
-                        unit.setAmount(payment.getAmount().getAmount().toString());
-                        unit.setOutstandingBalance(String.valueOf((int) Math.ceil(generatorUnit.getOutstandingBalance().getAmount().doubleValue())));
+                        unit.setAmount(String.valueOf(payment.getAmount().getAmount()));
+                        unit.setOutstandingBalance(String.valueOf(GeneralUtils.roundUpToNext100(generatorUnit.getOutstandingBalance().getAmount())));
                         unit.setCummulativeAmountPaid(String.valueOf(cummulativeAmountPaid));
                         unit.setInstallmentsPaid(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid()));
                         unit.setRemaining_installments(String.valueOf(generatorUnit.getTotalNumOfInstallmentsToBePaid()));
@@ -769,9 +707,11 @@ public class JsonAPIServer extends HttpServlet {
                 //Check if userAccount & key are allowed to register Clients
                 ClientType clientType = ClientType.convertToEnum(clientRegRequest.getParams().getClientType());
                 String primaryContact = GeneralUtils.formatMSISDN(clientRegRequest.getParams().getPrimaryPhone());
-                //generate a Telesola account # from the user's primary contact number
 
-                telesolaAccount = GeneralUtils.generateTelesolaAccount(primaryContact, clientType);
+                //generate a Telesola account # from the user's primary contact number
+                //TELESOLA account is the same as the client's primary contact
+                telesolaAccount = primaryContact;
+                //telesolaAccount = GeneralUtils.generateTelesolaAccount(primaryContact, clientType);
 
                 String firstName = clientRegRequest.getParams().getFirstName();
                 String secondName = clientRegRequest.getParams().getSecondName();
@@ -845,6 +785,7 @@ public class JsonAPIServer extends HttpServlet {
         int calculatedInstallment = 0;
         int calculatedTotalInstallments = 0;
         int calculatedOutstandingBal = 0;
+        int calculatedDepositAmount = 0;
         int cummulativeTotalPaid = 0;
 
         try {
@@ -865,7 +806,7 @@ public class JsonAPIServer extends HttpServlet {
                 String userKey = unitRegistration.getCredentials().getUserKey();
                 String appKey = unitRegistration.getParams().getAppKey();
 
-                telesolaAccount = unitRegistration.getParams().getTelesolaAccount();
+                telesolaAccount = GeneralUtils.formatMSISDN(unitRegistration.getParams().getTelesolaAccount());
 
                 //get the most recently registered generator data
                 GeneratorUnit recentGenerator = DBManager.getMostRecentRecord(GeneratorUnit.class, "id");
@@ -874,23 +815,14 @@ public class JsonAPIServer extends HttpServlet {
                     generatorId = NamedConstants.START_ID;
                 } else {
                     String idToIncrement = recentGenerator.getGeneratorId();
-                    generatorId = AlphaNumericIDGenerator.generateNextId(idToIncrement);
+                    //generatorId = AlphaNumericIDGenerator.generateNextId(idToIncrement);
+                    generatorId = NumericIDGenerator.generateNextId(idToIncrement);
                 }
 
-                /*int counter = 0;
-            while (!generatorId.equalsIgnoreCase("ZZZYY")) {
+                int repaymentPeriod = Integer.parseInt(unitRegistration.getParams().getRepaymentPeriod()); //this is the repayment period in months
+                int retailPriceStr = Integer.parseInt(unitRegistration.getParams().getRetailPrice());
 
-                generatorId = AlphaNumericIDGenerator.generateNextId(generatorId);
-                counter++;
-
-                logger.debug("generated: " + generatorId + " - counter: " + counter);
-            }*/
-                String contractDateString = unitRegistration.getParams().getContractDate();
-                String contractPeriod = unitRegistration.getParams().getContractPeriod(); //in months
-                String contractPriceString = unitRegistration.getParams().getContractPrice();
-                String depositAmountString = unitRegistration.getParams().getDepositAmount();
-
-                InstallmentDay installmentDay = InstallmentDay.convertToEnum(String.valueOf(unitRegistration.getParams().getInstallmentDay()));
+                //InstallmentDay installmentDay = InstallmentDay.convertToEnum(String.valueOf(unitRegistration.getParams().getInstallmentDay()));
                 InstallmentFrequency installmentFrequency = InstallmentFrequency.convertToEnum(unitRegistration.getParams().getInstallmentFrequency());
 
                 String macAddress = unitRegistration.getParams().getMacAddress();
@@ -898,12 +830,13 @@ public class JsonAPIServer extends HttpServlet {
 
                 CommercialStatus commercialStatus = CommercialStatus.convertToEnum(unitRegistration.getParams().getCommercialStatus());
 
-                Amounttype contractPrice = GeneralUtils.getAmountType(contractPriceString);
-                Amounttype depositAmount = GeneralUtils.getAmountType(depositAmountString);
+                Amounttype retailCashPrice = GeneralUtils.getAmountType(retailPriceStr);
 
-                LocalDateTime contractDate = DateUtils.convertStringToDateTime(contractDateString, NamedConstants.DATE_TIME_DASH_FORMAT);
+                //LocalDateTime contractDate = DateUtils.convertStringToDateTime(contractDateString, NamedConstants.DATE_TIME_DASH_FORMAT);
+                LocalDateTime contractDate = DateUtils.getDateTimeNow(NamedConstants.KAMPALA_TIME_ZONE);
 
-                Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount.toUpperCase());
+                //Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount.toUpperCase());
+                Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", telesolaAccount);
 
                 if (client == null) {
 
@@ -913,7 +846,7 @@ public class JsonAPIServer extends HttpServlet {
 
                 } else {
 
-                    logger.debug("Got cient with details: " + client.getTelesolaAccount() + ", " + client.getEmail());
+                    logger.debug("Got cient with details: " + telesolaAccount + ", " + client.getEmail());
 
                     GeneratorUnit generatorUnit = new GeneratorUnit();
 
@@ -923,11 +856,11 @@ public class JsonAPIServer extends HttpServlet {
 
                         //To-Do
                         //These two below need to be re-calculated wit proper formulas in the event that the calling app has not calculated them
-                        calculatedInstallment = calculateInstallmentAmount(installmentFrequency, contractPeriod, contractPriceString, depositAmountString);
-                        calculatedTotalInstallments = calculateTotalNumberOfInstallments(installmentFrequency, contractPeriod);
-                        //calculatedOutstandingBal = calculateOutstandingBalance(contractPriceString, depositAmountString);
-
-                        calculatedOutstandingBal = Integer.parseInt(contractPriceString);
+                        //calculatedInstallment = calculateInstallmentAmount(installmentFrequency, repaymentPeriod, retailPriceStr, depositAmountString);
+                        calculatedInstallment = calculateInstallmentAmount(installmentFrequency, repaymentPeriod, retailPriceStr);
+                        calculatedTotalInstallments = calculateTotalNumberOfInstallments(installmentFrequency, repaymentPeriod);
+                        calculatedDepositAmount = calculateDepositAmount(retailPriceStr);
+                        calculatedOutstandingBal = retailPriceStr;
 
                         generatorUnit.setPaymentProgress(PaymentProgress.NORMAL);
                     }
@@ -936,16 +869,16 @@ public class JsonAPIServer extends HttpServlet {
                     generatorUnit.setInstallmentAmount(GeneralUtils.getAmountType(String.valueOf(calculatedInstallment)));
                     generatorUnit.setCommercialStatus(commercialStatus);
                     generatorUnit.setContractDate(contractDate);
-                    generatorUnit.setContractPrice(contractPrice);
-                    generatorUnit.setDepositAmount(depositAmount);
-                    generatorUnit.setContractPeriod(contractPeriod);
+                    generatorUnit.setRetailPrice(retailCashPrice);
+                    generatorUnit.setDepositAmount(GeneralUtils.getAmountType(calculatedDepositAmount));
+                    generatorUnit.setRepaymentPeriod(repaymentPeriod);
                     generatorUnit.setGeneratorId(generatorId);
                     generatorUnit.setRegisteredTo(client.getClientType());
                     generatorUnit.setTotalNumOfInstallmentsSoFarPaid(0); //generator is still new
                     generatorUnit.setTotalNumOfInstallmentsToBePaid(calculatedTotalInstallments);
                     generatorUnit.setOutstandingBalance(GeneralUtils.getAmountType(String.valueOf(calculatedOutstandingBal)));
                     generatorUnit.setInstallmentFrequency(installmentFrequency);
-                    generatorUnit.setInstallmentDay(installmentDay);
+                    //generatorUnit.setInstallmentDay(installmentDay);
                     generatorUnit.setMobileMoneyAccount(momoAccount);
                     generatorUnit.setMacAddress(macAddress);
                     generatorUnit.setEnableDurationDefault(GeneralUtils.getEnableDuration(commercialStatus, installmentFrequency));
@@ -957,14 +890,14 @@ public class JsonAPIServer extends HttpServlet {
                     List<Integer> validactivationCodes = GeneralUtils.convertSetToList(activationCodeSet);
                     List<Integer> usedActivationCodes = new ArrayList<>();
 
-                    ActivationCodes paymentIdObj = new ActivationCodes();
-                    paymentIdObj.setGeneratorId(generatorId);
-                    paymentIdObj.setValidActivationCodes(validactivationCodes);
-                    paymentIdObj.setUsedActivationCodes(usedActivationCodes);
+                    ActivationCodes activationCodesObj = new ActivationCodes();
+                    activationCodesObj.setGeneratorId(generatorId);
+                    activationCodesObj.setValidActivationCodes(validactivationCodes);
+                    activationCodesObj.setUsedActivationCodes(usedActivationCodes);
 
-                    String paymentIdString = GeneralUtils.convertToJson(paymentIdObj, ActivationCodes.class);
+                    String activationCodesString = GeneralUtils.convertToJson(activationCodesObj, ActivationCodes.class);
 
-                    generatorUnit.setActivationCodes(paymentIdString);
+                    generatorUnit.setActivationCodes(activationCodesString);
 
                     logger.debug("About to save Generator Unit: " + generatorUnit.toString());
 
@@ -985,15 +918,17 @@ public class JsonAPIServer extends HttpServlet {
                         //To-Do
                         //send OTP to client for activating the app
                         //send activation code in SMS
-                        String otp = String.valueOf(GeneralUtils.generatorOTP(telesolaAccount, generatorId));
+                        String otp = String.valueOf(GeneralUtils.generateOTP(telesolaAccount, generatorId));
                         String smsText = GeneralUtils.getOTPMessage(client.getName().getFirstname(), otp, telesolaAccount, generatorId);
                         String recipientPhone = client.getPrimaryContactPhone();
 
+                        logger.debug("###### OTP generated is      : " + otp);
+                        logger.debug("###### Message sent to client: " + smsText + " #######");
+
                         Map<String, Object> paramPairs = GeneralUtils.prepareTextMsgParams(smsText, recipientPhone);
 
-                        String url = NamedConstants.SMS_API_URL;
-
-                        String response = AppEntry.clientPool.sendRemoteRequest("", url, paramPairs, HTTPMethod.GET);
+                        String response = GeneralUtils.sendSMS(paramPairs);
+                        //String response = AppEntry.clientPool.sendRemoteRequest("", url, paramPairs, HTTPMethod.GET);
 
                         logger.info("Response from SMS web API Server: " + response);
 
@@ -1028,6 +963,7 @@ public class JsonAPIServer extends HttpServlet {
 
         } catch (Exception ex) {
 
+            ex.printStackTrace();
             logger.error("An error occurred while trying to save Generator Unit: " + ex.getMessage());
 
             status = Status.NOT_LOGGED.getValue();
@@ -1041,8 +977,7 @@ public class JsonAPIServer extends HttpServlet {
         unitRegisterResponse.setStatusDescription(statusDescription);
         unitRegisterResponse.setInstallmentAmount(String.valueOf(calculatedInstallment));
 
-        String jsonResponse = GeneralUtils.convertToJson(unitRegisterResponse, UnitRegistrationResponse.class
-        );
+        String jsonResponse = GeneralUtils.convertToJson(unitRegisterResponse, UnitRegistrationResponse.class);
 
         return jsonResponse;
 
@@ -1069,7 +1004,8 @@ public class JsonAPIServer extends HttpServlet {
         String status = Status.LOGGED.getValue();
         String statusDescription = "Payment Logged for Processing";
 
-        String telesolaAccount = paymentRequest.getParams().getTelesolaAccount();
+        String telesolaAccount = GeneralUtils.formatMSISDN(paymentRequest.getParams().getTelesolaAccount());
+
         String generatorId = paymentRequest.getParams().getGeneratorId();
         String appKey = paymentRequest.getParams().getAppKey();
         String debitAccount = paymentRequest.getParams().getMomoAccount();
@@ -1117,7 +1053,7 @@ public class JsonAPIServer extends HttpServlet {
                 payment.setIsPayingDepositAmount(Boolean.TRUE);
             }
 
-            amountPayableInt = GeneralUtils.roundUpToNextInt(amountToPay.getAmount().doubleValue());
+            amountPayableInt = GeneralUtils.roundUpToNext100(amountToPay.getAmount());
 
             payment.setAmount(amountToPay);
             payment.setGeneratorId(generatorId);
@@ -1197,9 +1133,9 @@ public class JsonAPIServer extends HttpServlet {
 
             GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, "generatorId", payment.getGeneratorId());
 
-            int amountPaid = GeneralUtils.roundUpToNextInt(payment.getAmount().getAmount().doubleValue());
+            int amountPaid = GeneralUtils.roundUpToNext100(payment.getAmount().getAmount());
             int currTotalNoOfInstallmentsPaid = generatorUnit.getTotalNumOfInstallmentsSoFarPaid();
-            int currOutstandingBal = GeneralUtils.roundUpToNextInt(generatorUnit.getOutstandingBalance().getAmount().doubleValue());
+            int currOutstandingBal = GeneralUtils.roundUpToNext100(generatorUnit.getOutstandingBalance().getAmount());
             int newOutstandingBal = currOutstandingBal - amountPaid;
             int currRemainingDays = generatorUnit.getRemainingDays();
 
@@ -1220,11 +1156,11 @@ public class JsonAPIServer extends HttpServlet {
 
                     String activationCodes = GeneralUtils.convertToJson(activationCodeObj, ActivationCodes.class);
                     generatorUnit.setActivationCodes(activationCodes);
-                    generatorUnit.setTotalNumOfInstallmentsSoFarPaid(++currTotalNoOfInstallmentsPaid);
                     generatorUnit.setOutstandingBalance(GeneralUtils.getAmountType(String.valueOf(newOutstandingBal)));
                     //add the default enable duration to the current remaing days to get new remaining days
-                    generatorUnit.setRemainingDays(currRemainingDays + generatorUnit.getEnableDurationDefault());
-                    generatorUnit.setNextPaymentDueDate(DateUtils.addDaysToLocalDateTimeNow(generatorUnit.getRemainingDays()));
+                    int updatedRemainingDays = currRemainingDays + generatorUnit.getEnableDurationDefault();
+                    generatorUnit.setRemainingDays(updatedRemainingDays);
+                    generatorUnit.setNextPaymentDueDate(DateUtils.addDaysToLocalDateTimeNow(updatedRemainingDays));
                     generatorUnit.setPaymentProgress(PaymentProgress.NORMAL);
 
                     if (newOutstandingBal <= 0) {
@@ -1261,7 +1197,7 @@ public class JsonAPIServer extends HttpServlet {
                 case NamedConstants.MAMBOPAY_DEBIT_CUSTOMER_UNAPPROVED:
 
                     finalStatus = Status.FAILED;
-                    finalStatusDesc = "Failed to approve payment in about 6 min.: " + statusDescription;
+                    finalStatusDesc = "Failed to approve payment in about 6min: " + statusDescription;
                     break;
 
                 default:
@@ -1285,7 +1221,7 @@ public class JsonAPIServer extends HttpServlet {
             Client client = DBManager.fetchSingleRecord(Client.class, "telesolaAccount", generatorUnit.getTelesolaAccount().toUpperCase());
 
             int numberOfActiveDays = calculateNumberOfActiveDays(generatorUnit.getInstallmentFrequency());
-            String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
+            int amount = GeneralUtils.roundUpToNext100((payment.getAmount().getAmount()));
 
             switch (finalStatus) {
 
@@ -1300,7 +1236,8 @@ public class JsonAPIServer extends HttpServlet {
 
             recipientPhone = client.getPrimaryContactPhone();
             Map<String, Object> paramPairs = GeneralUtils.prepareTextMsgParams(smsText, recipientPhone);
-            String response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
+            //String response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
+            String response = GeneralUtils.sendSMS(paramPairs);
 
             logger.info("Response from SMS web API Server: " + response);
 
@@ -1362,7 +1299,13 @@ public class JsonAPIServer extends HttpServlet {
 
     }
 
-    int calculateTotalNumberOfInstallments(InstallmentFrequency installmentFrequency, String contractPeriod) {
+    /**
+     *
+     * @param installmentFrequency
+     * @param repaymentPeriod
+     * @return
+     */
+    int calculateTotalNumberOfInstallments(InstallmentFrequency installmentFrequency, int repaymentPeriod) {
 
         int numberOfInstallments = 0;
         int numberOfWeeksInMonth = 4;
@@ -1373,13 +1316,13 @@ public class JsonAPIServer extends HttpServlet {
             switch (installmentFrequency) {
 
                 case MONTHLY:
-                    numberOfInstallments = Integer.parseInt(contractPeriod);
+                    numberOfInstallments = repaymentPeriod;
                     break;
                 case WEEKLY:
-                    numberOfInstallments = GeneralUtils.roundUpToNextInt(Double.parseDouble(contractPeriod) * numberOfWeeksInMonth);
+                    numberOfInstallments = GeneralUtils.roundUpToNextInt(repaymentPeriod * numberOfWeeksInMonth);
                     break;
                 case BIWEEKLY:
-                    numberOfInstallments = GeneralUtils.roundUpToNextInt(Double.parseDouble(contractPeriod) * numberOfWeeksInHalfMonth);
+                    numberOfInstallments = GeneralUtils.roundUpToNextInt(repaymentPeriod * numberOfWeeksInHalfMonth);
                     break;
                 default:
                     break;
@@ -1388,6 +1331,71 @@ public class JsonAPIServer extends HttpServlet {
         }
 
         return numberOfInstallments;
+    }
+
+    /**
+     *
+     * @param retailCashPrice
+     * @return
+     */
+    int calculateDepositAmount(int retailCashPrice) {
+
+        return (GeneralUtils.roundUpToNext100(NamedConstants.DOWN_PAYMENT_RATE * retailCashPrice));
+
+    }
+
+    /**
+     *
+     * @param installmentFrequency
+     * @param repaymentPeriod
+     * @param retailCashPrice
+     * @return
+     */
+    int calculateInstallmentAmount(InstallmentFrequency installmentFrequency, int repaymentPeriod, int retailCashPrice) {
+
+        int installment = 0;
+
+        if (null != installmentFrequency && repaymentPeriod > 0) {
+
+            double percentMultiplier = 0d;
+
+            switch (RepaymentPeriod.convertToEnum(repaymentPeriod)) {
+
+                case SIX_MONTHS:
+
+                    if (installmentFrequency == InstallmentFrequency.WEEKLY) {
+                        percentMultiplier = NamedConstants.WEEKLY_INSTALLMENT_6_MONTHS;
+
+                    } else if (installmentFrequency == InstallmentFrequency.MONTHLY) {
+                        percentMultiplier = NamedConstants.MONTHLY_INSTALLMENT_6_MONTHS;
+                    }
+                    break;
+
+                case TWELVE_MONTHS:
+                    if (installmentFrequency == InstallmentFrequency.WEEKLY) {
+                        percentMultiplier = NamedConstants.WEEKLY_INSTALLMENT_12_MONTHS;
+
+                    } else if (installmentFrequency == InstallmentFrequency.MONTHLY) {
+                        percentMultiplier = NamedConstants.MONTHLY_INSTALLMENT_12_MONTHS;
+                    }
+                    break;
+
+                case EIGHTEEN_MONTHS:
+                    if (installmentFrequency == InstallmentFrequency.WEEKLY) {
+                        percentMultiplier = NamedConstants.WEEKLY_INSTALLMENT_18_MONTHS;
+
+                    } else if (installmentFrequency == InstallmentFrequency.MONTHLY) {
+                        percentMultiplier = NamedConstants.MONTHLY_INSTALLMENT_18_MONTHS;
+                    }
+                    break;
+            }
+
+            double calculatedInstallment = retailCashPrice * percentMultiplier;
+            installment = GeneralUtils.roundUpToNext100(calculatedInstallment);
+
+        }
+
+        return installment;
     }
 
     int calculateInstallmentAmount(InstallmentFrequency installmentFrequency, String contractPeriod, String contractPriceString, String depositAmountString
@@ -1439,8 +1447,8 @@ public class JsonAPIServer extends HttpServlet {
     ) {
 
         //return (Integer.parseInt(depositAmountString) + (Integer.parseInt(installmentAmount) * numberOfInstallmentsPaid));
-        int contractPrice = (int) Math.ceil(contractAmount.getAmount().doubleValue());
-        int outstandingBalance = (int) Math.ceil(outstandingAmount.getAmount().doubleValue());
+        int contractPrice = GeneralUtils.roundUpToNext100(contractAmount.getAmount());
+        int outstandingBalance = GeneralUtils.roundUpToNext100(outstandingAmount.getAmount());
 
         return (contractPrice - outstandingBalance);
 

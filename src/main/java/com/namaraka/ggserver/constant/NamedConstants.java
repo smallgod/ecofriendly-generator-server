@@ -14,13 +14,32 @@ public interface NamedConstants {
     //To-Do - Put these in configs file
     public static final String GGSERVER_CALLBACK_URL = "http://namaraka.com:9099/api/json";
     public static final String MAMBOPAY_DEBIT_URL = "https://mambopay.azure-api.net/api/v1/mtnmobilemoneyapi/debit";
-    public static final String SUBSCRIPTION_KEY = "9389259ec349469682c71910ab6f4ac3";
+    public static final String SMS_API_URL = "http://api.infobip.com/api/v3/sendsms/plain";
+
+    //public static final String SUBSCRIPTION_KEY = "9389259ec349469682c71910ab6f4ac3";
+    public static final String SUBSCRIPTION_KEY = "f3abdfa6568a4d8da75c27aa8fbd26ce"; //UNLIMITED
 
     public static final String START_ID = "00001"; //Will give us 3.7million ids before introducing 6th digit goes upto YYYYZ
     public static final int MAX_NUMBER_PAYMENTS = 5;
     public static final OrderFirst ORDER_FIRST = OrderFirst.NEWEST;
 
     public static final int NUM_OF_ACTIVATION_CODES = 100;
+    
+    //PERCENTAGE MULTIPLIERS TO GET INSTALLMENTS (Multiply these by the retail cash price to get installment)
+    public static final double MONTHLY_INSTALLMENT_6_MONTHS = 13.974/100;
+    public static final double MONTHLY_INSTALLMENT_12_MONTHS = 7.385/100;
+    public static final double MONTHLY_INSTALLMENT_18_MONTHS = 5.198/100;
+    
+    public static final double WEEKLY_INSTALLMENT_6_MONTHS = 3.250/100;
+    public static final double WEEKLY_INSTALLMENT_12_MONTHS = 1.718/100;
+    public static final double WEEKLY_INSTALLMENT_18_MONTHS = 1.210/100;
+    
+    public static final double DOWN_PAYMENT_RATE = 0.2d;
+    
+    /**
+     * OTP validity period in DAYS
+     */
+    public static final int OTP_VALIDITY_PERIOD = 24; //DAYS
 
     public static final int MAMBOPAY_DEBIT_ACCOUNT_UNREGISTERED = 101;
     public static final int MAMBOPAY_DEBIT_INSUFFICIENT_FUNDS = 106;
@@ -37,13 +56,12 @@ public interface NamedConstants {
     public static final String MAMBOPAY_PARAM_CALLBACKURL = "callbackurl";
     public static final String MAMBOPAY_HEADER_SUBSCKEY = "Ocp-Apim-Subscription-Key";
 
-    public static final String SMS_API_URL = "http://api.infobip.com/api/v3/sendsms/plain";
     public static final String SMS_API_SENDER_NAME = "TELESOLA";
     public static final String SMS_API_USERNAME = "codev";
     public static final String SMS_API_PASSWORD = "codev";
-    public static final String SMS_TEMPLATE_ACT_CODE = "Hello {firstName}, you have paid {amount}, remaining balance is: {outstandingBalance}. Enter this code: {activationCode}, in your Telesola app to activate {numberOfActiveDays} days. Thank you.";
-    public static final String SMS_PAYMENT_FAILURE = "Hello {firstName}, payment of {amount} for generator: {generatorId}, has Failed. Reason: {statusDescription}. Please initiate another payment to activate your generator. Thank you.";
-    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your PIN is: {otp} and Generator ID: {generatorId}. Please open your Telesola app and enter the details. However, you need to clear the deposit to activate the generator";
+    public static final String SMS_TEMPLATE_ACT_CODE = "Hello {firstName}, you paid {amount}, remaining balance is {outstandingBalance}. Enter code {activationCode} in your Telesola app for {numberOfActiveDays} days. Thank you";
+    public static final String SMS_PAYMENT_FAILURE = "Hello {firstName}, payment of {amount} for generator: {generatorId}, has Failed.Reason: {statusDescription}. Please re-initiate another payment. Thank you";
+    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your PIN is: {otp} & GeneratorID: {generatorId}. Please open your Telesola app & enter the details.However, clear the deposit to activate the generator";
 
     public static final String SMS_API_PARAM_USERNAME = "user";
     public static final String SMS_API_PARAM_PASSOWRD = "password";

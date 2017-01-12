@@ -12,6 +12,7 @@ public class AccountSetupResponse {
     
     {
         "telesola_account": "786577309",
+        "client_type": "CUSTOMER",
         "units": [
             {
                 "generator_id": "A001",
@@ -55,6 +56,9 @@ public class AccountSetupResponse {
     @SerializedName(value = "telesola_account")
     private String telesolaAccount;
 
+    @SerializedName(value = "client_type")
+    private String clientType;
+
     @SerializedName(value = "units")
     private List<Unit> units;
 
@@ -64,6 +68,14 @@ public class AccountSetupResponse {
 
     public void setTelesolaAccount(String telesolaAccount) {
         this.telesolaAccount = telesolaAccount;
+    }
+
+    public String getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
 
     public List<Unit> getUnits() {
@@ -87,8 +99,8 @@ public class AccountSetupResponse {
         @SerializedName(value = "contract_date")
         private String contractDate;
 
-        @SerializedName(value = "contract_price")
-        private String contractPrice;
+        @SerializedName(value = "retail_price")
+        private String retailPrice;
 
         @SerializedName(value = "user_account") //Telesola # of user who registered this unit
         private String userAccount;
@@ -148,12 +160,12 @@ public class AccountSetupResponse {
             this.contractDate = contractDate;
         }
 
-        public String getContractPrice() {
-            return contractPrice;
+        public String getRetailPrice() {
+            return retailPrice;
         }
 
-        public void setContractPrice(String contractPrice) {
-            this.contractPrice = contractPrice;
+        public void setRetailPrice(String retailPrice) {
+            this.retailPrice = retailPrice;
         }
 
         public String getInstallmentFrequency() {

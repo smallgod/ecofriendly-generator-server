@@ -549,6 +549,48 @@ public final class DBManager {
 
         return result;
     }
+    
+    
+    /**
+     * 
+     * @param <T>
+     * @param persistentClassType
+     * @param propertyNameValues
+     * @return 
+     */
+    public static <T> Set<T> fetchRecordsByProperties(Class<T> persistentClassType, Map<String, Object> propertyNameValues) {
+
+        StatelessSession tempSession = getStatelessSession();
+        Set<T> results = new HashSet<>();
+
+        try {
+
+            Criteria criteria = tempSession.createCriteria(persistentClassType);
+            criteria.add(Restrictions.allEq(propertyNameValues));
+            //criteria.addOrder(Order.asc(propertyName));
+
+            ScrollableResults scrollableResults = criteria.scroll(ScrollMode.FORWARD_ONLY);
+
+            int count = 0;
+            while (scrollableResults.next()) {
+                if (++count > 0 && count % 10 == 0) {
+                    logger.debug("Fetched " + count + " entities");
+                }
+                results.add((T) scrollableResults.get()[0]);
+
+            }
+        } catch (HibernateException he) {
+
+            logger.error("hibernate exception saving object list: " + he.getMessage());
+        } catch (Exception e) {
+
+            logger.error("General exception saving object list: " + e.getMessage());
+        } finally {
+            closeSession(tempSession);
+        }
+
+        return results;
+    }
 
     /**
      * Fetch a single record based on a single restriction

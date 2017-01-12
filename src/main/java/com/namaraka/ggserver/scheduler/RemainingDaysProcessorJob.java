@@ -75,7 +75,7 @@ public class RemainingDaysProcessorJob implements Job, InterruptableJob, Executa
 
                 String momoAccount = payment.getDebitAccount();
                 String paymentId = String.valueOf(payment.getPaymentId());
-                String amount = String.valueOf((int) Math.ceil((payment.getAmount().getAmount()).doubleValue()));
+                String amount = String.valueOf(GeneralUtils.roundUpToNext100(payment.getAmount().getAmount()));
 
                 /*DebitCustomerRequest request = new DebitCustomerRequest();
 

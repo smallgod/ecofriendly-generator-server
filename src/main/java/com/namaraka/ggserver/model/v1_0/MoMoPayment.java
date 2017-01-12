@@ -61,6 +61,8 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
     @Type(type = "jodalocaldatetime")
     private LocalDateTime approvalDate;
 
+
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -358,4 +360,10 @@ public class MoMoPayment extends BaseModel implements Auditable, Serializable {
     public void setIsPayingDepositAmount(boolean isPayingDepositAmount) {
         this.isPayingDepositAmount = isPayingDepositAmount;
     }
+    
+        @Override
+    public String toString() {
+        return "MoMoPayment{" + "telesolaAccount=" + telesolaAccount + ", generatorId=" + generatorId + ", activationCode=" + activationCode + ", paymentId=" + paymentId + ", aggregatorTransID=" + aggregatorTransID + ", momoId=" + momoId + ", amount=" + amount.getAmount() + ", debitAccount=" + debitAccount + ", approvalDate=" + approvalDate + ", status=" + status + ", statusDescription=" + statusDescription + ", isPayingDepositAmount=" + isPayingDepositAmount + ", extensionType=" + extensionType + '}';
+    }
+    
 }

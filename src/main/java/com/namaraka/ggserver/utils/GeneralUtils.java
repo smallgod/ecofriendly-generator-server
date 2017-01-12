@@ -15,9 +15,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.namaraka.ggserver.AppEntry;
 import com.namaraka.ggserver.constant.APIContentType;
 import com.namaraka.ggserver.constant.ClientType;
 import com.namaraka.ggserver.constant.CommercialStatus;
+import com.namaraka.ggserver.constant.HTTPMethod;
 import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.NamedConstants;
 import com.namaraka.ggserver.dbaccess.DBManager;
@@ -34,6 +36,7 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -41,6 +44,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -626,7 +630,7 @@ public class GeneralUtils {
      * @param generatorId
      * @return
      */
-    public static synchronized int generatorOTP(String telesolaAccount, String generatorId) {
+    public static synchronized int generateOTP(String telesolaAccount, String generatorId) {
 
         int START = 10000;
         long END = 99999L;
@@ -638,6 +642,7 @@ public class GeneralUtils {
         otp.setGeneratorId(generatorId);
         otp.setTelesolaAccount(telesolaAccount);
         otp.setOtp(generatedOTP);
+        otp.setIsOTPValid(Boolean.TRUE);
 
         long id = DBManager.persistDatabaseModel(otp);
 
@@ -672,7 +677,7 @@ public class GeneralUtils {
      * @param amount
      * @return
      */
-    public static Amounttype getAmountType(String amount) {
+    public static Amounttype getAmountTypeForBigDecimal(String amount) {
 
         Amounttype amountType = new Amounttype();
         BigDecimal decimalAmount = BigDecimal.ZERO;
@@ -681,7 +686,42 @@ public class GeneralUtils {
         } catch (ParseException ex) {
             logger.error("Failed to convert string amount: " + amount + " to BigDecimal");
         }
-        amountType.setAmount(decimalAmount);
+        //amountType.setAmount(decimalAmount);
+        //amountType.setCurrencycode("UGX"); //we will be picking this from the API once updated on app end    
+
+        return amountType;
+    }
+
+    /**
+     * Get Amounttpe from String
+     *
+     * @param amount
+     * @return
+     */
+    public static Amounttype getAmountType(String amount) {
+
+        Amounttype amountType = new Amounttype();
+
+        int amountInt = Integer.parseInt(amount);
+        amountInt = roundUpToNext100(amountInt);
+
+        amountType.setAmount(amountInt);
+        amountType.setCurrencycode("UGX"); //we will be picking this from the API once updated on app end    
+
+        return amountType;
+    }
+
+    /**
+     * Get Amounttpe from int
+     *
+     * @param amount
+     * @return
+     */
+    public static Amounttype getAmountType(int amount) {
+
+        Amounttype amountType = new Amounttype();
+
+        amountType.setAmount(amount);
         amountType.setCurrencycode("UGX"); //we will be picking this from the API once updated on app end    
 
         return amountType;
@@ -747,6 +787,9 @@ public class GeneralUtils {
                         + "Will be sent as is.");
                 break;
         }
+        
+        logger.debug("Returning formatted MSISDN as: " + MSISDN);
+        
         return MSISDN;
     }
 
@@ -923,14 +966,14 @@ public class GeneralUtils {
      * @param numberOfActiveDays
      * @return
      */
-    public static String getActivationCodeMessage(String firstName, String amount, int outstandingBalance, String activationCode, int numberOfActiveDays) {
+    public static String getActivationCodeMessage(String firstName, int amount, int outstandingBalance, String activationCode, int numberOfActiveDays) {
 
         //Object[] params = {"nameRobert", "rhume55@gmail.com"};
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("firstName", firstName);
-        map.put("amount", amount);
-        map.put("outstandingBalance", String.valueOf(outstandingBalance));
+        map.put("amount", addCommasAndCurrency(amount));
+        map.put("outstandingBalance", addCommasAndCurrency(outstandingBalance));
         map.put("activationCode", activationCode);
         map.put("numberOfActiveDays", String.valueOf(numberOfActiveDays));
 
@@ -955,7 +998,7 @@ public class GeneralUtils {
         Map<String, Object> map = new HashMap<>();
 
         map.put("firstName", firstName);
-        map.put("amount", amount);
+        map.put("amount", addCommasAndCurrency(amount));
         map.put("generatorId", generatorId);
         map.put("statusDescription", statusDescription);
 
@@ -1030,4 +1073,59 @@ public class GeneralUtils {
         return (int) Math.ceil(value);
     }
 
+    /**
+     * Add commas to a number
+     *
+     * @param numberToFormat
+     * @return
+     */
+    public static String addCommas1(int numberToFormat) {
+
+        return (NumberFormat.getNumberInstance(Locale.US).format(numberToFormat));
+    }
+
+    /**
+     *
+     * @param numberToAddCommas
+     * @return
+     */
+    public static String addCommas2(int numberToAddCommas) {
+
+        String str = "UGX" + String.valueOf(numberToAddCommas).replaceAll("/\\B(?=(\\d{3})+(?!\\d))/g", ",");
+
+        logger.debug("Formatted amount string is: " + str);
+
+        return str;
+    }
+
+    /**
+     * Add (a) comma(s) to a number
+     *
+     * @param numberToAddCommas
+     * @return
+     */
+    public static String addCommasAndCurrency(int numberToAddCommas) {
+
+        DecimalFormat myFormatter = new DecimalFormat("#,###");
+        String output = "UGX" + myFormatter.format(numberToAddCommas);
+
+        logger.debug("Formatted amount string is: " + output);
+
+        return output;
+
+    }
+
+    /**
+     * Send out SMS
+     *
+     * @param paramPairs
+     * @return
+     */
+    public static String sendSMS(Map<String, Object> paramPairs) {
+
+        String response = "Assume an SMS is sent and this is the response, hihihihi, LOLEST!!";
+        //response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
+
+        return response;
+    }
 }

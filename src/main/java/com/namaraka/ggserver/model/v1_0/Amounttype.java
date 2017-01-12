@@ -45,7 +45,8 @@ public class Amounttype {
 
     @XmlElement(required = true)
     
-    protected BigDecimal amount;
+    //protected BigDecimal amount;
+    protected int amount;
     @XmlElement(required = true)
     protected String currencycode;
 
@@ -54,10 +55,10 @@ public class Amounttype {
      * 
      * @return
      *     possible object is
-     *     {@link BigDecimal }
+     *     {@link int }
      *     
      */
-    public BigDecimal getAmount() {
+    public int getAmount() {
         return amount;
     }
 
@@ -66,10 +67,10 @@ public class Amounttype {
      * 
      * @param value
      *     allowed object is
-     *     {@link BigDecimal }
+     *     {@link int }
      *     
      */
-    public void setAmount(BigDecimal value) {
+    public void setAmount(int value) {
         this.amount = value;
     }
 
