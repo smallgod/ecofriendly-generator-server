@@ -1123,8 +1123,8 @@ public class GeneralUtils {
      */
     public static String sendSMS(Map<String, Object> paramPairs) {
 
-        String response = "Assume an SMS is sent and this is the response, hihihihi, LOLEST!!";
-        //response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
+        //String response = "Assume an SMS is sent and this is the response, hihihihi, LOLEST!!";
+        String response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
 
         return response;
     }
