@@ -602,6 +602,7 @@ public final class HttpClientPool {
      * @param requestPayloadString
      * @param urlToCall
      * @param paramPairs
+     * @param method
      * @return string response
      */
     public String sendRemoteRequest(String requestPayloadString, String urlToCall, Map<String, Object> paramPairs, HTTPMethod method) {

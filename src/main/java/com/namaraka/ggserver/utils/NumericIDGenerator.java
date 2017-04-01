@@ -11,6 +11,7 @@ package com.namaraka.ggserver.utils;
  */
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /*
  * This class generates numeric IDs incrementally starting from a 
@@ -48,6 +49,8 @@ public class NumericIDGenerator {
 		 * char by char
          */
         for (int i = number.length - 1; i >= 0; i--) {
+            
+           
 
             int lastnumber = numberset.indexOf(number[i]);
             /*
