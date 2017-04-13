@@ -61,6 +61,7 @@ import java.util.Collections;
 import org.joda.time.LocalDateTime;
 import com.namaraka.ggserver.utils.NumericIDGenerator;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 
 /**
  *
@@ -809,11 +810,19 @@ public class JsonAPIServer extends HttpServlet {
                 GeneratorUnit recentGenerator = DBManager.getMostRecentRecord(GeneratorUnit.class, "id");
 
                 if (recentGenerator == null) {
-                    generatorId = NamedConstants.START_ID;
+                    
+                    generatorId = NamedConstants.TWELVE_VOLT_UNIT_INITIALS + NamedConstants.START_ID;
+                    
                 } else {
-                    String idToIncrement = recentGenerator.getGeneratorId();
+                    String fullId = recentGenerator.getGeneratorId();
+
+                    int index = fullId.length() - 2;
+                    String idToIncrement = fullId.substring(index);
+                    String initials = fullId.substring(0, index);
+
+                    String newIncremented = NumericIDGenerator.generateNextId(idToIncrement);
                     //generatorId = AlphaNumericIDGenerator.generateNextId(idToIncrement);
-                    generatorId = NumericIDGenerator.generateNextId(idToIncrement);
+                    generatorId = initials + newIncremented;
                 }
 
                 int repaymentPeriod = Integer.parseInt(unitRegistration.getParams().getRepaymentPeriod()); //this is the repayment period in months

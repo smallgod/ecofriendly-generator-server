@@ -19,23 +19,28 @@ public interface NamedConstants {
     //public static final String SUBSCRIPTION_KEY = "9389259ec349469682c71910ab6f4ac3";
     public static final String SUBSCRIPTION_KEY = "f3abdfa6568a4d8da75c27aa8fbd26ce"; //UNLIMITED
 
-    public static final String START_ID = "00001"; //Will give us 3.7million ids before introducing 6th digit goes upto YYYYZ
+    public static final String TWELVE_VOLT_UNIT_INITIALS = "TS12";
+    public static final String TWENTYFOUR_VOLT_UNIT_INITIALS = "TS24";
+
+    // public static final String START_ID = "00001"; //Will give us 3.7million ids before introducing 6th digit goes upto YYYYZ
+    public static final String START_ID = "001";
+
     public static final int MAX_NUMBER_PAYMENTS = 5;
     public static final OrderFirst ORDER_FIRST = OrderFirst.NEWEST;
 
     public static final int NUM_OF_ACTIVATION_CODES = 100;
-    
+
     //PERCENTAGE MULTIPLIERS TO GET INSTALLMENTS (Multiply these by the retail cash price to get installment)
-    public static final double MONTHLY_INSTALLMENT_6_MONTHS = 13.974/100;
-    public static final double MONTHLY_INSTALLMENT_12_MONTHS = 7.385/100;
-    public static final double MONTHLY_INSTALLMENT_18_MONTHS = 5.198/100;
-    
-    public static final double WEEKLY_INSTALLMENT_6_MONTHS = 3.250/100;
-    public static final double WEEKLY_INSTALLMENT_12_MONTHS = 1.718/100;
-    public static final double WEEKLY_INSTALLMENT_18_MONTHS = 1.210/100;
-    
+    public static final double MONTHLY_INSTALLMENT_6_MONTHS = 13.974 / 100;
+    public static final double MONTHLY_INSTALLMENT_12_MONTHS = 7.385 / 100;
+    public static final double MONTHLY_INSTALLMENT_18_MONTHS = 5.198 / 100;
+
+    public static final double WEEKLY_INSTALLMENT_6_MONTHS = 3.250 / 100;
+    public static final double WEEKLY_INSTALLMENT_12_MONTHS = 1.718 / 100;
+    public static final double WEEKLY_INSTALLMENT_18_MONTHS = 1.210 / 100;
+
     public static final double DOWN_PAYMENT_RATE = 0.2d;
-    
+
     /**
      * OTP validity period in DAYS
      */

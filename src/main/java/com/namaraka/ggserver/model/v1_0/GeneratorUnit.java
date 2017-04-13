@@ -2,7 +2,6 @@ package com.namaraka.ggserver.model.v1_0;
 
 import com.namaraka.ggserver.constant.CommercialStatus;
 import com.namaraka.ggserver.constant.ClientType;
-import com.namaraka.ggserver.constant.InstallmentDay;
 import com.namaraka.ggserver.constant.InstallmentFrequency;
 import com.namaraka.ggserver.constant.PaymentProgress;
 import com.namaraka.ggserver.utils.Auditable;
@@ -18,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import jaxb.com.namaraka.ggserver.config.v1_0.Credentialstype;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.SelectBeforeUpdate;
@@ -26,7 +26,6 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.jadira.usertype.dateandtime.joda.PersistentLocalDate;
 import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 @TypeDefs({
