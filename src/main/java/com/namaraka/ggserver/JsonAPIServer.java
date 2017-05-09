@@ -810,9 +810,9 @@ public class JsonAPIServer extends HttpServlet {
                 GeneratorUnit recentGenerator = DBManager.getMostRecentRecord(GeneratorUnit.class, "id");
 
                 if (recentGenerator == null) {
-                    
+
                     generatorId = NamedConstants.TWELVE_VOLT_UNIT_INITIALS + NamedConstants.START_ID;
-                    
+
                 } else {
                     String fullId = recentGenerator.getGeneratorId();
 
@@ -1004,8 +1004,7 @@ public class JsonAPIServer extends HttpServlet {
         //2. respond with LOGGED if ok to client otherwise NOT_LOGGED
         //3. Notify fetcher to send to aggregator via a call back i think
         //transaction.setCreationDate(DateUtils.convertStringToDateTime(creationDate, NamedConstants.DATE_TIME_FORMAT));
-        MakePaymentRequest paymentRequest = convertFromJson(paymentPayload, MakePaymentRequest.class
-        );
+        MakePaymentRequest paymentRequest = convertFromJson(paymentPayload, MakePaymentRequest.class);
 
         String status = Status.LOGGED.getValue();
         String statusDescription = "Payment Logged for Processing";
@@ -1024,6 +1023,7 @@ public class JsonAPIServer extends HttpServlet {
         restrictions.put("telesolaAccount", telesolaAccount);
 
         GeneratorUnit generatorUnit = DBManager.fetchSingleRecord(GeneratorUnit.class, restrictions);
+
         Amounttype amountToPay;
         int amountPayableInt = -1;
 
@@ -1032,6 +1032,12 @@ public class JsonAPIServer extends HttpServlet {
 
             status = Status.NOT_LOGGED.getValue();
             statusDescription = "Failed to log payment: Failed to match Unit ID " + generatorId + " and Telesola: " + telesolaAccount;
+
+        } else if (generatorUnit.getPaymentProgress() == PaymentProgress.COMPLETED || generatorUnit.getTotalNumOfInstallmentsToBePaid() == generatorUnit.getTotalNumOfInstallmentsSoFarPaid()) {
+
+            status = Status.NOT_LOGGED.getValue();
+            statusDescription = "Payments already completed for this generator: " + generatorId;
+            amountPayableInt = 0;
 
         } else {
 

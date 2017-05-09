@@ -76,7 +76,8 @@ public class GeneratorUnit extends BaseModel implements Auditable, Serializable 
 
     private int enableDurationDefault; //set it at account setup
 
-    private int remainingDays;  //Number of days remaining to next installment payment
+    @Column(nullable = false)
+    private int remainingDays = 0;  //Number of days remaining to next installment payment
 
     private boolean isDepositAmountPaid; //shows if the client has paid the initial deposit amount for this generator
 
