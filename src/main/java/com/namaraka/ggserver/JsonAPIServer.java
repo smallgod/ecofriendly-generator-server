@@ -62,6 +62,8 @@ import org.joda.time.LocalDateTime;
 import com.namaraka.ggserver.utils.NumericIDGenerator;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
 import static com.namaraka.ggserver.utils.GeneralUtils.convertFromJson;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  *
@@ -733,17 +735,23 @@ public class JsonAPIServer extends HttpServlet {
                 client.setPrimaryContactPhone(primaryContact);
                 client.setOtherContactPhone(otherPhone);
 
-                long id = DBManager.persistDatabaseModel(client);
+                Map<String, Object> propertyNameValues = new HashMap<>();
+                propertyNameValues.put("primaryContactPhone", new HashSet<>(Arrays.asList(primaryContact)));
 
-                //To-Do 
-                //add condition to check for duplicate client and return appropriately
-                if (id == -1L) {
-                    status = Status.NOT_LOGGED.getValue();
-                    statusDescription = "Failed to register client";
+                long id;
+                if (!DBManager.isRecordExists(Client.class, propertyNameValues)) {
+                    id = DBManager.persistDatabaseModel(client);
+
+                    if (id == -1L) {
+                        status = Status.NOT_LOGGED.getValue();
+                        statusDescription = "Failed to register client";
+                    }
+
                 } else {
-
-                    //To-Do
+                    status = Status.NOT_LOGGED.getValue();
+                    statusDescription = "Error! Primary phone number is already registered with another client";
                 }
+
             }
 
         } catch (Exception ex) {

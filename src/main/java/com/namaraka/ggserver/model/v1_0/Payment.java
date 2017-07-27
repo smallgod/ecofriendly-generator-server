@@ -58,9 +58,7 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
 
     private String paymentQueryAnswers; //each recipient has a set of questions the payer must (has to) answer
 
-   private DateTime datePaymentAcknowledged;
-
-    private ServiceType serviceType;
+    private DateTime datePaymentAcknowledged;
 
     private String internalTransactionID; //generated internally
 
@@ -80,8 +78,8 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
 
     private String payerNames; //a customer entered names when paying - we will use to update the Name in Client incase it is different from what we have
 
-    
-    
+    private ServiceType serviceType;
+
     /**
      * Gets the value of the amount property.
      *
@@ -392,7 +390,7 @@ public class Payment extends BaseModel implements Auditable, Serializable, Proce
         this.payerID = payerID;
     }
 
-     @Override
+    @Override
     public String getModifyAction() {
         return "modify action";
     }

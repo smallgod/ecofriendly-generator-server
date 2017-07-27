@@ -4,6 +4,7 @@ import com.namaraka.ggserver.ApplicationPropertyLoader;
 import com.namaraka.ggserver.constant.OrderFirst;
 import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.utils.AuditTrailInterceptor;
+import com.namaraka.ggserver.utils.GeneralUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
+import org.joda.time.LocalDate;
 
 /**
  *
@@ -149,6 +151,155 @@ public final class DBManager {
         }
 
         return dbObjectId;
+    }
+
+    /**
+     * 
+     * @param entityType
+     * @param propertyNameValues
+     * @return 
+     */
+    public static boolean isRecordExists(Class entityType, Map<String, Object> propertyNameValues) {
+
+        Session session = getSession();
+        Transaction transaction = null;
+        String errorDetails;
+        long count = 0L;
+
+        try {
+            transaction = session.beginTransaction();
+            Criteria criteria = session.createCriteria(entityType);
+
+            //propertyNameValues.entrySet().stream().forEach((entry) -> {
+            for (Map.Entry<String, Object> entry : propertyNameValues.entrySet()) {
+
+                String name = entry.getKey();
+                Set<Object> values = (Set<Object>) entry.getValue();
+
+                logger.debug("Field Name  : " + name);
+                logger.debug("Field values: " + values);
+
+                //if objects set is empty or contains a '1' - we will select all records
+                if (values == null || values.isEmpty() || values.contains(String.valueOf(1))) {
+
+                    logger.info("No Restrictions on property: " + name + ", while Fetching: " + entityType.getName() + " objects.");
+
+                } else if (name.equals("displayDate")) {
+
+                    Set<LocalDate> displayDates = new HashSet<>();
+                    for (Object object : values) {
+
+                        //LocalDate userId = DateUtils.convertStringToLocalDate((String) object, NamedConstants.DATE_DASH_FORMAT);
+                        LocalDate date = new LocalDate(object);
+                        displayDates.add(date);
+                    }
+                    criteria.add(Restrictions.in(name, displayDates));
+
+                } else if (name.equals("id")) {
+
+                    Set<Long> ids = new HashSet<>();
+
+                    for (Object object : values) {
+
+                        long val = GeneralUtils.convertObjectToLong(object);
+                        ids.add(val);
+                    }
+                    criteria.add(Restrictions.in(name, ids));
+
+                } else if (name.equals("id.fileId")) {
+
+                    Set<Long> fileIds = new HashSet<>();
+
+                    for (Object object : values) {
+
+                        long val = GeneralUtils.convertObjectToLong(object);
+                        fileIds.add(val);
+                    }
+                    criteria.add(Restrictions.in(name, fileIds));
+
+                } else if (name.equals("isUploadedToDSM")) {
+
+                    Set<Boolean> vals = new HashSet<>();
+
+                    for (Object object : values) {
+
+                        boolean val = (Boolean) object;
+                        vals.add(val);
+                    }
+                    criteria.add(Restrictions.in(name, vals));
+
+                } else if (name.equals("id.taskId")) {
+
+                    Set<Integer> vals = new HashSet<>();
+
+                    for (Object object : values) {
+
+                        int val = (Integer) object;
+                        vals.add(val);
+                    }
+                    criteria.add(Restrictions.in(name, vals));
+
+                } else if (name.equals("id.cstmId")) {
+
+                    Set<Integer> vals = new HashSet<>();
+
+                    for (Object object : values) {
+
+                        int val = (Integer) object;
+                        vals.add(val);
+                    }
+                    criteria.add(Restrictions.in(name, vals));
+
+                } else if (name.equals("cstmId")) {
+
+                    Set<Integer> vals = new HashSet<>();
+
+                    for (Object object : values) {
+
+                        int val = (Integer) object;
+                        vals.add(val);
+                    }
+                    criteria.add(Restrictions.in(name, vals));
+
+                } else {
+                    criteria.add(Restrictions.in(name, values));
+                }
+
+            }
+
+            criteria.setProjection(Projections.rowCount());
+            count = (Long) criteria.uniqueResult();
+
+            transaction.commit();
+
+            logger.debug("Records count is: " + count);
+
+        } catch (HibernateException he) {
+
+            errorDetails = "HibernateException checking if record exists in database: " + he.toString();
+
+            if (transaction != null) {
+                transaction.rollback();
+            }
+
+        } catch (Exception e) {
+
+            errorDetails = "General exception checking if record exists in database: " + e.toString();
+
+            if (transaction != null) {
+                transaction.rollback();
+            }
+
+        } finally {
+            closeSession(session);
+        }
+        
+        if (count != 0) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+
     }
 
     public static <T> long persistDatabaseModel(String entityName, T dbObject) {
@@ -549,14 +700,13 @@ public final class DBManager {
 
         return result;
     }
-    
-    
+
     /**
-     * 
+     *
      * @param <T>
      * @param persistentClassType
      * @param propertyNameValues
-     * @return 
+     * @return
      */
     public static <T> Set<T> fetchRecordsByProperties(Class<T> persistentClassType, Map<String, Object> propertyNameValues) {
 
@@ -1199,15 +1349,15 @@ public final class DBManager {
     }
 
     /**
-     * 
+     *
      * @param dbObject
-     * @return 
+     * @return
      */
     public static boolean updateDatabaseModel(Object dbObject) {
 
         Session tempSession = getSession();
         Transaction transaction = null;
-        boolean updated  = false;
+        boolean updated = false;
 
         try {
             transaction = tempSession.beginTransaction();
@@ -1224,17 +1374,17 @@ public final class DBManager {
             updated = Boolean.TRUE;
 
         } catch (HibernateException he) {
-            
+
             updated = Boolean.FALSE;
-            
+
             if (transaction != null) {
                 transaction.rollback();
             }
             logger.error("hibernate exception updating DB object: " + he.getMessage());
         } catch (Exception e) {
-            
-             updated = Boolean.FALSE;
-             
+
+            updated = Boolean.FALSE;
+
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -1242,7 +1392,7 @@ public final class DBManager {
         } finally {
             closeSession(tempSession);
         }
-        
+
         return updated;
     }
 

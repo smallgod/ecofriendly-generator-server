@@ -5,7 +5,6 @@
  */
 package com.namaraka.ggserver.scheduler;
 
-import com.namaraka.ggserver.interfaces.SharedAppConfigIF;
 import java.io.Serializable;
 import org.quartz.DateBuilder;
 import org.quartz.Job;
@@ -21,9 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.quartz.JobListener;
 import org.quartz.JobKey;
-import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDataMap;
-import static org.quartz.TriggerKey.triggerKey;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerKey.triggerKey;
 

@@ -16,8 +16,39 @@ public interface NamedConstants {
     public static final String MAMBOPAY_DEBIT_URL = "https://mambopay.azure-api.net/api/v1/mtnmobilemoneyapi/debit";
     public static final String SMS_API_URL = "http://api.infobip.com/api/v3/sendsms/plain";
 
+    //pu
     //public static final String SUBSCRIPTION_KEY = "9389259ec349469682c71910ab6f4ac3";
     public static final String SUBSCRIPTION_KEY = "f3abdfa6568a4d8da75c27aa8fbd26ce"; //UNLIMITED
+
+    public static final int MAMBOPAY_DEBIT_ACCOUNT_UNREGISTERED = 101;
+    public static final int MAMBOPAY_DEBIT_INSUFFICIENT_FUNDS = 106;
+    public static final int MAMBOPAY_DEBIT_BELOW_THRESHOLD = 105;
+    public static final int MAMBOPAY_DEBIT_CUSTOMER_UNAPPROVED = 103;
+    public static final int MAMBOPAY_DEBIT_SUCCESS = 1;
+    public static final String MAMBOPAY_DEBIT_PROCESSING = "01";
+    public static final String MAMBOPAY_DEBIT_DUPLICATE = "02";
+
+    //MAMBO-PAY DEBIT API HTTP PARAMS
+    public static final String MAMBOPAY_PARAM_MSISDN = "msisdn";
+    public static final String MAMBOPAY_PARAM_AMOUNT = "amount";
+    public static final String MAMBOPAY_PARAM_TRANSID = "transaction_id";
+    public static final String MAMBOPAY_PARAM_CALLBACKURL = "callbackurl";
+    public static final String MAMBOPAY_HEADER_SUBSCKEY = "Ocp-Apim-Subscription-Key";
+
+    public static final String SMS_API_SENDER_NAME = "TELESOLA";
+    public static final String SMS_API_USERNAME = "codev";
+    public static final String SMS_API_PASSWORD = "codev";
+    public static final String SMS_TEMPLATE_ACT_CODE = "Hello {firstName}, you paid {amount}, remaining balance is {outstandingBalance}. Enter code {activationCode} in your Telesola app for {numberOfActiveDays} days. Thank you";
+    public static final String SMS_PAYMENT_FAILURE = "Hello {firstName}, payment of {amount} for generator: {generatorId}, failed. {statusDescription}. Please re-initiate another payment. Thank you";
+    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your PIN is: {otp} & GeneratorID: {generatorId}. Please open your Telesola app & enter the details. However, clear the deposit to activate the generator";
+
+    public static final String SMS_API_PARAM_USERNAME = "user";
+    public static final String SMS_API_PARAM_PASSOWRD = "password";
+    public static final String SMS_API_PARAM_SENDER = "sender";
+    public static final String SMS_API_PARAM_TEXT = "SMSText";
+    public static final String SMS_API_PARAM_RECIPIENT = "GSM";
+
+    public static final String INTERNAL_USE_APP_SECRET_KEY = "32254kUHE39AH3P90EQ";
 
     public static final String TWELVE_VOLT_UNIT_INITIALS = "TS12";
     public static final String TWENTYFOUR_VOLT_UNIT_INITIALS = "TS24";
@@ -45,36 +76,6 @@ public interface NamedConstants {
      * OTP validity period in DAYS
      */
     public static final int OTP_VALIDITY_PERIOD = 24; //DAYS
-
-    public static final int MAMBOPAY_DEBIT_ACCOUNT_UNREGISTERED = 101;
-    public static final int MAMBOPAY_DEBIT_INSUFFICIENT_FUNDS = 106;
-    public static final int MAMBOPAY_DEBIT_BELOW_THRESHOLD = 105;
-    public static final int MAMBOPAY_DEBIT_CUSTOMER_UNAPPROVED = 103;
-    public static final int MAMBOPAY_DEBIT_SUCCESS = 1;
-    public static final String MAMBOPAY_DEBIT_PROCESSING = "01";
-    public static final String MAMBOPAY_DEBIT_DUPLICATE = "02";
-
-    //MAMBO-PAY DEBIT API HTTP PARAMS
-    public static final String MAMBOPAY_PARAM_MSISDN = "msisdn";
-    public static final String MAMBOPAY_PARAM_AMOUNT = "amount";
-    public static final String MAMBOPAY_PARAM_TRANSID = "transaction_id";
-    public static final String MAMBOPAY_PARAM_CALLBACKURL = "callbackurl";
-    public static final String MAMBOPAY_HEADER_SUBSCKEY = "Ocp-Apim-Subscription-Key";
-
-    public static final String SMS_API_SENDER_NAME = "TELESOLA";
-    public static final String SMS_API_USERNAME = "codev";
-    public static final String SMS_API_PASSWORD = "codev";
-    public static final String SMS_TEMPLATE_ACT_CODE = "Hello {firstName}, you paid {amount}, remaining balance is {outstandingBalance}. Enter code {activationCode} in your Telesola app for {numberOfActiveDays} days. Thank you";
-    public static final String SMS_PAYMENT_FAILURE = "Hello {firstName}, payment of {amount} for generator: {generatorId}, has Failed.Reason: {statusDescription}. Please re-initiate another payment. Thank you";
-    public static final String SMS_TEMPLATE_OTP = "Hello {firstName}, your PIN is: {otp} & GeneratorID: {generatorId}. Please open your Telesola app & enter the details.However, clear the deposit to activate the generator";
-
-    public static final String SMS_API_PARAM_USERNAME = "user";
-    public static final String SMS_API_PARAM_PASSOWRD = "password";
-    public static final String SMS_API_PARAM_SENDER = "sender";
-    public static final String SMS_API_PARAM_TEXT = "SMSText";
-    public static final String SMS_API_PARAM_RECIPIENT = "GSM";
-
-    public static final String INTERNAL_USE_APP_SECRET_KEY = "32254kUHE39AH3P90EQ";
 
     /**
      * Date time string formats

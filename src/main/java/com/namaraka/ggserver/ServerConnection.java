@@ -24,7 +24,11 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 public class ServerConnection {
 
     //PUT IN CONFIGS FILE
-    public static final int HTTP_PORT = 8099;
+    //dev
+    //public static final int HTTP_PORT = 8099;
+    //prod
+    public static final int HTTP_PORT = 9099;
+    
     public static final int HTTPS_PORT = 8008;
     public static final int ADMIN_PORT = 8188;
     public static final int IDLE_TIME = 30000;

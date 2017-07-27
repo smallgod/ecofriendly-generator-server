@@ -1123,9 +1123,45 @@ public class GeneralUtils {
      */
     public static String sendSMS(Map<String, Object> paramPairs) {
 
-        //String response = "Assume an SMS is sent and this is the response, hihihihi, LOLEST!!";
-        String response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
+        String response = "Assume an SMS is sent and this is the response, hihihihi, LOLEST!!";
+        //String response = AppEntry.clientPool.sendRemoteRequest("", NamedConstants.SMS_API_URL, paramPairs, HTTPMethod.GET);
 
         return response;
     }
+    
+    
+    /**
+     * Convert an Object to a long value
+     *
+     * @param value
+     * @return
+     */
+    public static long convertObjectToLong(Object value) {
+
+        logger.debug("Converting Object to long");
+        return (value instanceof Number ? ((Number) value).longValue() : -1);
+    }
+
+    /**
+     * Convert an Object to a double value
+     *
+     * @param value
+     * @return
+     */
+    public static double convertObjectToDouble(Object value) {
+        logger.debug("Converting Object to double");
+        return (value instanceof Number ? ((Number) value).doubleValue() : -1.0);
+    }
+
+    /**
+     * Convert an Object to a double value
+     *
+     * @param value
+     * @return
+     */
+    public static int convertObjectToInteger(Object value) {
+        logger.debug("Converting Object to Integer");
+        return (value instanceof Number ? ((Number) value).intValue() : 0);
+    }
+    
 }
