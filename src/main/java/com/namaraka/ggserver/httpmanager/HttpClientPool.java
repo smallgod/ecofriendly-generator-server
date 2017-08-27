@@ -472,21 +472,21 @@ public final class HttpClientPool {
 
         try {
 
-            switch(method){
-                
+            switch (method) {
+
                 case POST:
                     request = setHttpPostRequest(requestPayloadString, urlToCall, httpParams);
                     break;
-                    
+
                 case GET:
                     request = setHttpGetRequest(requestPayloadString, urlToCall, httpParams);
                     break;
-                    
+
                 default:
                     request = setHttpPostRequest(requestPayloadString, urlToCall, httpParams);
                     break;
             }
-            
+
             //request = Security.setBasicEncoding(request, username, password);
             response = HttpClientPool.getHttpClient().execute(request);
 
@@ -842,7 +842,7 @@ public final class HttpClientPool {
 
         return postRequest;
     }
-    
+
     private HttpRequestBase setHttpGetRequest(String requestPayloadString, String urlToCall, List<NameValuePair> httpParams) throws UnsupportedEncodingException, IOException, URISyntaxException {
 
         logger.debug("Sending request to URL: " + urlToCall + " request: " + requestPayloadString);

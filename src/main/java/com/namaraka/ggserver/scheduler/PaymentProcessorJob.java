@@ -11,7 +11,6 @@ import com.namaraka.ggserver.constant.Status;
 import com.namaraka.ggserver.dbaccess.DBManager;
 import com.namaraka.ggserver.httpmanager.HttpClientPool;
 import com.namaraka.ggserver.interfaces.ExecutableJob;
-import com.namaraka.ggserver.jsondata.DebitCustomerRequest;
 import com.namaraka.ggserver.jsondata.DebitCustomerResponse;
 import com.namaraka.ggserver.jsondata.DebitCustomerResponseFail;
 import com.namaraka.ggserver.model.v1_0.MoMoPayment;
